@@ -1,0 +1,14 @@
+<svg width="40" height="44" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="20" cy="19.3602" r="19.2" fill="#1B92FF"/>
+<mask id="mask0_1_1534" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="20" y="0" width="20" height="44">
+<rect width="19.2" height="43.68" transform="matrix(1 0 0 -1 20.0002 43.8398)" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1_1534)">
+<path d="M0.800194 19.3602C0.800194 35.2002 20.0002 43.8402 20.0002 43.8402C20.0002 43.8402 39.2002 35.2002 39.2002 19.3602C39.2002 8.75629 30.6041 0.160156 20.0002 0.160156C9.39633 0.160156 0.800194 8.75629 0.800194 19.3602Z" fill="#1B92FF"/>
+</g>
+<rect x="24.8394" y="12.0703" width="5.376" height="14.592" rx="2.688" fill="#E9F4FF"/>
+<rect x="15.5029" y="12.0977" width="5.376" height="14.592" rx="2.688" fill="#E9F4FF"/>
+<rect opacity="0.8" x="18.2" y="10.9727" width="5.376" height="18.4929" rx="2.688" transform="rotate(45.4799 18.2 10.9727)" fill="#E9F4FF"/>
+<rect opacity="0.8" x="31.2678" y="16.6387" width="5.30213" height="10.4446" rx="2.65107" transform="rotate(45.4799 31.2678 16.6387)" fill="#E9F4FF"/>
+<rect opacity="0.8" x="27.5364" y="10.9453" width="5.43795" height="18.4261" rx="2.71897" transform="rotate(45.4799 27.5364 10.9453)" fill="#E9F4FF"/>
+</svg>
