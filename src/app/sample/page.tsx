@@ -1,4 +1,6 @@
-import TextFieldChat from '@/shared/components/text-field-chat/TextFieldChat';
+// import TextFieldChat from '@/shared/components/text-field-chat/TextFieldChat';
+import { SolidButton } from '@/shared/components/Button/SolidButton';
+import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { Button, Stack, SxProps } from '@mui/material';
@@ -12,7 +14,7 @@ export default function SamplePage() {
   const typoSample = '타이포 텍스트 이렇게 넣으면 됩니다';
   return (
     // 스타일링 방법 1.
-    <Stack justifyContent="center" alignItems="center" gap="20px" height="100vh">
+    <Stack justifyContent="center" alignItems="center" gap="20px" padding="20px" height="100%">
       {/* 스타일링 방법 2. */}
       <Stack sx={typoWraperSx}>
         <Typo className="text_R_24" content={typoSample} color={colorChips.background.f4f7fb} />
@@ -21,6 +23,21 @@ export default function SamplePage() {
       <Button color="secondary" variant="contained" sx={buttonSx}>
         <Typo className="text_B_16" content="변수로 해도 되고 이렇게 바로 넣어도 돼요" />
       </Button>
+
+      {/* CommonButton 테스트 - 확인하고 다 주석처리해주셔도 됩니다~ */}
+      <SolidButton buttonSize="sm" text="sm with icon" hasIcon={true} />
+      <SolidButton buttonSize="sm" text="sm no icon" />
+      <SolidButton buttonSize="sm" text="sm disabled" disabled={true} />
+      <SolidButton text="md with icon" hasIcon={true} />
+      <SolidButton text="md no icon" />
+      <SolidButton text="md disabled" disabled={true} />
+
+      <OutlinedButton buttonSize="sm" text="sm outlined default" justifyContent="flex-start" />
+      <OutlinedButton buttonType="done" buttonSize="sm" text="sm outlined done" justifyContent="flex-start" />
+      <OutlinedButton buttonSize="sm" text="sm outlined disabled" disabled={true} justifyContent="flex-start" />
+      <OutlinedButton text="md outlined default" />
+      <OutlinedButton buttonType="done" text="md outlined done" hasIcon={true} />
+      <OutlinedButton text="md outlined disabled" disabled={true} />
     </Stack>
   );
 }
