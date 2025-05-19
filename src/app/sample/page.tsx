@@ -51,10 +51,13 @@ export default function SamplePage() {
         error={isTooShort}
         helperText={isTooShort ? '10자 이상 입력해 주세요' : `${value.length}/500`}
       />
-      <Chip type="home" />
-      <Chip type="region" />
-      <Chip type="select" />
-      <Chip type="small">맞춤 이사</Chip>
+
+      <Stack width="400px" height="200px" gap="20px" bgcolor="black">
+        <Chip type="home" />
+        <Chip type="region" />
+        <Chip type="select" />
+        <Chip type="small">맞춤 이사</Chip>
+      </Stack>
     </Stack>
   );
 }

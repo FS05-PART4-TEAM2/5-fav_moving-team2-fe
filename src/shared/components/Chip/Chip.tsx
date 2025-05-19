@@ -1,6 +1,5 @@
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { typographyStyles } from '@/shared/styles/Typo/TypoStyles';
 import { useTheme, useMediaQuery, Chip as MuiChip, Stack } from '@mui/material';
 import Image from 'next/image';
 
@@ -14,6 +13,7 @@ export const Category = {
     className: 'text_SB_16',
     mobileClassName: 'text_SB_13',
     radius: '4px',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
   },
   home: {
     type: '가정이사',
@@ -24,6 +24,7 @@ export const Category = {
     className: 'text_SB_16',
     mobileClassName: 'text_SB_13',
     radius: '4px',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
   },
   office: {
     type: '사무실이사',
@@ -34,6 +35,7 @@ export const Category = {
     className: 'text_SB_16',
     mobileClassName: 'text_SB_13',
     radius: '4px',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
   },
   select: {
     type: '소형이사',
@@ -44,6 +46,7 @@ export const Category = {
     className: 'text_SB_16',
     mobileClassName: 'text_SB_13',
     radius: '4px',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
   },
   wait: {
     type: '견적 대기',
@@ -52,6 +55,7 @@ export const Category = {
     bgColor: colorChips.line['f2f3f8'],
     className: 'text_SB_16',
     mobileClassName: 'text_SB_13',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
   },
   moveType: {
     type: '지역',
@@ -61,6 +65,7 @@ export const Category = {
     borderColor: colorChips.primary[300],
     className: 'text_M_18',
     mobileClassName: 'text_M_14',
+    shadow: '4px 4px 10px rgba(230, 230, 230, 0.25)',
   },
   region: {
     type: '지역',
@@ -70,6 +75,7 @@ export const Category = {
     borderColor: colorChips.grayScale[100],
     className: 'text_M_18',
     mobileClassName: 'text_M_14',
+    shadow: '4px 4px 10px rgba(230, 230, 230, 0.25)',
   },
   address: {
     type: '도로명',
@@ -96,6 +102,8 @@ export default function Chip({ type, children, sx }: ChipProps) {
   const item = Category[type];
   const label = children ?? item.type;
   const hasIcon = 'src' in item;
+  const border = 'borderColor' in item ? `1px solid ${item.borderColor}` : 'none';
+  const boxShadow = 'shadow' in item ? item.shadow : 'none';
   const typoClass = isMobile && 'mobileClassName' in item ? item.mobileClassName : item.className;
 
   return (
@@ -115,8 +123,9 @@ export default function Chip({ type, children, sx }: ChipProps) {
         borderRadius: item.radius,
         backgroundColor: item.bgColor,
         padding: '0 12px',
-        border: 'borderColor' in item ? `1px solid ${item.borderColor}` : 'none',
+        border: border,
         color: item.color,
+        boxShadow: boxShadow,
         ...sx,
       }}
     />
