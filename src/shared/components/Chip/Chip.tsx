@@ -14,6 +14,16 @@ export const Category = {
     mobileClassName: 'text_SB_13',
     radius: '4px',
     shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px',
+      sm: '2px 6px',
+      md: '3px 5px',
+    },
+    height: {
+      xs: '24px',
+      sm: '26px',
+      md: '34px',
+    },
   },
   home: {
     type: '가정이사',
@@ -25,6 +35,16 @@ export const Category = {
     mobileClassName: 'text_SB_13',
     radius: '4px',
     shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 2px',
+      sm: '2px 6px',
+      md: '3px 5px',
+    },
+    height: {
+      xs: '24px',
+      sm: '26px',
+      md: '34px',
+    },
   },
   office: {
     type: '사무실이사',
@@ -36,9 +56,19 @@ export const Category = {
     mobileClassName: 'text_SB_13',
     radius: '4px',
     shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 2px',
+      sm: '2px 6px',
+      md: '3px 5px',
+    },
+    height: {
+      xs: '24px',
+      sm: '26px',
+      md: '34px',
+    },
   },
   select: {
-    type: '소형이사',
+    type: '지정 견적 요청',
     src: './assets/images/chip-icon/file-20x20-red.svg',
     alt: '지정 견적 아이콘',
     color: colorChips.secondary.red[200],
@@ -47,6 +77,16 @@ export const Category = {
     mobileClassName: 'text_SB_13',
     radius: '4px',
     shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 2px',
+      sm: '2px 6px',
+      md: '3px 5px',
+    },
+    height: {
+      xs: '24px',
+      sm: '26px',
+      md: '34px',
+    },
   },
   wait: {
     type: '견적 대기',
@@ -56,6 +96,16 @@ export const Category = {
     className: 'text_SB_16',
     mobileClassName: 'text_SB_13',
     shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 2px',
+      sm: '2px 6px',
+      md: '4px 6px',
+    },
+    height: {
+      xs: '24px',
+      sm: '26px',
+      md: '34px',
+    },
   },
   moveType: {
     type: '지역',
@@ -66,6 +116,14 @@ export const Category = {
     className: 'text_M_18',
     mobileClassName: 'text_M_14',
     shadow: '4px 4px 10px rgba(230, 230, 230, 0.25)',
+    padding: {
+      sm: '6px 12px',
+      md: '10px 20px',
+    },
+    height: {
+      sm: '36px',
+      md: '46px',
+    },
   },
   region: {
     type: '지역',
@@ -76,6 +134,14 @@ export const Category = {
     className: 'text_M_18',
     mobileClassName: 'text_M_14',
     shadow: '4px 4px 10px rgba(230, 230, 230, 0.25)',
+    padding: {
+      sm: '6px 12px',
+      md: '10px 20px',
+    },
+    height: {
+      sm: '36px',
+      md: '46px',
+    },
   },
   address: {
     type: '도로명',
@@ -84,6 +150,14 @@ export const Category = {
     bgColor: colorChips.primary[50],
     className: 'text_SB_14',
     mobileClassName: 'text_SB_12',
+    padding: {
+      sm: '2px 6px',
+      md: '2px 8.5px',
+    },
+    height: {
+      sm: '24px',
+      md: '28px',
+    },
   },
 } as const;
 
@@ -98,6 +172,7 @@ interface ChipProps {
 export default function Chip({ type, children, sx }: ChipProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const item = Category[type];
   const label = children ?? item.type;
@@ -109,8 +184,10 @@ export default function Chip({ type, children, sx }: ChipProps) {
   return (
     <MuiChip
       label={
-        <Stack direction="row" alignItems="center" spacing={1}>
-          {hasIcon && <Image src={item.src} alt={item.alt ?? ''} width={20} height={20} />}
+        <Stack direction="row" alignItems="center">
+          {hasIcon && (
+            <Image src={item.src} alt={item.alt ?? ''} width={isTablet ? 20 : 24} height={isTablet ? 20 : 24} />
+          )}
           {hasIcon && isMobile ? null : typeof label === 'string' ? (
             <Typo className={typoClass} content={label} />
           ) : (
@@ -119,13 +196,16 @@ export default function Chip({ type, children, sx }: ChipProps) {
         </Stack>
       }
       sx={{
-        height: '32px',
+        height: item.height,
         borderRadius: item.radius,
         backgroundColor: item.bgColor,
-        padding: '0 12px',
         border: border,
         color: item.color,
         boxShadow: boxShadow,
+        padding: 0,
+        '& .MuiChip-label': {
+          padding: item.padding,
+        },
         ...sx,
       }}
     />

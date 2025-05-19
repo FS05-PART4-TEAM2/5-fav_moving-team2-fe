@@ -35,7 +35,7 @@ export default function SamplePage() {
       <OutlinedButton text="md outlined disabled" disabled={true} />
 
       {/* TextFieldChat, Textarea 테스트 - 확인하고 주석 처리하셔도 됩니다!?! */}
-      <Stack height="200px" gap="20px" bgcolor={colorChips.background.f7f7f7}>
+      <Stack height="300px" gap="20px" bgcolor={colorChips.background.f7f7f7}>
         <TextFieldChat
           type="user"
           message="테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트"
@@ -52,7 +52,7 @@ export default function SamplePage() {
         helperText={isTooShort ? '10자 이상 입력해 주세요' : `${value.length}/500`}
       />
 
-      <Stack width="400px" height="200px" gap="20px" bgcolor="black">
+      <Stack height="200px" direction="row" gap="20px" bgcolor="black">
         <Chip type="home" />
         <Chip type="region" />
         <Chip type="select" />
