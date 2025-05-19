@@ -38,6 +38,7 @@ export const colorChips = {
   },
   line: {
     f2f2f2: '#F2F2F2',
+    f2f3f8: '#F2F3F8',
     e6e6e6: '#E6E6E6',
   },
 };
