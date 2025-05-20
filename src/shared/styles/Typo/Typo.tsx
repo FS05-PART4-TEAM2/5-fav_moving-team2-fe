@@ -28,7 +28,8 @@ export type TypoClassName =
   | 'text_M_13'
   | 'text_SB_12'
   | 'text_M_12'
-  | 'text_R_12';
+  | 'text_R_12'
+  | 'modal_header';
 
 interface CreateTypographyComponent extends TypographyProps {
   className: TypoClassName;

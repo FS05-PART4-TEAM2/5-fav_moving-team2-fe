@@ -1,6 +1,6 @@
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { Stack } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,8 @@ interface ToastPopupProps {
 }
 
 export const ToastPopup = ({ isOpen, onClose, message }: ToastPopupProps) => {
-  const isDesktop = useMediaQuery('(min-width: 744px)');
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const toastIcon = isDesktop
     ? './assets/images/info-icon/info-24x24-blue.svg'
     : './assets/images/info-icon/info-16x16-blue.svg';
