@@ -8,10 +8,11 @@ import { useState } from 'react';
 // import Textarea from '@/shared/components/Input/TextArea';
 // import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
 // import Chip from '@/shared/components/Chip/Chip';
-// import { SolidButton } from '@/shared/components/Button/SolidButton';
-// import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import { TabBarSampleProvider, useTabBarType } from './core/hooks/TabBarSampleProvider';
 import { TabBar } from '@/shared/components/Tab/TabBar';
+import { CommonModal } from '@/shared/components/Modal/CommonModal';
+import { SolidButton } from '@/shared/components/Button/SolidButton';
+import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -116,16 +117,37 @@ const TabBarTest1 = () => {
 };
 
 const TabBarTest2 = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <Stack
-      direction="row"
-      width="100%"
-      height="100px"
-      justifyContent="center"
-      alignItems="center"
-      bgcolor={colorChips.secondary.yellow[100]}
-    >
-      <Typo content="탭바테스트 2번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
-    </Stack>
+    <>
+      <Stack
+        direction="column"
+        width="100%"
+        height="300px"
+        justifyContent="center"
+        alignItems="center"
+        gap="20px"
+        bgcolor={colorChips.background.f7f7f7}
+      >
+        <Typo content="탭바테스트 2번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
+        <OutlinedButton buttonSize="sm" text="모달열기 테스트" onClick={handleOpenModal} />
+      </Stack>
+
+      {isModalOpen && (
+        <CommonModal modalTitle="지정 견적 요청하기" isOpen={isModalOpen} handleClickClose={handleCloseModal}>
+          <Stack padding="20px 0" gap="10px" alignItems="center">
+            <Typo content="테스트테스트" className="text_M_18" color={colorChips.black[400]} />
+            <SolidButton buttonSize="sm" text="확인" onClick={handleCloseModal} />
+          </Stack>
+        </CommonModal>
+      )}
+    </>
   );
 };

@@ -197,4 +197,15 @@ export const typographyStyles: TypoStyles = {
     fontWeight: 400,
     lineHeight: '18px',
   },
+  modal_header: {
+    fontFamily: 'pretendard',
+    fontSize: '24px',
+    fontStyle: 'normal',
+    fontWeight: 600,
+    lineHeight: '32px',
+    '@media (max-width: 744px)': {
+      fontSize: '18px',
+      lineHeight: '26px',
+    },
+  },
 };
