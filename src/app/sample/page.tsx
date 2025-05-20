@@ -13,6 +13,7 @@ import { TabBar } from '@/shared/components/Tab/TabBar';
 import { CommonModal } from '@/shared/components/Modal/CommonModal';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
+import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -117,12 +118,19 @@ const TabBarTest1 = () => {
 };
 
 const TabBarTest2 = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const [isCommonModalOpen, setIsCommonModalOpen] = useState(false);
+  const [isResponsiveModalOpen, setIsResponsiveModalOpen] = useState(false);
+  const handleOpenCommonModal = () => {
+    setIsCommonModalOpen(true);
   };
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseCommonModal = () => {
+    setIsCommonModalOpen(false);
+  };
+  const handleOpenResponsiveModal = () => {
+    setIsResponsiveModalOpen(true);
+  };
+  const handleCloseResponsiveModal = () => {
+    setIsResponsiveModalOpen(false);
   };
 
   return (
@@ -137,16 +145,33 @@ const TabBarTest2 = () => {
         bgcolor={colorChips.background.f7f7f7}
       >
         <Typo content="탭바테스트 2번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
-        <OutlinedButton buttonSize="sm" text="모달열기 테스트" onClick={handleOpenModal} />
+        <OutlinedButton buttonSize="sm" text="CommonModal 열기" onClick={handleOpenCommonModal} />
+        <OutlinedButton buttonSize="sm" text="ResponsiveModal 열기" onClick={handleOpenResponsiveModal} />
       </Stack>
 
-      {isModalOpen && (
-        <CommonModal modalTitle="지정 견적 요청하기" isOpen={isModalOpen} handleClickClose={handleCloseModal}>
+      {isCommonModalOpen && (
+        <CommonModal
+          modalTitle="지정 견적 요청하기"
+          isOpen={isCommonModalOpen}
+          handleClickClose={handleCloseCommonModal}
+        >
           <Stack padding="20px 0" gap="10px" alignItems="center">
             <Typo content="테스트테스트" className="text_M_18" color={colorChips.black[400]} />
-            <SolidButton buttonSize="sm" text="확인" onClick={handleCloseModal} />
+            <SolidButton buttonSize="sm" text="확인" onClick={handleCloseCommonModal} />
           </Stack>
         </CommonModal>
+      )}
+
+      {isResponsiveModalOpen && (
+        <ResponsiveModal
+          modalTitle="견적 보내기"
+          isOpen={isResponsiveModalOpen}
+          handleClickClose={handleCloseResponsiveModal}
+        >
+          <Stack padding="20px 0" gap="10px" alignItems="center">
+            <Typo content="테스트테스트" className="text_M_18" color={colorChips.black[400]} />
+          </Stack>
+        </ResponsiveModal>
       )}
     </>
   );
