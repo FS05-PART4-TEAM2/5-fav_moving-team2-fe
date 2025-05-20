@@ -8,13 +8,15 @@ import { useEffect, useState } from 'react';
 // import Textarea from '@/shared/components/Input/TextArea';
 // import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
 // import Chip from '@/shared/components/Chip/Chip';
+// import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
 import { TabBarSampleProvider, useTabBarType } from './core/hooks/TabBarSampleProvider';
 import { TabBar } from '@/shared/components/Tab/TabBar';
 import { CommonModal } from '@/shared/components/Modal/CommonModal';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
-import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
+import DropDown from '@/shared/components/DropDown/DropDown';
+import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -105,6 +107,23 @@ function TabBarSample() {
 
 const TabBarTest1 = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState('지역');
+  const [selectedService, setSelectedService] = useState('서비스');
+  const [selectedSort, setSelectedSort] = useState('정렬');
+  const [selectedProfile, setSelectedProfile] = useState('');
+  const [selectedAlarm, setSelectedAlarm] = useState('');
+  const [selected, setSelected] = useState<Record<string, boolean>>({
+    소형이사: true,
+    가정이사: true,
+    사무실이사: true,
+  });
+
+  const items = [
+    { label: '소형이사', count: 10, checked: selected['소형이사'] },
+    { label: '가정이사', count: 2, checked: selected['가정이사'] },
+    { label: '사무실이사', count: 8, checked: selected['사무실이사'] },
+  ];
+
   useEffect(() => {
     setIsOpen(true);
   }, []);
@@ -120,7 +139,35 @@ const TabBarTest1 = () => {
       bgcolor={colorChips.background.f7f7f7}
     >
       <Typo content="탭바테스트 1번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
-      <ToastPopup isOpen={isOpen} onClose={() => setIsOpen(false)} message="테스트 테스트 테스트" />
+      {/* 팝업 */}
+      {/* <ToastPopup isOpen={isOpen} onClose={() => setIsOpen(false)} message="테스트 테스트 테스트" /> */}
+      {/* 드롭다운 */}
+      <Stack direction="row" spacing={3}>
+        <DropDown category="region" selected={selectedRegion} onChange={setSelectedRegion} />
+
+        <DropDown category="service" selected={selectedService} onChange={setSelectedService} />
+
+        <DropDown category="sort" selected={selectedSort} onChange={setSelectedSort} />
+        <DropDown category="profile" selected={selectedProfile} onChange={setSelectedProfile} />
+
+        <DropDown category="alarm" selected={selectedAlarm} onChange={setSelectedAlarm} />
+      </Stack>
+
+      {/*필터 체크 박스*/}
+      <Stack>
+        <FilterCheckList
+          title="이사 유형"
+          items={items}
+          checkAll={Object.values(selected).every(Boolean)}
+          onCheckAll={(checked) => {
+            const newState = Object.fromEntries(Object.keys(selected).map((key) => [key, checked]));
+            setSelected(newState);
+          }}
+          onChange={(label, checked) => {
+            setSelected((prev) => ({ ...prev, [label]: checked }));
+          }}
+        />
+      </Stack>
     </Stack>
   );
 };
