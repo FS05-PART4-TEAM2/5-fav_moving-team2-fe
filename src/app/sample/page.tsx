@@ -3,7 +3,7 @@
 import { colorChips } from '@/shared/styles/colorChips';
 import { Stack, SxProps } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // import Textarea from '@/shared/components/Input/TextArea';
 // import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
@@ -12,6 +12,7 @@ import { useState } from 'react';
 // import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import { TabBarSampleProvider, useTabBarType } from './core/hooks/TabBarSampleProvider';
 import { TabBar } from '@/shared/components/Tab/TabBar';
+import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -101,16 +102,23 @@ function TabBarSample() {
 }
 
 const TabBarTest1 = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
   return (
     <Stack
-      direction="row"
+      direction="column"
       width="100%"
-      height="100px"
-      justifyContent="center"
+      height="300px"
+      justifyContent="flex-start"
       alignItems="center"
-      bgcolor={colorChips.primary[100]}
+      padding="20px"
+      gap="20px"
+      bgcolor={colorChips.background.f7f7f7}
     >
       <Typo content="탭바테스트 1번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
+      <ToastPopup isOpen={isOpen} onClose={() => setIsOpen(false)} message="테스트 테스트 테스트" />
     </Stack>
   );
 };
