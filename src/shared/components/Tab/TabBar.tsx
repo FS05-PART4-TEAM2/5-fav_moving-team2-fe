@@ -30,6 +30,7 @@ const StyledTabs = styled(Tabs)`
   }
 `;
 const StyledTab = styled(Tab)`
+  height: 54px;
   font-family: 'pretendard';
   font-size: '14px';
   font-style: 'normal';
