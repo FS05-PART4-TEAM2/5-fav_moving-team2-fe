@@ -111,6 +111,7 @@ const CollapseSx = {
   zIndex: 1000,
   borderRadius: '16px',
   bgcolor: colorChips.grayScale[50],
-  boxShadow: 2,
+  border: `1px solid ${colorChips.line.e6e6e6}`,
+  boxShadow: '0px 4px 16px 0px rgba(0, 0, 0, 0.08)',
   padding: { xs: '10px 6px 6px', md: '16px 4px 6px' },
 };

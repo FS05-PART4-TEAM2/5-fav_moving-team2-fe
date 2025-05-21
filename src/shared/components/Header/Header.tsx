@@ -27,9 +27,9 @@ export const Header = () => {
   // 알림 / 프로필 드롭다운 토글(둘 중 하나만 열리도록)
   const handleDropdownToggle = (dropdown: 'alarm' | 'user') => {
     setOpenDropdown(openDropdown === dropdown ? null : dropdown);
-    // TODO: 아직 드롭다운 컴포넌트 추가해야됨
   };
   const handleNavMenuDrawerOpen = () => {
+    setOpenDropdown(null);
     setIsNavMenuDrawerOpen(true);
   };
 
@@ -43,7 +43,12 @@ export const Header = () => {
         </Stack>
 
         <Stack sx={userMenuSx}>
-          <HeaderAlarm userMenuIconSize={userMenuIconSize} onToggle={() => handleDropdownToggle('alarm')} />
+          <HeaderAlarm
+            isDesktop={isDesktop}
+            userMenuIconSize={userMenuIconSize}
+            openDropdown={openDropdown === 'alarm'}
+            onToggle={() => handleDropdownToggle('alarm')}
+          />
           <HeaderProfile
             userType={tempUserType as UserType}
             isDesktop={isDesktop}
