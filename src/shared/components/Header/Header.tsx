@@ -1,7 +1,7 @@
 'use client';
 
 import { colorChips } from '@/shared/styles/colorChips';
-import { Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { HeaderLogo } from './core/components/HeaderLogo';
 import { DesktopNavMenu } from './core/components/DesktopNavMenu';
@@ -10,8 +10,12 @@ import { NavMenuDrawer } from './core/components/NavMenuDrawer';
 import Image from 'next/image';
 import { HeaderAlarm } from './core/components/HeaderAlarm';
 import { HeaderProfile } from './core/components/HeaderProfile';
+import { PATH } from '@/shared/constants';
+import { useRouter } from 'next/navigation';
+import { Typo } from '@/shared/styles/Typo/Typo';
 
 export const Header = () => {
+  const router = useRouter();
   const theme = useTheme();
   const [openDropdown, setOpenDropdown] = useState<'alarm' | 'user' | null>(null);
   const [isNavMenuDrawerOpen, setIsNavMenuDrawerOpen] = useState(false);
@@ -19,9 +23,8 @@ export const Header = () => {
   const userMenuIconSize = isDesktop ? 36 : 24;
 
   // TODO: 여기 api 연결하고 스토어에서 데이터 가져올것
-  // TODO: temp유저, 랜딩페이지 내비메뉴, 로그인 버튼 수정하기
-  let tempUserType = 'customer';
-  let tempUserNickname = '2팀짱';
+  let tempUserType = 'mover';
+  let tempUserNickname = '기사님';
   let tempProfileImg = null;
 
   // 알림 / 프로필 드롭다운 토글(둘 중 하나만 열리도록)
@@ -43,22 +46,44 @@ export const Header = () => {
         </Stack>
 
         <Stack sx={userMenuSx}>
-          <HeaderAlarm
-            isDesktop={isDesktop}
-            userMenuIconSize={userMenuIconSize}
-            openDropdown={openDropdown === 'alarm'}
-            onToggle={() => handleDropdownToggle('alarm')}
-          />
-          <HeaderProfile
-            userType={tempUserType as UserType}
-            isDesktop={isDesktop}
-            profileImgSrc={tempProfileImg}
-            nickname={tempUserNickname}
-            userMenuIconSize={userMenuIconSize}
-            openDropdown={openDropdown === 'user'}
-            onToggle={() => handleDropdownToggle('user')}
-          />
-          {/* 태블릿&모바일 - 네비 메뉴 drawer 열림 */}
+          {tempUserType === 'temp' ? (
+            isDesktop && (
+              // 비회원 - 데스크탑에서 로그인버튼
+              <Button
+                sx={{
+                  width: '116px',
+                  height: '44px',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  backgroundColor: colorChips.primary[300],
+                }}
+                onClick={() => router.push(PATH.customer.login)}
+              >
+                <Typo content={'로그인'} className="text_SB_18" color={colorChips.grayScale[50]} textAlign={'center'} />
+              </Button>
+            )
+          ) : (
+            // 로그인 유저 - 알림 / 프로필 드롭다운
+            <Stack sx={userMenuSx}>
+              <HeaderAlarm
+                isDesktop={isDesktop}
+                userMenuIconSize={userMenuIconSize}
+                openDropdown={openDropdown === 'alarm'}
+                onToggle={() => handleDropdownToggle('alarm')}
+              />
+              <HeaderProfile
+                userType={tempUserType as UserType}
+                isDesktop={isDesktop}
+                profileImgSrc={tempProfileImg}
+                nickname={tempUserNickname}
+                userMenuIconSize={userMenuIconSize}
+                openDropdown={openDropdown === 'user'}
+                onToggle={() => handleDropdownToggle('user')}
+              />
+            </Stack>
+          )}
+
+          {/* 태블릿&모바일 - 메뉴 drawer : 비회원 / 로그인 유저 모두 공통 */}
           {!isDesktop && (
             <Image
               src={'/assets/images/menu-icon/menu-24x24.svg'}
@@ -72,7 +97,8 @@ export const Header = () => {
           )}
         </Stack>
       </Stack>
-      {isNavMenuDrawerOpen && (
+
+      {!isDesktop && isNavMenuDrawerOpen && (
         <NavMenuDrawer
           userType={tempUserType as UserType}
           isNavMenuOpen={isNavMenuDrawerOpen}

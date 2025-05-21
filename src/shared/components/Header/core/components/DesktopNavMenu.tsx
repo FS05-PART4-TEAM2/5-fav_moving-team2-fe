@@ -6,6 +6,7 @@ import { Stack } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { UserType } from '@/shared/types/types';
 import { HeaderNavMenu } from '../constants';
+import { PATH } from '@/shared/constants';
 
 interface NavItemProps {
   userType: UserType;
@@ -22,16 +23,28 @@ export const DesktopNavMenu = ({ userType }: NavItemProps) => {
 
   return (
     <Stack direction="row" alignItems="center" gap="40px" width="fit-content">
-      {HeaderNavMenu[userType as keyof typeof HeaderNavMenu].map((item) => (
+      {userType === 'temp' ? (
         <Typo
-          key={item.path}
-          content={item.title}
+          content={'기사님 찾기'}
           className="text_B_18"
-          color={isActiveRoute(item.path) ? colorChips.black[400] : colorChips.grayScale[400]}
+          color={colorChips.black[400]}
           customStyle={{ cursor: 'pointer', whiteSpace: 'nowrap' }}
-          onClick={() => router.push(item.path)}
+          onClick={() => router.push(PATH.customer.searchMover)}
         />
-      ))}
+      ) : (
+        <>
+          {HeaderNavMenu[userType as keyof typeof HeaderNavMenu].map((item) => (
+            <Typo
+              key={item.path}
+              content={item.title}
+              className="text_B_18"
+              color={isActiveRoute(item.path) ? colorChips.black[400] : colorChips.grayScale[400]}
+              customStyle={{ cursor: 'pointer', whiteSpace: 'nowrap' }}
+              onClick={() => router.push(item.path)}
+            />
+          ))}
+        </>
+      )}
     </Stack>
   );
 };

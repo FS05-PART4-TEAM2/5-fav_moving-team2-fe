@@ -3,7 +3,6 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { Collapse, Stack } from '@mui/material';
 import Image from 'next/image';
 
-//TODO: 알림 api 연결
 const mockList = [
   { content: '1 김코드 기사님의 소형이사 견적이 도착했어요', createdAt: '2시간 전' },
   { content: '2 김코드 기사님의 견적이 확정되었어요', createdAt: '3시간 전' },
@@ -97,7 +96,6 @@ interface AlarmCardProps {
   isLast: boolean;
 }
 
-// TODO: api 붙이고 타입 맞추기
 const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) => {
   return (
     <Stack
@@ -121,7 +119,7 @@ const CollapseSx = {
   width: { xs: '312px', md: '360px' },
   height: { xs: '314px', md: '352px' }, // 고정 높이
   top: { xs: '30px', md: '50px' },
-  right: '-10px',
+  right: { xs: '-96px', md: '-10px' },
   zIndex: 1000,
   borderRadius: '24px',
   bgcolor: colorChips.grayScale[50],

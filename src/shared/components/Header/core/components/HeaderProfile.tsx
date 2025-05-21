@@ -39,6 +39,10 @@ export const HeaderProfile = ({
     onToggle();
   };
 
+  if (userType === 'temp') {
+    return null;
+  }
+
   return (
     <Stack sx={headerUserStyle} onClick={onToggle}>
       <Stack direction="row" sx={{ cursor: 'pointer', alignItems: 'center', gap: '16px' }}>
@@ -107,7 +111,7 @@ const CollapseSx = {
   position: 'absolute',
   width: { xs: '152px', md: '248px' },
   top: { xs: '30px', md: '50px' },
-  right: '-10px',
+  right: { xs: '-48px', md: '-10px' },
   zIndex: 1000,
   borderRadius: '16px',
   bgcolor: colorChips.grayScale[50],
