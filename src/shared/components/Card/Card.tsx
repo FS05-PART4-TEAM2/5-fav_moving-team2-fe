@@ -1,11 +1,12 @@
 import { Box, Stack } from '@mui/material';
+import CommonCardInfo from './CommonCardInfo';
 
-const UserData = {
+export const UserData = {
   name: '김코드',
   service: ['견적 대기', '소형이사', '지정 견적 요청'],
   description: '누구보다 빠르게 안전 운송합니다!',
   likeCount: 7942,
-  userProfileImage: './assets/images/profile-icon/avatartion-yellow-02', // 70x64
+  userProfileImage: '/assets/images/profile-icon/avatartion-yellow-01.svg', // 70x64
   review: {
     reviewer: 172,
   },
@@ -30,27 +31,13 @@ const UserData = {
 
 export default function Card() {
   return (
-    <Stack direction="column" gap="14px" px="14px" py="16px">
+    <Stack direction="column" width="100%" gap="14px" px="14px" py="16px">
       <Box>{/*chip맵핑 자리*/}</Box>
       <Box>{/*description 자리*/}</Box>
 
-      <Box>
-        <Box>
-          <Box>{/*userProfileImage 자리*/}</Box>
-
-          <Box>
-            <Box>{/*name 자리*/} 기사님</Box>
-            <Box>{/*likeCount 자리*/}</Box>
-            <Box>
-              <Box>
-                {/*별이미지 자리*/} {/*리뷰 5점만점 백분율 자리*/} {/*reviewer 자리*/}
-              </Box>
-              <Box>경력 {/*경력 자리*/}년</Box>
-              <Box>{/*confirmation 자리*/} 확정</Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+      <Stack>
+        <CommonCardInfo></CommonCardInfo>
+      </Stack>
     </Stack>
   );
 }
