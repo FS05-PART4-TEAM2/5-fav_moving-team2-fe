@@ -20,7 +20,7 @@ export const Header = () => {
 
   // TODO: 여기 api 연결하고 스토어에서 데이터 가져올것
   // TODO: temp유저, 랜딩페이지 내비메뉴, 로그인 버튼 수정하기
-  let tempUserType = 'mover';
+  let tempUserType = 'customer';
   let tempUserNickname = '2팀짱';
   let tempProfileImg = null;
 
@@ -45,10 +45,12 @@ export const Header = () => {
         <Stack sx={userMenuSx}>
           <HeaderAlarm userMenuIconSize={userMenuIconSize} onToggle={() => handleDropdownToggle('alarm')} />
           <HeaderProfile
+            userType={tempUserType as UserType}
             isDesktop={isDesktop}
             profileImgSrc={tempProfileImg}
             nickname={tempUserNickname}
             userMenuIconSize={userMenuIconSize}
+            openDropdown={openDropdown === 'user'}
             onToggle={() => handleDropdownToggle('user')}
           />
           {/* 태블릿&모바일 - 네비 메뉴 drawer 열림 */}
