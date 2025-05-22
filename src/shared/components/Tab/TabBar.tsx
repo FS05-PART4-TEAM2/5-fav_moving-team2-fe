@@ -28,9 +28,14 @@ const StyledTabs = styled(Tabs)`
   & .MuiTabs-indicator {
     background-color: transparent;
   }
+  & .MuiTabs-flexContainer {
+    gap: 32px;
+  }
 `;
 const StyledTab = styled(Tab)`
   height: 54px;
+  min-width: fit-content;
+  padding: 0;
   font-family: 'pretendard';
   font-size: '14px';
   font-style: 'normal';
@@ -42,5 +47,10 @@ const StyledTab = styled(Tab)`
   &.Mui-selected {
     color: #2b2b2b;
     border-bottom: 2px solid ${colorChips.black[400]};
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 20px;
+    line-height: 32px;
   }
 `;
