@@ -1,8 +1,8 @@
 export const PATH = {
   landing: '/',
   customer: {
-    login: '/customer/auth/login',
-    signup: '/customer/auth/signup',
+    login: '/customer/login',
+    signup: '/customer/signup',
     profile: '/customer/profile', // 프로필 등록
     movingQuoteRequest: '/customer/moving-quote/request', // 견적 요청
     movingQuoteHistory: '/customer/moving-quote/history', // 내 견적 관리
@@ -12,8 +12,8 @@ export const PATH = {
     myReview: '/customer/my-review', // 이사 리뷰
   },
   mover: {
-    login: '/mover/auth/login',
-    signup: '/mover/auth/signup',
+    login: '/mover/login',
+    signup: '/mover/signup',
     profile: '/mover/profile', // 프로필 등록
     movingQuoteRequest: '/mover/moving-quote/request', // 받은 요청
     movingQuoteHistory: '/mover/moving-quote/history', // 내 견적 관리
