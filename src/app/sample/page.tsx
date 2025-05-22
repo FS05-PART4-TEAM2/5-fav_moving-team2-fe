@@ -17,6 +17,7 @@ import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
 import DropDown from '@/shared/components/DropDown/DropDown';
 import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
+import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -106,6 +107,7 @@ function TabBarSample() {
 }
 
 const TabBarTest1 = () => {
+  const [pageNum, setPageNum] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('지역');
   const [selectedService, setSelectedService] = useState('서비스');
@@ -134,11 +136,11 @@ const TabBarTest1 = () => {
       height="300px"
       justifyContent="flex-start"
       alignItems="center"
-      padding="20px"
       gap="20px"
       bgcolor={colorChips.background.f7f7f7}
     >
       <Typo content="탭바테스트 1번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
+      <CommonPagination page={pageNum} totalCount={10} handleChange={(event, value) => setPageNum(value)} />
       {/* 팝업 */}
       {/* <ToastPopup isOpen={isOpen} onClose={() => setIsOpen(false)} message="테스트 테스트 테스트" /> */}
       {/* 드롭다운 */}
