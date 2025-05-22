@@ -1,5 +1,5 @@
 import CommonCardInfo from './CommonCardInfo';
-import ReviewSection from './parts/ReviewSection';
+import ReviewSection from './ReviewSection';
 
 export type PresetCardName =
   | 'profile'
@@ -22,7 +22,9 @@ export interface UserCardData {
   likeCount: number;
   userProfileImage: string;
   review: {
+    content: string;
     reviewer: number;
+    averageScore: number;
   };
   present: number;
   confirmation: number;

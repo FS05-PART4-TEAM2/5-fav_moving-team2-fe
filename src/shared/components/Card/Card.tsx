@@ -1,5 +1,7 @@
 import { Box, Stack } from '@mui/material';
 import CommonCardInfo from './CommonCardInfo';
+import CardHeader from './CardHeader';
+import { PresetCardName } from './CardPresets';
 
 export const UserData = {
   name: '김코드',
@@ -8,7 +10,9 @@ export const UserData = {
   likeCount: 7942,
   userProfileImage: '/assets/images/profile-icon/avatartion-yellow-01.svg', // 70x64
   review: {
+    content: '완전 친절하고 싸고 어쩌구 저쩌구 이것저것 길게 설명과 중간에 칭찬',
     reviewer: 172,
+    averageScore: 4.3,
   },
   present: 10,
   confirmation: 216,
@@ -29,14 +33,25 @@ export const UserData = {
 // 좋아요 버튼 on, off
 // md: padding
 
-export default function Card() {
+interface CardProps {
+  type: PresetCardName;
+}
+
+export default function Card({ type }: CardProps) {
   return (
-    <Stack direction="column" width="100%" gap="14px" px="14px" py="16px">
-      <Box>{/*chip맵핑 자리*/}</Box>
-      <Box>{/*description 자리*/}</Box>
+    <Stack direction="column" width="100%" gap="14px" px="14px" py="16px" bgcolor="white">
+      <Stack>
+        <CardHeader
+          type={type}
+          services={UserData.service}
+          description={UserData.description}
+          name="김코드"
+          data={UserData}
+        />
+      </Stack>
 
       <Stack>
-        <CommonCardInfo></CommonCardInfo>
+        <CommonCardInfo type={type} data={UserData}></CommonCardInfo>
       </Stack>
     </Stack>
   );

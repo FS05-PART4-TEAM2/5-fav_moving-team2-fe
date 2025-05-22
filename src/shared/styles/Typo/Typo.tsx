@@ -12,6 +12,7 @@ export type TypoClassName =
   | 'text_B_20'
   | 'text_SB_20'
   | 'text_M_20'
+  | 'text_R_20'
   | 'text_B_18'
   | 'text_SB_18'
   | 'text_M_18'
