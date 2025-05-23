@@ -40,7 +40,12 @@ export default function DatePicker({ onSelect }: DatePickerProps) {
             value={value}
             onChange={(newValue) => setValue(newValue)}
             view={view}
-            onViewChange={(newView) => setView(newView)}
+            onViewChange={(newView) => {
+              setView(newView);
+              if (newView !== 'day') {
+                setConfirmedDate(null);
+              }
+            }}
             views={['year', 'month', 'day']}
             minDate={dayjs().startOf('day')}
             showDaysOutsideCurrentMonth
