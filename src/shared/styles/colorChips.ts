@@ -21,6 +21,7 @@ export const colorChips = {
     300: '#373737',
     400: '#1F1F1F',
     500: '#040404',
+    b2b2b: '#2B2B2B',
   },
   grayScale: {
     50: '#FFFFFF',

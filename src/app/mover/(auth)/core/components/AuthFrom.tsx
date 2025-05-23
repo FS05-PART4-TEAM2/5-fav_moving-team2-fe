@@ -1,7 +1,8 @@
 'use client';
 
+import Card from '@/shared/components/Card/Card';
 import InputField from '@/shared/components/Input/InputField';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 
 export default function AuthForm() {
