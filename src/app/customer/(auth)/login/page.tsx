@@ -16,7 +16,7 @@ export default function Login() {
       username: '일반유저',
       email: 'test@test.com',
       phoneNumber: '01012345678',
-      profileImage: '/assets/images/profile-icon/avatartion-pink-01.svg',
+      profileImage: null,
     });
     router.push(PATH.customer.movingQuoteRequest);
   };
