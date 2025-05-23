@@ -26,7 +26,8 @@ export const HeaderProfile = ({
   onToggle,
 }: HeaderProfileProps) => {
   const router = useRouter();
-  const imgSrc = profileImgSrc || '/assets/images/profile-icon/login-default-36x36.svg';
+  const hasProfileImg = profileImgSrc !== null;
+  const imgSrc = hasProfileImg ? profileImgSrc : '/assets/images/profile-icon/login-default-36x36.svg';
   const userTitle = `${nickname} 고객님`;
 
   const handleClickMenu = (path: string) => {
@@ -48,11 +49,16 @@ export const HeaderProfile = ({
       <Stack direction="row" sx={{ cursor: 'pointer', alignItems: 'center', gap: '16px' }}>
         <Image
           src={imgSrc}
-          alt="close"
+          alt="profile"
           width={userMenuIconSize}
           height={userMenuIconSize}
           onClick={onToggle}
-          style={{ cursor: 'pointer' }}
+          style={{
+            cursor: 'pointer',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            border: hasProfileImg ? `1.5px solid ${colorChips.black[400]}` : 'none',
+          }}
           priority
         />
         {isDesktop && <Typo content={nickname} className="text_M_18" color={colorChips.black[400]} />}
