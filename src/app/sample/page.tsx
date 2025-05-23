@@ -22,6 +22,8 @@ import { CommonPagination } from '@/shared/components/Pagination/CommonPaginatio
 import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
 import Card, { UserData } from '@/shared/components/Card/Card';
 import { UserCardData } from '@/shared/components/Card/CardPresets';
+import DatePicker from '@/shared/components/DatePicker/DatePicker';
+import { Dayjs } from 'dayjs';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -109,9 +111,14 @@ const TabBarTest1 = () => {
     사무실이사: true,
   });
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [date, setDate] = useState<Dayjs | null>(null);
 
   const nextStep = () => {
     setStep((prev) => (prev < 4 ? ((prev + 1) as 1 | 2 | 3 | 4) : 1));
+  };
+
+  const handleDate = (date: Dayjs) => {
+    console.log('선택된 날짜:', date.format('YYYY-MM-DD'));
   };
 
   const items = [
@@ -165,7 +172,8 @@ const TabBarTest1 = () => {
           }}
         />
       </Stack> */}
-      <Stack direction="row" gap="10px">
+      {/* 카드 */}
+      {/* <Stack direction="row" gap="10px">
         <Card type="search" data={UserData} />
         <Card type="quotation" data={UserData} />
         <Card type="pickMover" data={UserData} />
@@ -184,18 +192,20 @@ const TabBarTest1 = () => {
         <Card type="confirmRequest" data={UserData} />
         <Card type="rejectRequest" data={UserData} />
         <Card type="finishRequest" data={UserData} />
-      </Stack>
+      </Stack> */}
       {/*request는 총 4단계로 step 진행 과정마다 +1 해주면 좋을 듯*/}
-      <Stack width="100%" gap="5px">
+      {/* <Stack width="100%" gap="5px">
         <ProgressBar type="request" step={step} />
         <Stack direction="row" width="100%" justifyContent="flex-end">
           <Button variant="contained" onClick={nextStep} sx={{ width: '100px', textWrap: 'nowrap' }}>
             현재 단계: {step}
           </Button>
-        </Stack>
-        {/*review는 백분율 값을 넣으면 됨*/}
-        <ProgressBar type="review" percentage={30} />
-      </Stack>
+        </Stack> */}
+      {/*review는 백분율 값을 넣으면 됨*/}
+      {/* <ProgressBar type="review" percentage={30} />
+      </Stack> */}
+      <Stack />
+      <DatePicker onSelect={handleDate} />
     </Stack>
   );
 };

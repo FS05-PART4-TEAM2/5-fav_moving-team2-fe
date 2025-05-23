@@ -3,7 +3,6 @@ import CommonCardInfo from './CommonCardInfo';
 import CardHeader from './CardHeader';
 import { PresetCardName, UserCardData } from './CardPresets';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { colorChips } from '@/shared/styles/colorChips';
 import { OutlinedButton } from '../Button/OutlinedButton';
 import theme from '@/shared/theme';
 
@@ -28,15 +27,6 @@ export const UserData = {
   QuoteAmount: 274000,
   createTime: '2025-05-22',
 };
-
-// 1. 프리셋으로 padding 등 style 값 저장
-// 2. type을 || 연산자로 분기 처리
-// 3. 컴포넌트 분리 굳이?... cleanCode를 위해 분해 해서 분기처리하자...
-
-// chip 맵핑
-// 리뷰 5점만점 백분율
-// 좋아요 버튼 on, off
-// md: padding
 
 interface CardProps {
   type: PresetCardName;
