@@ -82,7 +82,6 @@ export default function DatePicker({ onSelect }: DatePickerProps) {
         <SolidButton
           fullWidth
           onClick={handleConfirm}
-          buttonSize={isMdDown ? 'sm' : 'md'}
           text={'선택완료'}
           sx={{ mt: 2, borderRadius: '16px' }}
           disabled={!value || view !== 'day' || !value.isAfter(dayjs(), 'day')}
