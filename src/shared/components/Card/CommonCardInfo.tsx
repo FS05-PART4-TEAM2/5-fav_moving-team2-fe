@@ -384,28 +384,16 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
 
       {isWriteReview && (
         <Stack direction={isMobile ? 'column' : 'row'} gap="8px" sx={{ paddingTop: '26px' }}>
-          <SolidButton
-            text="리뷰 작성하기"
-            buttonSize="sm"
-            width="100%"
-            onClick={() => router.push(PATH.mover.movingQuoteRequest)}
-          />
+          <SolidButton text="리뷰 작성하기" width="100%" onClick={() => router.push(PATH.mover.movingQuoteRequest)} />
         </Stack>
       )}
 
       {isProfile && isMdDown && (
         <Stack direction={isMobile ? 'column' : 'row'} gap="8px" sx={{ paddingTop: '26px' }}>
-          <SolidButton
-            text="내 프로필 수정"
-            buttonSize="sm"
-            width="100%"
-            hasIcon
-            onClick={() => router.push(PATH.mover.profile)}
-          />
+          <SolidButton text="내 프로필 수정" width="100%" hasIcon onClick={() => router.push(PATH.mover.profile)} />
           <OutlinedButton
             text="기본 정보 수정"
             buttonType="done"
-            buttonSize="sm"
             width="100%"
             hasIcon
             onClick={() => router.push(PATH.mover.profile)}

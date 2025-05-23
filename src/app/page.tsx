@@ -16,7 +16,6 @@ export default function Home() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const landingText = '원하는 이사 서비스를 요청하고\n견적을 받아보세요';
-  const authBtnSize = isDesktop ? 'md' : 'sm';
   const authBtnWidth = isDesktop ? '340px' : '100%';
   const handleClickLogin = () => {
     router.push(PATH.customer.login);
@@ -72,20 +71,8 @@ export default function Home() {
           </Stack>
 
           <Stack sx={authBtnWrapperSx}>
-            <SolidButton
-              buttonSize={authBtnSize}
-              width={authBtnWidth}
-              text="로그인"
-              onClick={handleClickLogin}
-              borderRadius="50px"
-            />
-            <OutlinedButton
-              buttonSize={authBtnSize}
-              width={authBtnWidth}
-              text="회원가입"
-              onClick={handleClickSignup}
-              borderRadius="50px"
-            />
+            <SolidButton width={authBtnWidth} text="로그인" onClick={handleClickLogin} borderRadius="50px" />
+            <OutlinedButton width={authBtnWidth} text="회원가입" onClick={handleClickSignup} borderRadius="50px" />
           </Stack>
         </Stack>
       </Stack>

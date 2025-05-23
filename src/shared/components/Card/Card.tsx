@@ -69,12 +69,8 @@ export default function Card({ type, data }: CardProps) {
             </Typo>
 
             {type === 'finishRequest' && (
-              <OutlinedButton
-                text="견적 상세보기"
-                width="100%"
-                onClick={() => console.log('견적 상세보기')}
-                buttonSize="md"
-              />
+              // TODO: 여기 onClick 처리 수정해야겠네요
+              <OutlinedButton text="견적 상세보기" width="100%" onClick={() => console.log('견적 상세보기')} />
             )}
           </Stack>
         </Box>
