@@ -1,7 +1,8 @@
 'use client';
 
 import { colorChips } from '@/shared/styles/colorChips';
-import { Button, Stack, SxProps } from '@mui/material';
+import { Button, Stack, SxProps, Typography } from '@mui/material';
+
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +20,8 @@ import DropDown from '@/shared/components/DropDown/DropDown';
 import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
 import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
 import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
+import Card, { UserData } from '@/shared/components/Card/Card';
+import { UserCardData } from '@/shared/components/Card/CardPresets';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -41,7 +44,7 @@ function TabBarSample() {
   const { tabBarType, setTabBarType } = useTabBarType();
 
   return (
-    <Stack justifyContent="center" alignItems="center" gap="20px" padding="20px" height="100%">
+    <Stack justifyContent="center" alignItems="center" gap="20px" padding="20px" height="100vw">
       <Stack
         direction="column"
         width="100%"
@@ -139,7 +142,7 @@ const TabBarTest1 = () => {
     <Stack
       direction="column"
       width="100%"
-      height="300px"
+      height="100%"
       justifyContent="flex-start"
       alignItems="center"
       gap="20px"
@@ -162,7 +165,8 @@ const TabBarTest1 = () => {
       </Stack> */}
 
       {/*필터 체크 박스*/}
-      {/* <Stack>
+
+      {/*<Stack>
         <FilterCheckList
           title="이사 유형"
           items={items}
@@ -176,6 +180,26 @@ const TabBarTest1 = () => {
           }}
         />
       </Stack> */}
+      <Stack direction="row" gap="10px">
+        <Card type="search" data={UserData} />
+        <Card type="quotation" data={UserData} />
+        <Card type="pickMover" data={UserData} />
+      </Stack>
+      <Stack direction="row" gap="10px">
+        <Card type="waitRequest" data={UserData} />
+        <Card type="profile" data={UserData} />
+        <Card type="request" data={UserData} />
+      </Stack>
+      <Stack direction="row" gap="10px">
+        <Card type="writeReview" data={UserData} />
+        <Card type="finishReview" data={UserData} />
+        <Card type="review" data={UserData} />
+      </Stack>
+      <Stack direction="row" gap="10px">
+        <Card type="confirmRequest" data={UserData} />
+        <Card type="rejectRequest" data={UserData} />
+        <Card type="finishRequest" data={UserData} />
+      </Stack>
       {/*request는 총 4단계로 step 진행 과정마다 +1 해주면 좋을 듯*/}
       <Stack width="100%" gap="5px">
         <ProgressBar type="request" step={step} />

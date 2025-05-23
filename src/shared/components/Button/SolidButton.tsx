@@ -12,6 +12,7 @@ interface SolidButtonProps extends ButtonProps {
   justifyContent?: 'center' | 'flex-start' | 'space-between';
   isLoading?: boolean;
   hasIcon?: boolean;
+  borderRadius?: string;
 }
 
 export const SolidButton = ({
@@ -23,6 +24,7 @@ export const SolidButton = ({
   hasIcon = false,
   onClick,
   disabled,
+  borderRadius = '16px',
   ...props
 }: SolidButtonProps) => {
   const textSize = buttonSize === 'sm' ? 'text_SB_16' : 'text_SB_20';
@@ -37,11 +39,12 @@ export const SolidButton = ({
         width: width,
         height: buttonSize === 'sm' ? '54px' : '64px',
         padding: '16px 24px',
-        borderRadius: '16px',
+        borderRadius: borderRadius,
         backgroundColor: colorChips.primary[300],
         color: colorChips.grayScale[50],
         justifyContent: justifyContent,
         textTransform: 'none',
+        boxShadow: 'none',
         '&:hover': {
           backgroundColor: colorChips.primary[200],
         },
