@@ -29,7 +29,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     <Stack position="relative">
       <Image
         src={'/assets/images/alarm-icon/alarm-36x36.svg'}
-        alt="close"
+        alt="notifications"
         width={userMenuIconSize}
         height={userMenuIconSize}
         onClick={onToggle}

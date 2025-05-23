@@ -44,7 +44,7 @@ export const ToastPopup = ({ isOpen, onClose, message }: ToastPopupProps) => {
         marginTop: '16px',
       }}
     >
-      <Image src={toastIcon} alt="toast" width={toastIconSize} height={toastIconSize} />
+      <Image src={toastIcon} alt="caution" width={toastIconSize} height={toastIconSize} />
       <Typo className={toastMsgSize} content={message} color={colorChips.primary[300]} />
     </Stack>
   );

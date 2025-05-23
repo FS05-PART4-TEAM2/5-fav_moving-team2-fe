@@ -89,7 +89,7 @@ export const Header = () => {
           {!isDesktop && (
             <Image
               src={'/assets/images/menu-icon/menu-24x24.svg'}
-              alt="close"
+              alt="menu"
               width={userMenuIconSize}
               height={userMenuIconSize}
               onClick={handleNavMenuDrawerOpen}

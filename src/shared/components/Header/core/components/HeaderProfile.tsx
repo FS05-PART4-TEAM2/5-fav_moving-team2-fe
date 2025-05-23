@@ -48,7 +48,7 @@ export const HeaderProfile = ({
       <Stack direction="row" sx={{ cursor: 'pointer', alignItems: 'center', gap: '16px' }}>
         <Image
           src={imgSrc}
-          alt="close"
+          alt="profile"
           width={userMenuIconSize}
           height={userMenuIconSize}
           onClick={onToggle}
