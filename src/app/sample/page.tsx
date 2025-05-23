@@ -18,7 +18,8 @@ import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
 import DropDown from '@/shared/components/DropDown/DropDown';
 import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
 import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
-import Card from '@/shared/components/Card/Card';
+import Card, { UserData } from '@/shared/components/Card/Card';
+import { UserCardData } from '@/shared/components/Card/CardPresets';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -172,24 +173,24 @@ const TabBarTest1 = () => {
         />
       </Stack> */}
       <Stack direction="row" gap="10px">
-        <Card type="search" />
-        <Card type="quotation" />
-        <Card type="pickMover" />
+        <Card type="search" data={UserData} />
+        <Card type="quotation" data={UserData} />
+        <Card type="pickMover" data={UserData} />
       </Stack>
       <Stack direction="row" gap="10px">
-        <Card type="waitRequest" />
-        <Card type="profile" />
-        <Card type="request" />
+        <Card type="waitRequest" data={UserData} />
+        <Card type="profile" data={UserData} />
+        <Card type="request" data={UserData} />
       </Stack>
       <Stack direction="row" gap="10px">
-        <Card type="writeReview" />
-        <Card type="finishReview" />
-        <Card type="review" />
+        <Card type="writeReview" data={UserData} />
+        <Card type="finishReview" data={UserData} />
+        <Card type="review" data={UserData} />
       </Stack>
       <Stack direction="row" gap="10px">
-        <Card type="confirmRequest" />
-        <Card type="rejectRequest" />
-        <Card type="finishRequest" />
+        <Card type="confirmRequest" data={UserData} />
+        <Card type="rejectRequest" data={UserData} />
+        <Card type="finishRequest" data={UserData} />
       </Stack>
     </Stack>
   );

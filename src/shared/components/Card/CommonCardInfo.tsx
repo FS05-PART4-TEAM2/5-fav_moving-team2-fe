@@ -105,7 +105,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                       />
                     </Stack>
                     <Typo className={isMdDown ? 'text_M_13' : 'text_M_16'} style={{ color: colorChips.black[300] }}>
-                      {data.review.averageScore?.toFixed(1) ?? '0.0'}
+                      {data.review?.averageScore?.toFixed(1) ?? '0.0'}
                     </Typo>
                     <Typo
                       className={isMdDown ? 'text_M_13' : 'text_M_16'}
@@ -360,7 +360,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
               className={isMdDown ? 'text_R_14' : 'text_R_20'}
               style={{ color: colorChips.grayScale[500], paddingTop: isMdDown ? '10px' : '32px' }}
             >
-              {data.review.content || '작성된 리뷰가 없습니다.'}
+              {data.review?.content || '작성된 리뷰가 없습니다.'}
             </Typo>
           </Stack>
         </>

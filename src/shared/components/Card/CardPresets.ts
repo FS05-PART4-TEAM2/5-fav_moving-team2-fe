@@ -16,18 +16,18 @@ export type PresetCardName =
   | 'review'; // 리뷰 카드
 
 export interface UserCardData {
-  name: string;
-  service: string[];
+  name?: string;
+  service?: string[];
   description?: string;
-  likeCount: number;
-  userProfileImage: string;
-  review: {
-    content: string;
-    reviewer: number;
-    averageScore: number;
+  likeCount?: number;
+  userProfileImage?: string;
+  review?: {
+    content?: string;
+    reviewer?: number;
+    averageScore?: number;
   };
-  present: number;
-  confirmation: number;
+  present?: number;
+  confirmation?: number;
   moveDay?: string;
   startPoint?: string;
   endPoint?: string;
@@ -35,7 +35,7 @@ export interface UserCardData {
   region?: string[];
   QuoteAmount?: number;
   reviewContent?: string;
-  createTime?: 'string';
+  createTime?: string;
 }
 
 export type CardButtonType = 'solid' | 'outlined';

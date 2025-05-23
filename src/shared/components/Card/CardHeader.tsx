@@ -88,7 +88,7 @@ export default function CardHeader({ type, services, moveDay, description, name,
                   position: 'relative',
                 }}
               >
-                <Image src={data.userProfileImage} alt="user profile Image" fill style={{ objectFit: 'cover' }} />
+                <Image src={data.userProfileImage ?? ''} alt="user profile Image" fill style={{ objectFit: 'cover' }} />
               </Stack>
             )}
 

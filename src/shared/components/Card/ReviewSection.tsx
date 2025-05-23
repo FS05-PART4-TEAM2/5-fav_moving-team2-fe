@@ -1,6 +1,6 @@
 import { Divider, Stack, useMediaQuery } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { PresetCardName, UserCardData } from './CardPresets';
+import { UserCardData } from './CardPresets';
 import theme from '@/shared/theme';
 import { colorChips } from '@/shared/styles/colorChips';
 import Image from 'next/image';
@@ -62,7 +62,7 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
         className={isMdDown ? 'text_R_14' : 'text_R_18'}
         style={{ color: colorChips.black['b2b2b'], paddingTop: isMdDown ? '8px' : '12px' }}
       >
-        {data.review.content || '작성된 리뷰가 없습니다.'}
+        {data.review?.content || '작성된 리뷰가 없습니다.'}
       </Typo>
     </Stack>
   );

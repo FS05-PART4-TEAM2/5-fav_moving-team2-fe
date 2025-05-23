@@ -1,7 +1,7 @@
 import { Box, Stack, useMediaQuery } from '@mui/material';
 import CommonCardInfo from './CommonCardInfo';
 import CardHeader from './CardHeader';
-import { PresetCardName } from './CardPresets';
+import { PresetCardName, UserCardData } from './CardPresets';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import { OutlinedButton } from '../Button/OutlinedButton';
@@ -40,9 +40,10 @@ export const UserData = {
 
 interface CardProps {
   type: PresetCardName;
+  data: UserCardData;
 }
 
-export default function Card({ type }: CardProps) {
+export default function Card({ type, data }: CardProps) {
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <Box position="relative">
@@ -92,12 +93,12 @@ export default function Card({ type }: CardProps) {
             services={UserData.service}
             description={UserData.description}
             name="김코드"
-            data={UserData}
+            data={data}
           />
         </Stack>
 
         <Stack>
-          <CommonCardInfo type={type} data={UserData} />
+          <CommonCardInfo type={type} data={data} />
         </Stack>
       </Stack>
     </Box>
