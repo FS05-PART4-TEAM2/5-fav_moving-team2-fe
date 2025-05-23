@@ -44,7 +44,6 @@ export interface CardButtonConfig {
   buttonType: CardButtonType;
   text: string;
   actionKey: string;
-  buttonSize?: 'sm' | 'md';
   justifyContent?: 'center' | 'space-between' | 'flex-start';
   hasIcon?: boolean;
   isLoading?: boolean;

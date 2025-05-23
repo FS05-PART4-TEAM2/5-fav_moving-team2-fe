@@ -23,7 +23,7 @@ export default function Login() {
   return (
     <Stack>
       <AuthForm />
-      <SolidButton buttonSize="sm" text="기사님 로그인" onClick={handleLogin} />
+      <SolidButton text="기사님 로그인" onClick={handleLogin} />
     </Stack>
   );
 }

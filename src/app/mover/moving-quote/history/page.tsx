@@ -21,11 +21,7 @@ export default function MoverMovingQuoteHistoryPage() {
         bgcolor={colorChips.background.f7f7f7}
       >
         <Typo className="text_B_20" content="기사님 내 견적 관리 페이지" />
-        <SolidButton
-          buttonSize="sm"
-          text="견적상세 페이지 이동"
-          onClick={() => router.push('/mover/moving-quote/history/1')}
-        />
+        <SolidButton text="견적상세 페이지 이동" onClick={() => router.push('/mover/moving-quote/history/1')} />
       </Stack>
       {tabBarType === 'quoteOffer' && <TabBarTest1 />}
       {tabBarType === 'rejectedQuote' && <TabBarTest2 />}

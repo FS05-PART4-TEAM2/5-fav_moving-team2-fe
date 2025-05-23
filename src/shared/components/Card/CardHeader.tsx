@@ -104,7 +104,6 @@ export default function CardHeader({ type, services, moveDay, description, name,
               <Stack direction="row" gap="8px">
                 <OutlinedButton
                   text="기본 정보 수정"
-                  buttonSize="sm"
                   buttonType="done"
                   width="fit-content"
                   onClick={() => router.push(`${PATH.mover.profile}`)}
@@ -113,7 +112,6 @@ export default function CardHeader({ type, services, moveDay, description, name,
                 />
                 <SolidButton
                   text="내 프로필 수정"
-                  buttonSize="sm"
                   width="fit-content"
                   onClick={() => router.push(`${PATH.mover.profile}`)}
                   hasIcon={true}
