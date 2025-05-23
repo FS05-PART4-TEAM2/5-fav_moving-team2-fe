@@ -23,7 +23,7 @@ export const Header = () => {
   const userMenuIconSize = isDesktop ? 36 : 24;
 
   // TODO: 여기 api 연결하고 스토어에서 데이터 가져올것
-  let tempUserType = 'mover';
+  let tempUserType = 'temp';
   let tempUserNickname = '기사님';
   let tempProfileImg = null;
 
@@ -56,6 +56,9 @@ export const Header = () => {
                   borderRadius: '16px',
                   padding: '16px',
                   backgroundColor: colorChips.primary[300],
+                  '&:hover': {
+                    backgroundColor: colorChips.primary[200],
+                  },
                 }}
                 onClick={() => router.push(PATH.customer.login)}
               >

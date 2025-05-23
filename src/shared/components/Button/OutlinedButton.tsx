@@ -14,6 +14,7 @@ interface OutlinedButtonProps extends ButtonProps {
   justifyContent?: 'center' | 'flex-start' | 'space-between';
   isLoading?: boolean;
   hasIcon?: boolean;
+  borderRadius?: string;
 }
 
 export const OutlinedButton = ({
@@ -26,6 +27,7 @@ export const OutlinedButton = ({
   hasIcon = false,
   onClick,
   disabled,
+  borderRadius = '16px',
   ...props
 }: OutlinedButtonProps) => {
   const textSize = buttonSize === 'sm' ? 'text_SB_16' : 'text_SB_20';
@@ -42,7 +44,7 @@ export const OutlinedButton = ({
         width: width,
         height: buttonSize === 'sm' ? '54px' : '64px',
         padding: '16px 24px',
-        borderRadius: '16px',
+        borderRadius: borderRadius,
         border: buttonType === 'default' ? `1px solid ${colorChips.primary[300]}` : `1px solid ${disabledColor}`,
         backgroundColor: 'transparent',
         color: buttonType === 'default' ? colorChips.primary[300] : disabledTextColor,
