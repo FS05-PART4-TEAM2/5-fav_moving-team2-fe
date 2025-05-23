@@ -17,7 +17,7 @@ import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
 import DropDown from '@/shared/components/DropDown/DropDown';
 import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
-import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
+import Card from '@/shared/components/Card/Card';
 import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
@@ -108,7 +108,6 @@ function TabBarSample() {
 }
 
 const TabBarTest1 = () => {
-  const [pageNum, setPageNum] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('지역');
   const [selectedService, setSelectedService] = useState('서비스');
@@ -142,11 +141,11 @@ const TabBarTest1 = () => {
       height="300px"
       justifyContent="flex-start"
       alignItems="center"
+      padding="20px"
       gap="20px"
       bgcolor={colorChips.background.f7f7f7}
     >
       <Typo content="탭바테스트 1번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
-      <CommonPagination page={pageNum} totalCount={10} handleChange={(event, value) => setPageNum(value)} />
       {/* 팝업 */}
       {/* <ToastPopup isOpen={isOpen} onClose={() => setIsOpen(false)} message="테스트 테스트 테스트" /> */}
       {/* 드롭다운 */}
@@ -176,8 +175,9 @@ const TabBarTest1 = () => {
           }}
         />
       </Stack> */}
-      {/*request는 총 4단계로 step 진행 과정마다 +1 해주면 좋을 듯*/}
       <Stack width="100%" gap="5px">
+        <Card />
+        {/*request는 총 4단계로 step 진행 과정마다 +1 해주면 좋을 듯*/}
         <ProgressBar type="request" step={step} />
         <Stack direction="row" width="100%" justifyContent="flex-end">
           <Button variant="contained" onClick={nextStep} sx={{ width: '100px', textWrap: 'nowrap' }}>
