@@ -68,10 +68,10 @@ export default function DatePicker({ onSelect }: DatePickerProps) {
               }}
             >
               <Stack direction="row" gap="4px">
-                <Typo className={isMdDown ? 'text_M_16' : 'text_M_20'} style={{ color: colorChips.grayScale[400] }}>
+                <Typo className={isMdDown ? 'text_M_16' : 'text_M_18'} style={{ color: colorChips.grayScale[400] }}>
                   선택된 이사 날짜 :
                 </Typo>
-                <Typo className={isMdDown ? 'text_M_16' : 'text_M_20'} style={{ color: colorChips.black[400] }}>
+                <Typo className={isMdDown ? 'text_M_16' : 'text_M_18'} style={{ color: colorChips.black[400] }}>
                   {confirmedDate.format('YYYY년 MM월 DD일')}
                 </Typo>
               </Stack>
