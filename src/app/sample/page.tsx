@@ -1,7 +1,8 @@
 'use client';
 
 import { colorChips } from '@/shared/styles/colorChips';
-import { Stack, SxProps, Typography } from '@mui/material';
+import { Button, Stack, SxProps, Typography } from '@mui/material';
+
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { useEffect, useState } from 'react';
 
@@ -18,6 +19,7 @@ import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
 import DropDown from '@/shared/components/DropDown/DropDown';
 import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
 import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
+import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
 import Card, { UserData } from '@/shared/components/Card/Card';
 import { UserCardData } from '@/shared/components/Card/CardPresets';
 
@@ -121,6 +123,11 @@ const TabBarTest1 = () => {
     가정이사: true,
     사무실이사: true,
   });
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+
+  const nextStep = () => {
+    setStep((prev) => (prev < 4 ? ((prev + 1) as 1 | 2 | 3 | 4) : 1));
+  };
 
   const items = [
     { label: '소형이사', count: 10, checked: selected['소형이사'] },
@@ -155,9 +162,10 @@ const TabBarTest1 = () => {
         <DropDown category="profile" selected={selectedProfile} onChange={setSelectedProfile} />
 
         <DropDown category="alarm" selected={selectedAlarm} onChange={setSelectedAlarm} />
-      </Stack>
+      </Stack> */}
 
       {/*필터 체크 박스*/}
+
       {/*<Stack>
         <FilterCheckList
           title="이사 유형"
@@ -191,6 +199,17 @@ const TabBarTest1 = () => {
         <Card type="confirmRequest" data={UserData} />
         <Card type="rejectRequest" data={UserData} />
         <Card type="finishRequest" data={UserData} />
+      </Stack>
+      {/*request는 총 4단계로 step 진행 과정마다 +1 해주면 좋을 듯*/}
+      <Stack width="100%" gap="5px">
+        <ProgressBar type="request" step={step} />
+        <Stack direction="row" width="100%" justifyContent="flex-end">
+          <Button variant="contained" onClick={nextStep} sx={{ width: '100px', textWrap: 'nowrap' }}>
+            현재 단계: {step}
+          </Button>
+        </Stack>
+        {/*review는 백분율 값을 넣으면 됨*/}
+        <ProgressBar type="review" percentage={30} />
       </Stack>
     </Stack>
   );
