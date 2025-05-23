@@ -5,7 +5,6 @@ import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { HeaderLogo } from './core/components/HeaderLogo';
 import { DesktopNavMenu } from './core/components/DesktopNavMenu';
-import { UserType } from '@/shared/types/types';
 import { NavMenuDrawer } from './core/components/NavMenuDrawer';
 import Image from 'next/image';
 import { HeaderAlarm } from './core/components/HeaderAlarm';
@@ -13,6 +12,7 @@ import { HeaderProfile } from './core/components/HeaderProfile';
 import { PATH } from '@/shared/constants';
 import { useRouter } from 'next/navigation';
 import { Typo } from '@/shared/styles/Typo/Typo';
+import useUserStore from '@/shared/store/useUserStore';
 
 export const Header = () => {
   const router = useRouter();
@@ -22,10 +22,9 @@ export const Header = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const userMenuIconSize = isDesktop ? 36 : 24;
 
-  // TODO: 여기 api 연결하고 스토어에서 데이터 가져올것
-  let tempUserType = 'temp';
-  let tempUserNickname = '기사님';
-  let tempProfileImg = null;
+  const { userType, userInfo } = useUserStore();
+  const userName = userInfo?.username ?? '';
+  const profileImg = userInfo?.profileImage ?? null;
 
   // 알림 / 프로필 드롭다운 토글(둘 중 하나만 열리도록)
   const handleDropdownToggle = (dropdown: 'alarm' | 'user') => {
@@ -42,11 +41,11 @@ export const Header = () => {
         <Stack sx={navWrapperSx}>
           <HeaderLogo />
           {/* 데스크탑에서만 페이지 네비 아이템 보여줌 */}
-          {isDesktop && <DesktopNavMenu userType={tempUserType as UserType} />}
+          {isDesktop && <DesktopNavMenu userType={userType} />}
         </Stack>
 
         <Stack sx={userMenuSx}>
-          {tempUserType === 'temp' ? (
+          {userType === 'temp' ? (
             isDesktop && (
               // 비회원 - 데스크탑에서 로그인버튼
               <Button
@@ -75,10 +74,10 @@ export const Header = () => {
                 onToggle={() => handleDropdownToggle('alarm')}
               />
               <HeaderProfile
-                userType={tempUserType as UserType}
+                userType={userType}
                 isDesktop={isDesktop}
-                profileImgSrc={tempProfileImg}
-                nickname={tempUserNickname}
+                profileImgSrc={profileImg}
+                nickname={userName}
                 userMenuIconSize={userMenuIconSize}
                 openDropdown={openDropdown === 'user'}
                 onToggle={() => handleDropdownToggle('user')}
@@ -103,7 +102,7 @@ export const Header = () => {
 
       {!isDesktop && isNavMenuDrawerOpen && (
         <NavMenuDrawer
-          userType={tempUserType as UserType}
+          userType={userType}
           isNavMenuOpen={isNavMenuDrawerOpen}
           onClose={() => setIsNavMenuDrawerOpen(false)}
         />

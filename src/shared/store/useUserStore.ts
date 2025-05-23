@@ -36,7 +36,7 @@ export interface CustomerData {
 
 // 기사님 프로필 데이터
 // 기사님 로그인 response로 여기 업데이트해놓기 -> 프로필 수정 시 사용
-export interface DriverData {
+export interface MoverData {
   nickname: string | null;
   serviceArea: string[] | null;
   serviceList: string[] | null;
@@ -49,11 +49,11 @@ interface UserStore {
   userType: UserType;
   userInfo: UserInfo | null;
   customerData: CustomerData | null;
-  driverData: DriverData | null;
+  moverData: MoverData | null;
   isAuthenticated: boolean; // 로그인 여부
   setUserInfo: (userType: UserType, userInfo: UserInfo) => void;
   setCustomerData: (customerData: CustomerData) => void;
-  setDriverData: (driverData: DriverData) => void;
+  setMoverData: (moverData: MoverData) => void;
 }
 
 const useUserStore = create<UserStore>()(
@@ -62,7 +62,7 @@ const useUserStore = create<UserStore>()(
       userType: 'temp',
       userInfo: null,
       customerData: null,
-      driverData: null,
+      moverData: null,
       isAuthenticated: false,
 
       setUserInfo: (userType: UserType, userInfo: UserInfo) => {
@@ -71,8 +71,8 @@ const useUserStore = create<UserStore>()(
       setCustomerData: (customerData: CustomerData) => {
         set({ customerData });
       },
-      setDriverData: (driverData: DriverData) => {
-        set({ driverData });
+      setMoverData: (moverData: MoverData) => {
+        set({ moverData });
       },
     }),
     {
