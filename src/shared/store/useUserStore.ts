@@ -54,6 +54,7 @@ interface UserStore {
   setUserInfo: (userType: UserType, userInfo: UserInfo) => void;
   setCustomerData: (customerData: CustomerData) => void;
   setMoverData: (moverData: MoverData) => void;
+  logout: () => void;
 }
 
 const useUserStore = create<UserStore>()(
@@ -73,6 +74,9 @@ const useUserStore = create<UserStore>()(
       },
       setMoverData: (moverData: MoverData) => {
         set({ moverData });
+      },
+      logout: () => {
+        set({ userType: 'temp', userInfo: null, customerData: null, moverData: null, isAuthenticated: false });
       },
     }),
     {
