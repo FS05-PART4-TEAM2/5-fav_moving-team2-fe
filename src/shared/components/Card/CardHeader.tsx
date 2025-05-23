@@ -53,6 +53,7 @@ export default function CardHeader({ type, services, moveDay, description, name,
     type !== 'confirmRequest' &&
     type !== 'request' &&
     type !== 'writeReview' &&
+    type !== 'review' &&
     type !== 'finishReview';
 
   return (
@@ -90,12 +91,15 @@ export default function CardHeader({ type, services, moveDay, description, name,
                 <Image src={data.userProfileImage} alt="user profile Image" fill style={{ objectFit: 'cover' }} />
               </Stack>
             )}
-            <Stack direction="column" flexWrap="nowrap" sx={{ gap: { xs: '2px', md: '12px' } }}>
-              <Typo className={profileNameText}>{name}</Typo>
-              <Typo className={profileDescriptionText} sx={{ color: colorChips.grayScale[400], textWrap: 'nowrap' }}>
-                {description}
-              </Typo>
-            </Stack>
+
+            {type !== 'review' && (
+              <Stack direction="column" flexWrap="nowrap" sx={{ gap: { xs: '2px', md: '12px' } }}>
+                <Typo className={profileNameText}>{name}</Typo>
+                <Typo className={profileDescriptionText} sx={{ color: colorChips.grayScale[400], textWrap: 'nowrap' }}>
+                  {description}
+                </Typo>
+              </Stack>
+            )}
             {type === 'profile' && isLarge ? (
               <Stack direction="row" gap="8px">
                 <OutlinedButton

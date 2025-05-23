@@ -1,7 +1,11 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useMediaQuery } from '@mui/material';
 import CommonCardInfo from './CommonCardInfo';
 import CardHeader from './CardHeader';
 import { PresetCardName } from './CardPresets';
+import { Typo } from '@/shared/styles/Typo/Typo';
+import { colorChips } from '@/shared/styles/colorChips';
+import { OutlinedButton } from '../Button/OutlinedButton';
+import theme from '@/shared/theme';
 
 export const UserData = {
   name: '김코드',
@@ -22,6 +26,7 @@ export const UserData = {
   provideService: ['소형이사', '가정이사'],
   region: ['서울', '경기'],
   QuoteAmount: 274000,
+  createTime: '2025-05-22',
 };
 
 // 1. 프리셋으로 padding 등 style 값 저장
@@ -38,21 +43,63 @@ interface CardProps {
 }
 
 export default function Card({ type }: CardProps) {
+  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
   return (
-    <Stack direction="column" width="100%" gap="14px" px="14px" py="16px" bgcolor="white">
-      <Stack>
-        <CardHeader
-          type={type}
-          services={UserData.service}
-          description={UserData.description}
-          name="김코드"
-          data={UserData}
-        />
-      </Stack>
+    <Box position="relative">
+      {(type === 'rejectRequest' || type === 'finishRequest') && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#040404A3',
+            zIndex: 10,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: isMdDown ? '16px' : '24px',
+          }}
+        >
+          <Stack padding="24px" borderRadius="12px" alignItems="center" gap="16px" sx={{ minWidth: '240px' }}>
+            <Typo className={isMdDown ? 'text_SB_16' : 'text_SB_18'} style={{ color: 'white' }}>
+              {type === 'rejectRequest' ? '반려된 요청이에요' : '이사 완료된 견적이에요'}
+            </Typo>
 
-      <Stack>
-        <CommonCardInfo type={type} data={UserData}></CommonCardInfo>
+            {type === 'finishRequest' && (
+              <OutlinedButton
+                text="견적 상세보기"
+                width="100%"
+                onClick={() => console.log('견적 상세보기')}
+                buttonSize="md"
+              />
+            )}
+          </Stack>
+        </Box>
+      )}
+      <Stack
+        direction="column"
+        width="100%"
+        gap="14px"
+        p={isMdDown ? '20px' : '30px 20px'}
+        bgcolor="white"
+        borderRadius={isMdDown ? '16px' : '24px'}
+      >
+        <Stack>
+          <CardHeader
+            type={type}
+            services={UserData.service}
+            description={UserData.description}
+            name="김코드"
+            data={UserData}
+          />
+        </Stack>
+
+        <Stack>
+          <CommonCardInfo type={type} data={UserData} />
+        </Stack>
       </Stack>
-    </Stack>
+    </Box>
   );
 }

@@ -35,6 +35,7 @@ export interface UserCardData {
   region?: string[];
   QuoteAmount?: number;
   reviewContent?: string;
+  createTime?: 'string';
 }
 
 export type CardButtonType = 'solid' | 'outlined';

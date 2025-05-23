@@ -39,6 +39,10 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
     return <RequestConfirmCardInfo type={type} data={data} />;
   }
 
+  if (type === 'review') {
+    return <ReviewSection data={data} />;
+  }
+
   return (
     <>
       <Stack
