@@ -8,6 +8,17 @@ interface TypoStyles {
 // 혹시 빠진게 있다면 여기에 추가하고 Typo.tsx TypoClassName 에도 추가해주세요
 // 만약 반응형으로 폰트 사이즈가 달라진다면 스타일에 미디어쿼리 적용할 수 있어요.
 export const typographyStyles: TypoStyles = {
+  landing_title: {
+    fontFamily: 'pretendard',
+    fontSize: '36px',
+    fontStyle: 'normal',
+    fontWeight: 600,
+    lineHeight: '50px',
+    '@media (max-width: 1200px)': {
+      fontSize: '24px',
+      lineHeight: '34px',
+    },
+  },
   text_B_32: {
     fontFamily: 'pretendard',
     fontSize: '32px',
