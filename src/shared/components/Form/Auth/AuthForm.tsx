@@ -31,7 +31,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
     formState: { isSubmitting },
   } = methods;
   const router = useRouter();
-  const { setUserInfo } = useUserStore();
+  const { setUserInfo, setCustomerData, setMoverData } = useUserStore();
 
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const isLogin = mode === 'login';
@@ -80,6 +80,12 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             profileImage: customer.profileImage,
           });
 
+          setCustomerData({
+            wantService: customer.wantService,
+            livingPlace: customer.livingPlace,
+            hasQuotation: customer.hasQuotation,
+          });
+
           router.push(PATH.customer.myPage);
         }
         if (userType === 'mover') {
@@ -95,6 +101,15 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             email: mover.email,
             phoneNumber: mover.phoneNumber,
             profileImage: mover.profileImage,
+          });
+
+          setMoverData({
+            nickname: mover.nickname,
+            serviceArea: mover.serviceArea,
+            serviceList: mover.serviceList,
+            intro: mover.intro,
+            career: mover.career,
+            detailDescription: mover.detailDescription,
           });
 
           router.push(PATH.mover.movingQuoteRequest);

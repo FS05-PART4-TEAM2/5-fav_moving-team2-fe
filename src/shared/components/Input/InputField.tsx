@@ -12,12 +12,15 @@ import { SxProps, Theme } from '@mui/material';
 
 type InputFieldProps<T extends FieldValues> = {
   name: Path<T> & PresetFieldName;
-  override?: Partial<Omit<TextFieldProps, 'name'>>;
+  override?: Partial<Omit<TextFieldProps, 'name'>> & {
+    backgroundColor?: string;
+  };
 };
 
 export default function InputField<T extends FieldValues>({ name, override = {} }: InputFieldProps<T>) {
   const { control, getValues } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState(false);
+  const { backgroundColor, sx, ...textFieldOverride } = override;
 
   const preset = fieldPresets[name];
   if (!preset) throw new Error(`정의되지 않은 필드 이름: ${name}`);
@@ -71,6 +74,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 fontWeight: 400,
                 fontSize: '16px',
                 lineHeight: '26px',
+                backgroundColor: override.backgroundColor ?? 'white',
                 [theme.breakpoints.up('md')]: {
                   fontSize: '20px',
                   lineHeight: '32px',
@@ -93,7 +97,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
               ...override?.sx,
             })) as SxProps<Theme>
           }
-          {...override}
+          {...textFieldOverride}
         />
       )}
     />
