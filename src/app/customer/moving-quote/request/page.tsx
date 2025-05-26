@@ -9,13 +9,14 @@ import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
 import { OngoingQuoteViewFeature } from './features/OngoingQuoteVIew/Feature';
 import { QuoteRequestFormFeature } from './features/QuoteRequestForm/Feature';
 import { useRequestStepStore } from './core/hooks/useRequestStepStore';
+import useUserStore from '@/shared/store/useUserStore';
 
 export default function Page() {
+  const { customerData } = useUserStore();
   const { requestStep } = useRequestStepStore();
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
-
-  const hasOngoingQuote = false; // 진행중인 견적요청서 유무 TODO: API 연동 필요
+  const hasQuotation = customerData?.hasQuotation ?? false;
 
   useEffect(() => {
     // hasOngoingQuote / 화면크기 변경 시 헤더 높이 재계산
@@ -31,7 +32,7 @@ export default function Page() {
     return () => {
       window.removeEventListener('resize', updateHeaderHeight);
     };
-  }, [hasOngoingQuote]);
+  }, [hasQuotation]);
 
   return (
     <Stack sx={{ minHeight: '100vh', width: '100%' }}>
@@ -51,7 +52,7 @@ export default function Page() {
             gap={{ xs: '16px', md: '24px' }}
           >
             <Typo content="견적요청" className="header_title" color={colorChips.black.b2b2b} />
-            {!hasOngoingQuote && (
+            {!hasQuotation && (
               <Box width="100%">
                 <ProgressBar type="request" step={requestStep} />
               </Box>
@@ -62,7 +63,7 @@ export default function Page() {
 
       <Stack sx={{ ...mainContainerSx, marginTop: `${headerHeight}px` }}>
         <Stack sx={contentContainerSx}>
-          {hasOngoingQuote ? (
+          {hasQuotation ? (
             // 현재 진행중 견적 있는 경우
             <OngoingQuoteViewFeature />
           ) : (
