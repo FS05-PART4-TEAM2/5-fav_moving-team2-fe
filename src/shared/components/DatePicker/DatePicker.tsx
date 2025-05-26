@@ -1,5 +1,5 @@
 'use client';
-
+// TODO 반응형 디자인 수정 필요
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';

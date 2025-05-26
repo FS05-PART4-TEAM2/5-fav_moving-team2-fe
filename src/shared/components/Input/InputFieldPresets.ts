@@ -3,7 +3,7 @@ import { RegisterOptions } from 'react-hook-form';
 
 // Preset 종류
 export type PresetFieldName =
-  | 'name'
+  | 'username'
   | 'present'
   | 'intro'
   | 'description'
@@ -35,7 +35,7 @@ const validatePasswordConfirm = (value: string, getPassword: () => string): true
 // 기사님 프로필에 별명에서 갑자기 이름으로 바뀜 이부분 고려해서 별명 필요시 nickname프리셋 추가
 //  상세 후기, 현재 비번, 새 비번
 export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
-  name: {
+  username: {
     placeholder: '성함을 입력해 주세요',
     type: 'text',
     autoComplete: 'name',
@@ -132,9 +132,9 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     defaultValue: '',
     rules: {
       required: '비밀번호를 입력해 주세요',
-      minLength: {
-        value: 6,
-        message: '비밀번호는 최소 6자 이상이어야 합니다',
+      pattern: {
+        value: /^(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{9,}$/,
+        message: '숫자와 특수문자를 포함해 9자 이상 입력해주세요',
       },
     },
   },

@@ -32,6 +32,7 @@ export interface UserInfo {
 export interface CustomerData {
   wantService: string[] | null;
   livingPlace: string | null;
+  hasQuotation: boolean;
 }
 
 // 기사님 프로필 데이터
