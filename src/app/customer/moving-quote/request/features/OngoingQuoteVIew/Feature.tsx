@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { PATH } from '@/shared/constants';
 import Image from 'next/image';
 
-export const OngoingQuoteView = () => {
+export const OngoingQuoteViewFeature = () => {
   const router = useRouter();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
