@@ -242,19 +242,8 @@ export default function RequestConfirmCardInfo({ type, data }: Props) {
 
       {showButtons ? (
         <Stack direction={isSm ? 'column' : 'row'} gap={isMdDown ? '8px' : '11px'}>
-          <SolidButton
-            text="견적 보내기"
-            width="100%"
-            buttonSize={isMdDown ? 'sm' : 'md'}
-            hasIcon
-            onClick={() => console.log('견적 보내기')}
-          />
-          <OutlinedButton
-            text="반려"
-            width="100%"
-            buttonSize={isMdDown ? 'sm' : 'md'}
-            onClick={() => console.log('반려')}
-          />
+          <SolidButton text="견적 보내기" width="100%" hasIcon onClick={() => console.log('견적 보내기')} />
+          <OutlinedButton text="반려" width="100%" onClick={() => console.log('반려')} />
         </Stack>
       ) : (
         <Stack direction="row" justifyContent="flex-end" alignItems="center" gap={isMdDown ? '8px' : '16px'}>

@@ -69,21 +69,6 @@ function TabBarSample() {
         {tabBarType === 'tabBarType1' ? <TabBarTest1 /> : <TabBarTest2 />}
       </Stack>
 
-      {/* CommonButton 테스트 - 확인하고 다 주석처리해주셔도 됩니다~ */}
-      {/* <SolidButton buttonSize="sm" text="sm with icon" hasIcon={true} />
-      <SolidButton buttonSize="sm" text="sm no icon" />
-      <SolidButton buttonSize="sm" text="sm disabled" disabled={true} />
-      <SolidButton text="md with icon" hasIcon={true} />
-      <SolidButton text="md no icon" />
-      <SolidButton text="md disabled" disabled={true} hasIcon={true} />
-
-      <OutlinedButton buttonSize="sm" text="sm outlined default" justifyContent="flex-start" />
-      <OutlinedButton buttonType="done" buttonSize="sm" text="sm outlined done" justifyContent="flex-start" />
-      <OutlinedButton buttonSize="sm" text="sm outlined disabled" disabled={true} justifyContent="flex-start" />
-      <OutlinedButton text="md outlined default" />
-      <OutlinedButton buttonType="done" text="md outlined done" hasIcon={true} />
-      <OutlinedButton text="md outlined disabled" disabled={true} /> */}
-
       {/* TextFieldChat, Textarea 테스트 - 확인하고 주석 처리하셔도 됩니다!?! */}
       {/* <Stack height="300px" gap="20px" bgcolor={colorChips.background.f7f7f7}>
         <TextFieldChat
@@ -253,8 +238,8 @@ const TabBarTest2 = () => {
         bgcolor={colorChips.background.f7f7f7}
       >
         <Typo content="탭바테스트 2번컴포넌트입니다." className="text_M_16" color={colorChips.black[400]} />
-        <OutlinedButton buttonSize="sm" text="CommonModal 열기" onClick={handleOpenCommonModal} />
-        <OutlinedButton buttonSize="sm" text="ResponsiveModal 열기" onClick={handleOpenResponsiveModal} />
+        <OutlinedButton text="CommonModal 열기" onClick={handleOpenCommonModal} />
+        <OutlinedButton text="ResponsiveModal 열기" onClick={handleOpenResponsiveModal} />
       </Stack>
 
       {isCommonModalOpen && (
@@ -265,7 +250,7 @@ const TabBarTest2 = () => {
         >
           <Stack padding="20px 0" gap="10px" alignItems="center">
             <Typo content="테스트테스트" className="text_M_18" color={colorChips.black[400]} />
-            <SolidButton buttonSize="sm" text="확인" onClick={handleCloseCommonModal} />
+            <SolidButton text="확인" onClick={handleCloseCommonModal} />
           </Stack>
         </CommonModal>
       )}

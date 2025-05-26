@@ -3,6 +3,7 @@ import Typography, { TypographyProps } from '@mui/material/Typography';
 import { typographyStyles } from './TypoStyles';
 
 export type TypoClassName =
+  | 'button_text'
   | 'landing_title'
   | 'text_B_32'
   | 'text_SB_32'

@@ -19,7 +19,7 @@ interface OutlinedButtonProps extends ButtonProps {
 
 export const OutlinedButton = ({
   buttonType = 'default',
-  buttonSize = 'md',
+  buttonSize = 'default',
   text,
   width = '100%',
   justifyContent = 'center',
@@ -30,10 +30,9 @@ export const OutlinedButton = ({
   borderRadius = '16px',
   ...props
 }: OutlinedButtonProps) => {
-  const textSize = buttonSize === 'sm' ? 'text_SB_16' : 'text_SB_20';
   const disabledColor = colorChips.grayScale[100];
   const disabledTextColor = colorChips.grayScale[300];
-  const iconGap = buttonSize === 'sm' ? '4px' : '8px';
+  const buttonHeight = buttonSize === 'xs' ? { xs: '48px', md: '54px' } : { xs: '54px', md: '64px' };
 
   return (
     <Button
@@ -42,7 +41,7 @@ export const OutlinedButton = ({
       variant="outlined"
       sx={{
         width: width,
-        height: buttonSize === 'sm' ? '54px' : '64px',
+        height: buttonHeight,
         padding: '16px 24px',
         borderRadius: borderRadius,
         border: buttonType === 'default' ? `1px solid ${colorChips.primary[300]}` : `1px solid ${disabledColor}`,
@@ -64,8 +63,8 @@ export const OutlinedButton = ({
       {isLoading ? (
         <CircularProgress size={15} sx={{ color: colorChips.grayScale[300] }} />
       ) : (
-        <Stack direction="row" justifyContent="center" alignItems="center" gap={iconGap}>
-          <Typo className={textSize} content={text} />
+        <Stack direction="row" justifyContent="center" alignItems="center" gap={{ xs: '4px', md: '8px' }}>
+          <Typo className="button_text" content={text} />
           {hasIcon && (
             <Image src={'./assets/images/writing-icon/writing-24x24-gray.svg'} alt="writing" width={24} height={24} />
           )}

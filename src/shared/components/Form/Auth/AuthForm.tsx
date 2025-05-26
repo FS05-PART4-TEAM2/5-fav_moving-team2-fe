@@ -66,7 +66,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         const res = await login(userType, loginData);
 
         if (userType === 'customer') {
-          const customer = res?.customer;
+          const customer = res?.data?.customer;
 
           if (!customer) {
             throw new Error('로그인 응답에 customer 정보가 없습니다.');
@@ -84,7 +84,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         }
         if (userType === 'mover') {
           const mover = res?.data?.mover;
-          console.log('mover', mover);
+
           if (!mover) {
             throw new Error('로그인 응답에 mover 정보가 없습니다.');
           }
