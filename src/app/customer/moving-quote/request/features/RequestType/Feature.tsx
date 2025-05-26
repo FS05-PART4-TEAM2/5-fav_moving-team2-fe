@@ -4,12 +4,12 @@ import { SelectType } from './core/components/SelectType';
 import { useState } from 'react';
 import { EditButton } from '../../core/components/EditButton';
 import { selectTypeOptions } from '../../core/constants';
-import { MovingType, CustomerRequestParams } from '@/shared/types/types';
+import { MovingType, CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 
 interface RequestTypeFeatureProps {
   moveType: MovingType | null;
-  updateParams: (key: keyof CustomerRequestParams, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
 }
 
 export const RequestTypeFeature = ({ moveType, updateParams }: RequestTypeFeatureProps) => {

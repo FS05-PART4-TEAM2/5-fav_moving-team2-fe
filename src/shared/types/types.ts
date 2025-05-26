@@ -44,7 +44,7 @@ export interface AuthResponseCustomer {
   customer: CustomerUser;
 }
 
-export interface CustomerRequestParams {
+export interface CustomerRequestPayload {
   moveType: MovingType | null;
   moveDate: string;
   startAddress: string;

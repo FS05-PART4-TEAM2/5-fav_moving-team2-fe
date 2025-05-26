@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { CustomerRequestParams } from '@/shared/types/types';
+import { CustomerRequestPayload } from '@/shared/types/types';
 
 export const useCustomerRequestPost = () => {
-  const [params, setParams] = useState<CustomerRequestParams>({
+  const [params, setParams] = useState<CustomerRequestPayload>({
     moveType: null,
     moveDate: '',
     startAddress: '',
     endAddress: '',
   });
 
-  const updateParams = (key: keyof CustomerRequestParams, value: string) => {
+  const updateParams = (key: keyof CustomerRequestPayload, value: string) => {
     setParams({ ...params, [key]: value });
   };
 

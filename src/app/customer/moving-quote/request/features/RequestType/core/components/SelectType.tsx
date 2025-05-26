@@ -4,12 +4,12 @@ import { MovingType } from '@/shared/types/types';
 import { useEffect, useState } from 'react';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { selectTypeOptions } from '../../../../core/constants';
-import { CustomerRequestParams } from '@/shared/types/types';
+import { CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../../../core/hooks/useRequestStepStore';
 
 interface SelectTypeProps {
   moveType: MovingType | null;
-  updateParams: (key: keyof CustomerRequestParams, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
   setIsEditing: (isEditing: boolean) => void;
 }
 

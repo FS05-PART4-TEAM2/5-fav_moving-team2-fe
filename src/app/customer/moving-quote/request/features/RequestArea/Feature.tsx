@@ -1,13 +1,13 @@
 import { Stack } from '@mui/material';
 import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
-import { CustomerRequestParams } from '@/shared/types/types';
+import { CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 
 interface RequestAreaFeatureProps {
   startAddress: string;
   endAddress: string;
-  updateParams: (key: keyof CustomerRequestParams, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
 }
 
 // TODO: 주소 출/도착 입력 컴포넌트 만들기

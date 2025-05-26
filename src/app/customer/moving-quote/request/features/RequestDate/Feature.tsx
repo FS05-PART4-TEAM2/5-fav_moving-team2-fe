@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
-import { CustomerRequestParams } from '@/shared/types/types';
+import { CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { useState } from 'react';
 import { EditButton } from '../../core/components/EditButton';
@@ -8,7 +8,7 @@ import DatePicker from '@/shared/components/DatePicker/DatePicker';
 
 interface RequestDateFeatureProps {
   moveDate: string;
-  updateParams: (key: keyof CustomerRequestParams, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
 }
 
 export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatureProps) => {
