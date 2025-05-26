@@ -8,6 +8,8 @@ export const QuoteRequestFormFeature = () => {
   const { params, updateParams } = useCustomerRequestPost();
   const { moveType, moveDate, startAddress, endAddress } = params;
 
+  // TODO: 단계별로 채팅하듯이 올라오는 애니메이션 추가
+  // TODO: api 연결(날짜, 주소 형식 확인 필요)
   return (
     <Stack
       direction="column"

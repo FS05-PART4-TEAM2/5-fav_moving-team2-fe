@@ -8,85 +8,89 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Paper } from '@mui/material';
 import { SolidButton } from '../Button/SolidButton';
 import DatePickerHeader from './DatePickerHeader';
-import { Typo } from '@/shared/styles/Typo/Typo';
-import { Box, Stack, useMediaQuery } from '@mui/system';
+import { useMediaQuery } from '@mui/system';
 import theme from '@/shared/theme';
 import { colorChips } from '@/shared/styles/colorChips';
 
 interface DatePickerProps {
-  onSelect: (date: Dayjs) => void;
+  onSelect: (formattedDate: string) => void;
+  value?: string;
 }
 
-export default function DatePicker({ onSelect }: DatePickerProps) {
-  const [value, setValue] = useState<Dayjs | null>(dayjs());
+// 기본값: 오늘날짜, 한번 선택했다가 수정할때는 선택값 보이도록 수정함
+export default function DatePicker({ onSelect, value }: DatePickerProps) {
+  const initialDayjs = value ? parseKoreanDateString(value) : dayjs();
+  const [selected, setSelected] = useState<Dayjs | null>(initialDayjs);
   const [confirmedDate, setConfirmedDate] = useState<Dayjs | null>(null);
   const [view, setView] = useState<'year' | 'month' | 'day'>('day');
 
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleConfirm = () => {
-    if (value) {
-      setConfirmedDate(value);
-      onSelect(value);
+    if (selected) {
+      setConfirmedDate(selected);
+      onSelect(selected.format('YYYY년 MM월 DD일') || '');
     }
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-        <Box sx={{ position: 'relative' }}>
-          <StaticDatePicker
-            displayStaticWrapperAs="desktop"
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
-            view={view}
-            onViewChange={(newView) => {
-              setView(newView);
-              if (newView !== 'day') {
-                setConfirmedDate(null);
-              }
-            }}
-            views={['year', 'month', 'day']}
-            minDate={dayjs().startOf('day')}
-            showDaysOutsideCurrentMonth
-            slotProps={{
-              actionBar: { actions: [] },
-            }}
-            slots={{
-              calendarHeader: (props) => <DatePickerHeader {...props} isMdDown={isMdDown} />,
-            }}
-          />
-
-          {confirmedDate && (
-            <Box
-              sx={{
-                position: 'absolute',
-                bottom: 8,
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Stack direction="row" gap="4px">
-                <Typo className={isMdDown ? 'text_M_16' : 'text_M_18'} style={{ color: colorChips.grayScale[400] }}>
-                  선택된 이사 날짜 :
-                </Typo>
-                <Typo className={isMdDown ? 'text_M_16' : 'text_M_18'} style={{ color: colorChips.black[400] }}>
-                  {confirmedDate.format('YYYY년 MM월 DD일')}
-                </Typo>
-              </Stack>
-            </Box>
-          )}
-        </Box>
+      <Paper
+        sx={{
+          boxShadow: 'none',
+          width: 'fit-content',
+          padding: '14px 24px',
+          borderRadius: { xs: '16px', md: '32px' },
+        }}
+      >
+        <StaticDatePicker
+          sx={{
+            fontSize: '13px',
+            height: 'fit-content',
+            '& .MuiPickersDay-root.Mui-selected, \
+                & .MuiPickersMonth-root.Mui-selected, \
+                & .MuiPickersYear-root.Mui-selected': {
+              background: colorChips.primary[300],
+              color: '#fff',
+              '&:hover, &:focus': {
+                background: colorChips.primary[200],
+              },
+            },
+          }}
+          displayStaticWrapperAs="desktop"
+          value={selected}
+          onChange={(newValue) => setSelected(newValue)}
+          view={view}
+          onViewChange={(newView) => {
+            setView(newView);
+            if (newView !== 'day') {
+              setConfirmedDate(null);
+            }
+          }}
+          views={['year', 'month', 'day']}
+          minDate={dayjs().startOf('day')}
+          showDaysOutsideCurrentMonth
+          slotProps={{
+            actionBar: { actions: [] },
+          }}
+          slots={{
+            calendarHeader: (props) => <DatePickerHeader {...props} isMdDown={isMdDown} />,
+          }}
+        />
 
         <SolidButton
-          fullWidth
           onClick={handleConfirm}
           text={'선택완료'}
-          sx={{ mt: 2, borderRadius: '16px' }}
-          disabled={!value || view !== 'day' || !value.isAfter(dayjs(), 'day')}
+          disabled={!selected || view !== 'day' || !selected.isAfter(dayjs(), 'day')}
         />
       </Paper>
     </LocalizationProvider>
   );
+}
+
+function parseKoreanDateString(dateStr: string): Dayjs | null {
+  const match = dateStr.match(/(\d{4})년 (\d{2})월 (\d{2})일/);
+  if (!match) return null;
+  const [, year, month, day] = match;
+  return dayjs(`${year}-${month}-${day}`);
 }
