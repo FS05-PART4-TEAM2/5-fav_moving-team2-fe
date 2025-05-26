@@ -1,5 +1,6 @@
 'use client';
 
+import { OAuthLogin } from '@/shared/core/Auth/service';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import theme from '@/shared/theme';
@@ -15,14 +16,21 @@ const OAuthItems = [
 
 type OAuthItemsProps = (typeof OAuthItems)[number]['name'];
 
-export default function AuthFormOAuth() {
+interface AuthFormOAuthProps {
+  userType: 'customer' | 'mover';
+}
+
+export default function AuthFormOAuth({ userType }: AuthFormOAuthProps) {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
 
   const OAuthImageSize = isMd ? 54 : 72;
 
-  const handleOAuthLogin = (OAuthItems: OAuthItemsProps) => {
-    console.log(`[OAuth] ${OAuthItems} 버튼 클릭`);
-    // TODO: 나중에 fetch 요청 추가
+  const handleOAuthLogin = async (provider: OAuthItemsProps) => {
+    const res = await OAuthLogin(provider, userType);
+
+    if (res?.request?.redirected || (res?.status === 200 && res?.data?.redirectUrl)) {
+      window.location.href = res?.request?.responseURL || res?.data.redirectUrl;
+    }
   };
 
   return (

@@ -1,6 +1,11 @@
 import customAxios from '@/lib/customAxios';
 import { LoginPayload, SignupPayload } from '@/shared/types/types';
 
+export async function OAuthLogin(provider: 'google' | 'kakao' | 'naver', userType: 'customer' | 'mover') {
+  const res = await customAxios.get(`/api/auth/${provider}/${userType}/login`);
+  return res;
+}
+
 export async function login(userType: 'customer' | 'mover', payload: LoginPayload) {
   const res = await customAxios.post(`/api/auth/${userType}/login`, payload);
   console.log('res', res.data);

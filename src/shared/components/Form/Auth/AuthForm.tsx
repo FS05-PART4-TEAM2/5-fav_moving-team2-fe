@@ -14,7 +14,7 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import AuthFormOAuth from './AuthFormOAuth';
 import { login, signup } from '@/shared/core/Auth/service';
-import { AuthResponseCustomer, AuthResponseMover, LoginPayload, SignupPayload } from '@/shared/types/types';
+import { LoginPayload, SignupPayload } from '@/shared/types/types';
 
 interface AuthFormProps {
   mode: 'login' | 'signup';
@@ -185,7 +185,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
               </Stack>
             </Stack>
           </Stack>
-          <AuthFormOAuth />
+          <AuthFormOAuth userType={userType} />
         </Stack>
       </Stack>
     </FormProvider>
