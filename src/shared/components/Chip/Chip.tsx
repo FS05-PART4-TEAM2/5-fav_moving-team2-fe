@@ -167,9 +167,10 @@ interface ChipProps {
   type: CategoryKey;
   children?: React.ReactNode;
   sx?: object;
+  onClick?: () => void;
 }
 
-export default function Chip({ type, children, sx }: ChipProps) {
+export default function Chip({ type, children, sx, onClick, ...props }: ChipProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
@@ -183,6 +184,9 @@ export default function Chip({ type, children, sx }: ChipProps) {
 
   return (
     <MuiChip
+      clickable
+      onClick={onClick}
+      {...props}
       label={
         <Stack direction="row" alignItems="center">
           {hasIcon && (
