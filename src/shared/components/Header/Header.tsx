@@ -13,6 +13,7 @@ import { PATH } from '@/shared/constants';
 import { useRouter } from 'next/navigation';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import useUserStore from '@/shared/store/useUserStore';
+import { redirectURL } from '@/lib/redirectURL';
 
 export const Header = () => {
   const router = useRouter();
@@ -59,7 +60,10 @@ export const Header = () => {
                     backgroundColor: colorChips.primary[200],
                   },
                 }}
-                onClick={() => router.push(PATH.customer.login)}
+                onClick={() => {
+                  const loginPath = redirectURL('customer');
+                  router.push(loginPath);
+                }}
               >
                 <Typo content={'로그인'} className="text_SB_18" color={colorChips.grayScale[50]} textAlign={'center'} />
               </Button>

@@ -78,6 +78,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             email: customer.email,
             phoneNumber: customer.phoneNumber,
             profileImage: customer.profileImage,
+            isProfile: customer.isProfile,
           });
 
           setCustomerData({
@@ -86,7 +87,12 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             hasQuotation: customer.hasQuotation,
           });
 
-          router.push(PATH.customer.myPage);
+          if (!customer.isProfile) {
+            router.push(PATH.customer.profile);
+          } else if (!customer.hasQuotation) {
+            router.push(PATH.customer.myPage);
+          }
+          router.push(PATH.customer.movingQuoteRequest);
         }
         if (userType === 'mover') {
           const mover = res?.data?.mover;
@@ -101,6 +107,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             email: mover.email,
             phoneNumber: mover.phoneNumber,
             profileImage: mover.profileImage,
+            isProfile: mover.isProfile,
           });
 
           setMoverData({
@@ -112,7 +119,11 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             detailDescription: mover.detailDescription,
           });
 
-          router.push(PATH.mover.movingQuoteRequest);
+          if (!mover.isProfile) {
+            router.push(PATH.mover.profile);
+          } else {
+            router.push(PATH.mover.movingQuoteRequest);
+          }
         }
       }
       if (isSignup) {
