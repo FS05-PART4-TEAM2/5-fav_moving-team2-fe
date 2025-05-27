@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Stack, Box } from '@mui/material';
+import { Stack, Box, CircularProgress } from '@mui/material';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { Header } from '@/shared/components/Header/Header';
@@ -62,15 +62,22 @@ export default function Page() {
       </Stack>
 
       <Stack sx={{ ...mainContainerSx, marginTop: `${headerHeight}px` }}>
-        <Stack sx={contentContainerSx}>
-          {hasQuotation ? (
-            // 현재 진행중 견적 있는 경우
-            <OngoingQuoteViewFeature />
-          ) : (
-            // 현재 진행중 견적 없는 경우 - 견적요청 프로그레스 표시
-            <QuoteRequestFormFeature />
-          )}
-        </Stack>
+        {headerRef.current ? (
+          <Stack sx={contentContainerSx}>
+            {hasQuotation ? (
+              // 현재 진행중 견적 있는 경우
+              <OngoingQuoteViewFeature />
+            ) : (
+              // 현재 진행중 견적 없는 경우 - 견적요청 프로그레스 표시
+              <QuoteRequestFormFeature />
+            )}
+          </Stack>
+        ) : (
+          // 헤더 높이 계산하는 동안 로딩인디케이터
+          <Stack sx={{height: '100vh', justifyContent: 'center', alignItems: 'center'}}>
+          <CircularProgress size={60}/>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

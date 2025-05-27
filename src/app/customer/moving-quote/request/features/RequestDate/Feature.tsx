@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
 import { CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EditButton } from '../../core/components/EditButton';
 import DatePicker from '@/shared/components/DatePicker/DatePicker';
 
@@ -13,9 +13,21 @@ interface RequestDateFeatureProps {
 
 export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatureProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [visibleMessages, setVisibleMessages] = useState(0);
   const { decreaseStep, increaseStep } = useRequestStepStore();
 
   const dateQ = '이사 예정일을 선택해주세요.';
+
+    // 컴포넌트 마운트 시 메시지들을 순차적으로 보여주기
+    useEffect(() => {
+      const timer1 = setTimeout(() => setVisibleMessages(1), 300);
+      const timer2 = setTimeout(() => setVisibleMessages(2), 800);
+  
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
+    }, []);
 
   // 선택값 없을 때 || 수정버튼 클릭했을 때 옵션 보여주기
   const showOptions = !moveDate || isEditing;
@@ -30,6 +42,14 @@ export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatur
     setIsEditing(false);
   };
 
+    // 애니메이션 스타일
+    const fadeInUpStyle = (isVisible: boolean, delay = 0) => ({
+      width: '100%',
+      opacity: isVisible ? 1 : 0,
+      transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+      transition: `all 0.4s ease-out ${delay}ms`,
+    });
+
   return (
     <Stack
       direction="column"
@@ -39,7 +59,13 @@ export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatur
       justifyContent="center"
       gap={{ xs: '8px', md: '24px' }}
     >
-      <TextFieldChat text={dateQ} align="left" color="white" />
+            {/* 첫 번째 메시지 */}
+            <div style={fadeInUpStyle(visibleMessages >= 1)}>
+        <TextFieldChat text={dateQ} align="left" color="white" />
+      </div>
+
+      {/* 두 번째 메시지 */}
+      <div style={fadeInUpStyle(visibleMessages >= 2)}>
       {showOptions ? (
         // 날짜 선택
         <Stack width="100%" direction="row" justifyContent="flex-end">
@@ -52,6 +78,7 @@ export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatur
           <EditButton onClick={handleClickEdit} />
         </Stack>
       )}
+      </div>
     </Stack>
   );
 };

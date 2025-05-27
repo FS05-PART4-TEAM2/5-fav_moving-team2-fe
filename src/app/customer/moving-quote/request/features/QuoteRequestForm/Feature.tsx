@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Stack } from '@mui/material';
 import { RequestTypeFeature } from '../RequestType/Feature';
 import { RequestDateFeature } from '../RequestDate/Feature';
@@ -5,10 +6,12 @@ import { RequestAreaFeature } from '../RequestArea/Feature';
 import { useCustomerRequestPost } from '../../core/hooks/useCustomerRequestPost';
 
 export const QuoteRequestFormFeature = () => {
+  const [showDate, setShowDate] = useState(false);
+  const [showArea, setShowArea] = useState(false);
+  const [visibleMessages, setVisibleMessages] = useState(0);
   const { params, updateParams, handleSubmit } = useCustomerRequestPost();
   const { moveType, moveDate, startAddress, endAddress } = params;
 
-  // TODO: 단계별로 채팅하듯이 올라오는 애니메이션 추가
   return (
     <Stack
       direction="column"
@@ -19,13 +22,13 @@ export const QuoteRequestFormFeature = () => {
       gap={{ xs: '8px', md: '24px' }}
     >
       <RequestTypeFeature moveType={moveType} updateParams={updateParams} />
-      <RequestDateFeature moveDate={moveDate} updateParams={updateParams} />
-      <RequestAreaFeature
+      {showDate && <RequestDateFeature moveDate={moveDate} updateParams={updateParams} />}
+      {showArea && <RequestAreaFeature
         startAddress={startAddress}
         endAddress={endAddress}
         updateParams={updateParams}
         handleSubmit={handleSubmit}
-      />
+      />}
     </Stack>
   );
 };

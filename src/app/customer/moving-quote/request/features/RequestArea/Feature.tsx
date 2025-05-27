@@ -5,7 +5,7 @@ import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { EditButton } from '../../core/components/EditButton';
 import { SelectAddressButton } from './core/components/SelectAddressButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SelectAddressModal } from './core/components/SelectAddressModal';
 
 interface RequestAreaFeatureProps {
@@ -24,9 +24,21 @@ export const RequestAreaFeature = ({
   const [isStartModalOpen, setIsStartModalOpen] = useState(false);
   const [isEndModalOpen, setIsEndModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [visibleMessages, setVisibleMessages] = useState(0);
   const { requestStep, decreaseStep, increaseStep } = useRequestStepStore();
 
   const areaQ = '이사 지역을 선택해주세요.';
+
+      // 컴포넌트 마운트 시 메시지들을 순차적으로 보여주기
+      useEffect(() => {
+        const timer1 = setTimeout(() => setVisibleMessages(1), 300);
+        const timer2 = setTimeout(() => setVisibleMessages(2), 800);
+    
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+        };
+      }, []);
 
   // 주소 선택완료한 경우 각각 수정하기 버튼 보여주기
   const hasStartAddress = startAddress.length > 0;
@@ -75,6 +87,14 @@ export const RequestAreaFeature = ({
     setIsEndModalOpen(false);
   };
 
+      // 애니메이션 스타일
+      const fadeInUpStyle = (isVisible: boolean, delay = 0) => ({
+        width: '100%',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+        transition: `all 0.4s ease-out ${delay}ms`,
+      });
+
   return (
     <>
       <Stack
@@ -85,9 +105,14 @@ export const RequestAreaFeature = ({
         justifyContent="center"
         gap={{ xs: '8px', md: '24px' }}
       >
+                    {/* 첫 번째 메시지 */}
+                    <div style={fadeInUpStyle(visibleMessages >= 1)}>
         <TextFieldChat text={areaQ} align="left" color="white" />
+      </div>
 
         <Stack direction="row" width="100%" justifyContent="flex-end">
+          {/* 두 번째 메시지 */}
+      <div style={fadeInUpStyle(visibleMessages >= 2)}>
           <TextFieldChat isText={false} align="right" color="white">
             <Stack direction="column" width="100%" height="100%" gap={{ xs: '16px', md: '24px' }}>
               {/* 출발지 주소 선택 */}
@@ -118,6 +143,7 @@ export const RequestAreaFeature = ({
               )}
             </Stack>
           </TextFieldChat>
+          </div>
         </Stack>
       </Stack>
 
