@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { InputAdornment, IconButton, TextField } from '@mui/material';
-import { Stack, useMediaQuery } from '@mui/system';
+import { Stack, SxProps, SystemStyleObject, Theme, useMediaQuery } from '@mui/system';
 import theme from '@/shared/theme';
 import Image from 'next/image';
 import { typographyStyles } from '@/shared/styles/Typo/TypoStyles';
@@ -22,6 +22,17 @@ export default function SearchBar({
   const [input, setInput] = useState('');
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const iconSize = isMd ? 24 : 36;
+  const inputFont = (isMd ? typographyStyles.text_R_14 : typographyStyles.text_R_20) as SystemStyleObject<Theme>;
+
+  const inputStyle: SxProps<Theme> = {
+    '& .MuiInputBase-input': {
+      ...inputFont,
+      color: colorChips.black[400],
+    },
+    '& .MuiInputBase-input::placeholder': {
+      color: colorChips.grayScale[400],
+    },
+  };
 
   const handleClear = () => setInput('');
   const handleSearch = () => {
@@ -100,17 +111,7 @@ export default function SearchBar({
           height: 48,
         },
       }}
-      sx={{
-        '& .MuiInputBase-input': {
-          fontSize: '16px', // 텍스트 크기
-          color: colorChips.black[400],
-          padding: '12px 14px',
-        },
-        '& .MuiOutlinedInput-notchedOutline': {},
-        '& .MuiInputBase-input::placeholder': {
-          color: colorChips.grayScale[400],
-        },
-      }}
+      sx={inputStyle}
     />
   );
 }

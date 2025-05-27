@@ -206,8 +206,10 @@ const TabBarTest1 = () => {
       {/* <ProgressBar type="review" percentage={30} />
       </Stack> */}
       <Stack />
-      <SearchBar isModal={false} onSearch={(text) => console.log('검색:', text)} />
-      <SearchBar isModal={true} onSearch={(text) => console.log('모달 검색:', text)} />
+      <Stack width="600px" gap="20px">
+        <SearchBar isModal={false} onSearch={(text) => console.log('검색:', text)} />
+        <SearchBar isModal={true} onSearch={(text) => console.log('모달 검색:', text)} />
+      </Stack>
       {/* <DatePicker onSelect={handleDate} /> */}
     </Stack>
   );
