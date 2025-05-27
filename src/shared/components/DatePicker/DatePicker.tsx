@@ -29,7 +29,7 @@ export default function DatePicker({ onSelect, value }: DatePickerProps) {
   const handleConfirm = () => {
     if (selected) {
       setConfirmedDate(selected);
-      onSelect(selected.format('YYYY년 MM월 DD일') || '');
+      onSelect(selected.format('YYYY-MM-DD') || '');
     }
   };
 

@@ -14,7 +14,15 @@ export const OngoingQuoteViewFeature = () => {
   const hasOngoingQuoteMsg = '현재 진행 중인 이사 견적이 있어요!\n진행 중인 이사 완료 후 새로운 견적을 받아보세요.';
 
   return (
-    <Stack direction="column" width="100%" height="100%" alignItems="center" justifyContent="center" gap="32px">
+    <Stack
+      flex={1}
+      direction="column"
+      width="100%"
+      height="100%"
+      alignItems="center"
+      justifyContent="center"
+      gap="32px"
+    >
       <Stack direction="column" width="100%" alignItems="center" gap={{ xs: '32px', md: '64px' }}>
         <Image src={imgSrc} alt="Moving" width={isDesktop ? 378 : 244} height={isDesktop ? 140 : 96} />
         <Typo

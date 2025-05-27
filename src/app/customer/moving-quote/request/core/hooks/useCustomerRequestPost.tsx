@@ -4,12 +4,13 @@ import { postCustomerRequest } from '../service/postCustomerRequestApi';
 import useUserStore from '@/shared/store/useUserStore';
 
 export const useCustomerRequestPost = () => {
-  const { setCustomerData, customerData } = useUserStore();
+  const { setCustomerData, customerData, userInfo } = useUserStore();
   const [params, setParams] = useState<CustomerRequestPayload>({
     moveType: null,
     moveDate: '',
     startAddress: '',
     endAddress: '',
+    customerId: userInfo?.id ?? '',
   });
 
   const updateParams = (key: keyof CustomerRequestPayload, value: string) => {

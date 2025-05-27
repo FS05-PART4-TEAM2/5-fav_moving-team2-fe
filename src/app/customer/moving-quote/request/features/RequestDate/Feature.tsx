@@ -5,6 +5,7 @@ import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { useState, useEffect } from 'react';
 import { EditButton } from '../../core/components/EditButton';
 import DatePicker from '@/shared/components/DatePicker/DatePicker';
+import dayjs from 'dayjs';
 
 interface RequestDateFeatureProps {
   moveDate: string;
@@ -42,6 +43,11 @@ export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatur
     increaseStep();
   };
 
+  // YYYY-MM-DD 형식을 한글 형식으로 변환
+  const formatDateToKorean = (date: string) => {
+    return dayjs(date).format('YYYY년 MM월 DD일');
+  };
+
   // 애니메이션 스타일
   const fadeInUpStyle = (isVisible: boolean, delay = 0) => ({
     width: '100%',
@@ -74,7 +80,7 @@ export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatur
         ) : (
           // 선택 완료
           <Stack direction="column" width="100%" alignItems="flex-end" gap={{ xs: '4px', md: '6px' }}>
-            <TextFieldChat text={moveDate} align="right" color="blue" />
+            <TextFieldChat text={formatDateToKorean(moveDate)} align="right" color="blue" />
             <EditButton onClick={handleClickEdit} />
           </Stack>
         )}

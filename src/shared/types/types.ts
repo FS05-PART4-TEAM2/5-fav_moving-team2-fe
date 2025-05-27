@@ -50,6 +50,7 @@ export interface CustomerRequestPayload {
   moveDate: string;
   startAddress: string;
   endAddress: string;
+  customerId: string;
 }
 
 export interface CustomerRequestResponseData {
