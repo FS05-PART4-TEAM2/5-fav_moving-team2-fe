@@ -30,7 +30,8 @@ export const SelectAddressButton = ({ optionType, isSelected, selectedAddress, o
 
 const wrapperSx = {
   flexDirection: 'column',
-  width: { xs: '280px', md: '560px' },
+  width: '100%',
+  minWidth: { xs: '280px', md: '560px' },
   height: '100%',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',

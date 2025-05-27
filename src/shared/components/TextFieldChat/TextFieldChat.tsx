@@ -23,7 +23,7 @@ export default function TextFieldChat({ color, align, isText = true, text, child
         alignItems="flex-start"
         sx={{
           maxWidth: {
-            xs: '80%',
+            xs: '100%',
             md: '60%',
           },
           minHeight: {

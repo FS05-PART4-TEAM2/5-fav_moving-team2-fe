@@ -73,3 +73,45 @@ export interface CustomerRequestResponse {
   message: string;
   data: CustomerRequestResponseData;
 }
+
+export interface SearchAddressResponseCommon {
+  errorMessage: string;
+  countPerPage: string;
+  totalCount: string;
+  errorCode: string;
+  currentPage: string;
+}
+
+export interface SearchAddressResponseJuso {
+  roadAddr: string; // 전체도로명주소
+  jibunAddr: string; // 지번주소
+  zipNo: string; // 우편번호
+  siNm: string; // 시도명
+  sggNm: string; // 시군구명
+  rn: string; // 도로명
+  roadAddrPart1: string;
+  roadAddrPart2: string;
+  detBdNmList: string;
+  engAddr: string;
+  emdNm: string;
+  emdNo: string;
+  bdNm: string;
+  admCd: string;
+  udrtYn: string;
+  lnbrMnnm: string;
+  lnbrSlno: string;
+  buldMnnm: string;
+  bdKdcd: string;
+  liNm: string;
+  rnMgtSn: string;
+  mtYn: string;
+  bdMgtSn: string;
+  buldSlno: string;
+}
+
+export interface SearchAddressResponse {
+  results: {
+    common: SearchAddressResponseCommon;
+    juso: SearchAddressResponseJuso[];
+  };
+}

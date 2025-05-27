@@ -38,13 +38,23 @@ export const RequestAreaFeature = ({
 
   const handleChangeStartAddress = (address: string) => {
     updateParams('startAddress', address);
-    increaseStep();
+    if (!isEditing) {
+      increaseStep();
+    }
   };
   const handleChangeEndAddress = (address: string) => {
     updateParams('endAddress', address);
-    increaseStep();
+    if (!isEditing) {
+      increaseStep();
+    }
   };
-  const handleClickEdit = () => {
+  const handleClickStartEdit = () => {
+    setIsStartModalOpen(true);
+    setIsEditing(true);
+    decreaseStep();
+  };
+  const handleClickEndEdit = () => {
+    setIsEndModalOpen(true);
     setIsEditing(true);
     decreaseStep();
   };
@@ -79,16 +89,16 @@ export const RequestAreaFeature = ({
 
         <Stack direction="row" width="100%" justifyContent="flex-end">
           <TextFieldChat isText={false} align="right" color="white">
-            <Stack direction="column" width="100%" height="100%" gap="24px">
+            <Stack direction="column" width="100%" height="100%" gap={{ xs: '16px', md: '24px' }}>
               {/* 출발지 주소 선택 */}
               <Stack sx={wrapperSx}>
                 <SelectAddressButton
                   optionType="start"
                   isSelected={hasStartAddress}
                   selectedAddress={startAddress}
-                  onClick={() => setIsStartModalOpen(true)}
+                  onClick={() => !hasStartAddress && setIsStartModalOpen(true)}
                 />
-                {hasStartAddress && <EditButton onClick={handleClickEdit} />}
+                {hasStartAddress && <EditButton onClick={handleClickStartEdit} />}
               </Stack>
 
               {/* 도착지 주소 선택 */}
@@ -97,16 +107,16 @@ export const RequestAreaFeature = ({
                   optionType="end"
                   isSelected={hasEndAddress}
                   selectedAddress={endAddress}
-                  onClick={() => setIsEndModalOpen(true)}
+                  onClick={() => !hasEndAddress && setIsEndModalOpen(true)}
                 />
-                {hasEndAddress && <EditButton onClick={handleClickEdit} />}
+                {hasEndAddress && <EditButton onClick={handleClickEndEdit} />}
               </Stack>
-            </Stack>
 
-            {/* 견적 확정 버튼 */}
-            {showSubmitButton && (
-              <SolidButton text="견적 확정하기" onClick={handleSubmit} disabled={submitButtonDisabled} />
-            )}
+              {/* 견적 확정 버튼 */}
+              {showSubmitButton && (
+                <SolidButton text="견적 확정하기" onClick={handleSubmit} disabled={submitButtonDisabled} />
+              )}
+            </Stack>
           </TextFieldChat>
         </Stack>
       </Stack>
