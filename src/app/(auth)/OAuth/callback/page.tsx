@@ -5,6 +5,8 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { CircularProgress } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { keyframes } from '@emotion/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const blink = keyframes`
   0%   { opacity: 0; }
@@ -14,6 +16,15 @@ const blink = keyframes`
 `;
 
 export default function OAuthCallbackPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // TODO: 유저 정보 저장하는 로직
+    const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
+    localStorage.removeItem('redirectAfterLogin');
+    router.replace(redirectPath);
+  }, [router]);
+
   return (
     <Stack width="100vw" height="100vh" justifyContent="center" alignItems="center" gap="16px">
       <CircularProgress size={64} thickness={5} />
