@@ -25,6 +25,7 @@ export interface UserInfo {
   email: string;
   phoneNumber: string;
   profileImage: string | null;
+  isProfile: boolean;
 }
 
 // 일반유저 프로필 데이터
