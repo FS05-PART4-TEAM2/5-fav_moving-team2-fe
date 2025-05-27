@@ -87,6 +87,12 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             hasQuotation: customer.hasQuotation,
           });
 
+          //development 일때만 로컬에 저장
+          if (process.env.NODE_ENV === 'development') {
+            localStorage.setItem('accessToken', res.data.accessToken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+          }
+
           if (!customer.isProfile) {
             router.push(PATH.customer.profile);
           } else if (!customer.hasQuotation) {
@@ -118,6 +124,12 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             career: mover.career,
             detailDescription: mover.detailDescription,
           });
+
+          //development 일때만 로컬에 저장
+          if (process.env.NODE_ENV === 'development') {
+            localStorage.setItem('accessToken', res.data.accessToken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+          }
 
           if (!mover.isProfile) {
             router.push(PATH.mover.profile);

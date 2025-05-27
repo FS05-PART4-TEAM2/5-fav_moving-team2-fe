@@ -65,7 +65,15 @@ const customAxios = axios.create({
   },
 });
 
-customAxios.interceptors.request.use((config) => config);
+customAxios.interceptors.request.use((config) => {
+  if (process.env.NODE_ENV === 'development') {
+    const token = localStorage.getItem('accessToken');
+    if (token && config.headers && typeof config.headers.set === 'function') {
+      config.headers.set('Authorization', `Bearer ${token}`);
+    }
+  }
+  return config;
+});
 
 // 응답 인터셉터
 let isRefreshing = false;
@@ -102,6 +110,10 @@ customAxios.interceptors.response.use(
       try {
         const res = await customAxios.get('/api/auth/refresh');
         const newAccessToken = res.data.accessToken;
+
+        if (process.env.NODE_ENV === 'development') {
+          localStorage.setItem('accessToken', newAccessToken);
+        }
 
         customAxios.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
         onTokenRefreshed(newAccessToken);
