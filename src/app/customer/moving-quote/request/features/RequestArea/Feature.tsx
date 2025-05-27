@@ -4,9 +4,9 @@ import { CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { EditButton } from '../../core/components/EditButton';
-import { SelectAddressButton } from './components/SelectAddressButton';
+import { SelectAddressButton } from './core/components/SelectAddressButton';
 import { useState } from 'react';
-import { SelectAddressModal } from './components/SelectAddressModal';
+import { SelectAddressModal } from './core/components/SelectAddressModal';
 
 interface RequestAreaFeatureProps {
   startAddress: string;
