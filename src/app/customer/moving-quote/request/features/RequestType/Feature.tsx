@@ -41,7 +41,7 @@ export const RequestTypeFeature = ({ moveType, updateParams }: RequestTypeFeatur
 
   // 선택값 없을 때 || 수정버튼 클릭했을 때 옵션 보여주기
   const showOptions = !moveType || isEditing;
-  
+
   const handleClickEdit = () => {
     // 옵션 선택 보여주고 프로그레스 스텝 -1
     setIsEditing(true);

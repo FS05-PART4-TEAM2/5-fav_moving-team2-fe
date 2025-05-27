@@ -29,16 +29,16 @@ export const RequestAreaFeature = ({
 
   const areaQ = '이사 지역을 선택해주세요.';
 
-      // 컴포넌트 마운트 시 메시지들을 순차적으로 보여주기
-      useEffect(() => {
-        const timer1 = setTimeout(() => setVisibleMessages(1), 300);
-        const timer2 = setTimeout(() => setVisibleMessages(2), 800);
-    
-        return () => {
-          clearTimeout(timer1);
-          clearTimeout(timer2);
-        };
-      }, []);
+  // 컴포넌트 마운트 시 메시지들을 순차적으로 보여주기
+  useEffect(() => {
+    const timer1 = setTimeout(() => setVisibleMessages(1), 300);
+    const timer2 = setTimeout(() => setVisibleMessages(2), 800);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
 
   // 주소 선택완료한 경우 각각 수정하기 버튼 보여주기
   const hasStartAddress = startAddress.length > 0;
@@ -87,13 +87,13 @@ export const RequestAreaFeature = ({
     setIsEndModalOpen(false);
   };
 
-      // 애니메이션 스타일
-      const fadeInUpStyle = (isVisible: boolean, delay = 0) => ({
-        width: '100%',
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-        transition: `all 0.4s ease-out ${delay}ms`,
-      });
+  // 애니메이션 스타일
+  const fadeInUpStyle = (isVisible: boolean, delay = 0) => ({
+    width: '100%',
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+    transition: `all 0.4s ease-out ${delay}ms`,
+  });
 
   return (
     <>
@@ -105,44 +105,44 @@ export const RequestAreaFeature = ({
         justifyContent="center"
         gap={{ xs: '8px', md: '24px' }}
       >
-                    {/* 첫 번째 메시지 */}
-                    <div style={fadeInUpStyle(visibleMessages >= 1)}>
-        <TextFieldChat text={areaQ} align="left" color="white" />
-      </div>
+        {/* 첫 번째 메시지 */}
+        <div style={fadeInUpStyle(visibleMessages >= 1)}>
+          <TextFieldChat text={areaQ} align="left" color="white" />
+        </div>
 
         <Stack direction="row" width="100%" justifyContent="flex-end">
           {/* 두 번째 메시지 */}
-      <div style={fadeInUpStyle(visibleMessages >= 2)}>
-          <TextFieldChat isText={false} align="right" color="white">
-            <Stack direction="column" width="100%" height="100%" gap={{ xs: '16px', md: '24px' }}>
-              {/* 출발지 주소 선택 */}
-              <Stack sx={wrapperSx}>
-                <SelectAddressButton
-                  optionType="start"
-                  isSelected={hasStartAddress}
-                  selectedAddress={startAddress}
-                  onClick={() => !hasStartAddress && setIsStartModalOpen(true)}
-                />
-                {hasStartAddress && <EditButton onClick={handleClickStartEdit} />}
-              </Stack>
+          <div style={fadeInUpStyle(visibleMessages >= 2)}>
+            <TextFieldChat isText={false} align="right" color="white">
+              <Stack direction="column" width="100%" height="100%" gap={{ xs: '16px', md: '24px' }}>
+                {/* 출발지 주소 선택 */}
+                <Stack sx={wrapperSx}>
+                  <SelectAddressButton
+                    optionType="start"
+                    isSelected={hasStartAddress}
+                    selectedAddress={startAddress}
+                    onClick={() => !hasStartAddress && setIsStartModalOpen(true)}
+                  />
+                  {hasStartAddress && <EditButton onClick={handleClickStartEdit} />}
+                </Stack>
 
-              {/* 도착지 주소 선택 */}
-              <Stack sx={wrapperSx}>
-                <SelectAddressButton
-                  optionType="end"
-                  isSelected={hasEndAddress}
-                  selectedAddress={endAddress}
-                  onClick={() => !hasEndAddress && setIsEndModalOpen(true)}
-                />
-                {hasEndAddress && <EditButton onClick={handleClickEndEdit} />}
-              </Stack>
+                {/* 도착지 주소 선택 */}
+                <Stack sx={wrapperSx}>
+                  <SelectAddressButton
+                    optionType="end"
+                    isSelected={hasEndAddress}
+                    selectedAddress={endAddress}
+                    onClick={() => !hasEndAddress && setIsEndModalOpen(true)}
+                  />
+                  {hasEndAddress && <EditButton onClick={handleClickEndEdit} />}
+                </Stack>
 
-              {/* 견적 확정 버튼 */}
-              {showSubmitButton && (
-                <SolidButton text="견적 확정하기" onClick={handleSubmit} disabled={submitButtonDisabled} />
-              )}
-            </Stack>
-          </TextFieldChat>
+                {/* 견적 확정 버튼 */}
+                {showSubmitButton && (
+                  <SolidButton text="견적 확정하기" onClick={handleSubmit} disabled={submitButtonDisabled} />
+                )}
+              </Stack>
+            </TextFieldChat>
           </div>
         </Stack>
       </Stack>
