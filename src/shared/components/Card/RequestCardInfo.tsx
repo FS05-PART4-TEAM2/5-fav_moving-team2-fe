@@ -237,9 +237,8 @@ export default function RequestConfirmCardInfo({ type, data }: Props) {
           </Stack>
         )}
       </Stack>
-
       <InfoGroup />
-
+      // TODO: onCLick console.log 지우기
       {showButtons ? (
         <Stack direction={isSm ? 'column' : 'row'} gap={isMdDown ? '8px' : '11px'}>
           <SolidButton text="견적 보내기" width="100%" hasIcon onClick={() => console.log('견적 보내기')} />

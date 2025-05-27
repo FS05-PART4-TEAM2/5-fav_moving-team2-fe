@@ -8,7 +8,6 @@ export async function OAuthLogin(provider: 'google' | 'kakao' | 'naver', userTyp
 
 export async function login(userType: 'customer' | 'mover', payload: LoginPayload) {
   const res = await customAxios.post(`/api/auth/${userType}/login`, payload);
-  console.log('res', res.data);
   return res.data;
 }
 

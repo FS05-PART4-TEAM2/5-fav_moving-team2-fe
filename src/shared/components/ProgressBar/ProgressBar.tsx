@@ -8,7 +8,7 @@ import { colorChips } from '@/shared/styles/colorChips';
 type ProgressBarProps =
   | {
       type: 'request';
-      step: 1 | 2 | 3 | 4;
+      step: 1 | 2 | 3 | 4 | 5;
     }
   | {
       type: 'review';
@@ -18,7 +18,7 @@ type ProgressBarProps =
 export default function ProgressBar(props: ProgressBarProps) {
   const isRequest = props.type === 'request';
 
-  const targetValue = isRequest ? props.step * 25 : props.percentage;
+  const targetValue = isRequest ? props.step * 20 : props.percentage;
   const filledColor = isRequest ? colorChips.primary[300] : colorChips.secondary.yellow[100];
   const emptyColor = isRequest ? colorChips.line['e6e6e6'] : colorChips.background['efefef'];
   const borderRadius = isRequest ? '30px' : '15px';

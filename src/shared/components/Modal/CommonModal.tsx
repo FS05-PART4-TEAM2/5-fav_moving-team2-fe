@@ -22,7 +22,7 @@ export const CommonModal: React.FC<CommonModalProps> = ({ modalTitle, isOpen, ha
       onClose={handleClickClose}
       aria-labelledby="common-modal"
       sx={{
-        zIndex: 10000,
+        zIndex: 10000000,
         marginX: '20px',
         '& .MuiBackdrop-root': {
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -35,7 +35,7 @@ export const CommonModal: React.FC<CommonModalProps> = ({ modalTitle, isOpen, ha
       <Stack sx={CommonModalSx}>
         <Stack sx={ModalWrapperSx}>
           <Stack sx={ModalHeaderWrapperSx}>
-            <Typo className="modal_header" content={modalTitle} color={colorChips.black[400]} />
+            <Typo className="header_title" content={modalTitle} color={colorChips.black[400]} />
             <Image
               src={closeIconSrc}
               alt="close"

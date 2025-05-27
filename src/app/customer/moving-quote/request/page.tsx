@@ -1,21 +1,22 @@
 'use client';
 
-import { Header } from '@/shared/components/Header/Header';
-import { Stack, Box, useTheme, useMediaQuery } from '@mui/material';
+import { useState, useRef, useEffect } from 'react';
+import { Stack, Box, CircularProgress } from '@mui/material';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
+import { Header } from '@/shared/components/Header/Header';
 import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
-import { useState, useRef, useEffect } from 'react';
-import { OngoingQuoteView } from './components/OngoingQuoteView';
+import { OngoingQuoteViewFeature } from './features/OngoingQuoteVIew/Feature';
+import { QuoteRequestFormFeature } from './features/QuoteRequestForm/Feature';
+import { useRequestStepStore } from './core/hooks/useRequestStepStore';
+import useUserStore from '@/shared/store/useUserStore';
 
 export default function Page() {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const [requestStep, setRequestStep] = useState<1 | 2 | 3 | 4>(1);
+  const { customerData } = useUserStore();
+  const { requestStep } = useRequestStepStore();
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
-
-  const hasOngoingQuote = true; // 진행중인 견적요청서 유무 TODO: API 연동 필요
+  const hasQuotation = customerData?.hasQuotation ?? false;
 
   useEffect(() => {
     // hasOngoingQuote / 화면크기 변경 시 헤더 높이 재계산
@@ -31,7 +32,7 @@ export default function Page() {
     return () => {
       window.removeEventListener('resize', updateHeaderHeight);
     };
-  }, [hasOngoingQuote]);
+  }, [hasQuotation]);
 
   return (
     <Stack sx={{ minHeight: '100vh', width: '100%' }}>
@@ -51,7 +52,7 @@ export default function Page() {
             gap={{ xs: '16px', md: '24px' }}
           >
             <Typo content="견적요청" className="header_title" color={colorChips.black.b2b2b} />
-            {!hasOngoingQuote && (
+            {!hasQuotation && (
               <Box width="100%">
                 <ProgressBar type="request" step={requestStep} />
               </Box>
@@ -61,20 +62,22 @@ export default function Page() {
       </Stack>
 
       <Stack sx={{ ...mainContainerSx, marginTop: `${headerHeight}px` }}>
-        <Stack sx={contentContainerSx}>
-          {hasOngoingQuote ? (
-            // 현재 진행중 견적 있는 경우
-            <OngoingQuoteView />
-          ) : (
-            // 현재 진행중 견적 없는 경우 - 견적요청 프로그레스 표시
-            <Typo
-              content={'견적요청'}
-              className="landing_title"
-              color={colorChips.black[500]}
-              customStyle={{ textAlign: 'center', whiteSpace: 'pre-line' }}
-            />
-          )}
-        </Stack>
+        {headerRef.current ? (
+          <Stack sx={contentContainerSx}>
+            {hasQuotation ? (
+              // 현재 진행중 견적 있는 경우
+              <OngoingQuoteViewFeature />
+            ) : (
+              // 현재 진행중 견적 없는 경우 - 견적요청 프로그레스 표시
+              <QuoteRequestFormFeature />
+            )}
+          </Stack>
+        ) : (
+          // 헤더 높이 계산하는 동안 로딩인디케이터
+          <Stack sx={{height: '100vh', justifyContent: 'center', alignItems: 'center'}}>
+          <CircularProgress size={60}/>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );
@@ -104,12 +107,12 @@ const contentContainerSx = {
   flex: 1,
   height: '100%',
   width: '100%',
-  maxWidth: { xs: '327px', md: '1448px' },
+  maxWidth: '1400px',
   margin: '0 auto',
   overflowY: 'scroll',
   direction: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
-  paddingTop: '40px',
-  paddingBottom: '60px',
+  justifyContent: 'flex-start',
+  paddingTop: { xs: '20px', md: '40px' },
+  paddingBottom: { xs: '40px', md: '60px' },
 };

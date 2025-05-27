@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { InputAdornment, IconButton, TextField } from '@mui/material';
-import { Stack, SxProps, SystemStyleObject, Theme, useMediaQuery } from '@mui/system';
+import { Stack, SxProps, Theme, useMediaQuery } from '@mui/system';
+import CloseIcon from '@mui/icons-material/Close';
 import theme from '@/shared/theme';
 import Image from 'next/image';
-import { typographyStyles } from '@/shared/styles/Typo/TypoStyles';
 import { colorChips } from '@/shared/styles/colorChips';
 
 interface SearchBarProps {
@@ -22,15 +22,32 @@ export default function SearchBar({
   const [input, setInput] = useState('');
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const iconSize = isMd ? 24 : 36;
-  const inputFont = (isMd ? typographyStyles.text_R_14 : typographyStyles.text_R_20) as SystemStyleObject<Theme>;
+  const closeIconSize = isMd ? 20 : 28;
 
   const inputStyle: SxProps<Theme> = {
-    '& .MuiInputBase-input': {
-      ...inputFont,
-      color: colorChips.black[400],
+    '& .MuiOutlinedInput-root': {
+      p: { xs: '14px 16px', md: '14px 24px' },
+      height: { xs: '52px', md: '64px' },
+      '& fieldset': {
+        border: 'none',
+      },
+      '&:hover fieldset': {
+        border: 'none',
+      },
+      '&.Mui-focused fieldset': {
+        border: 'none',
+      },
     },
-    '& .MuiInputBase-input::placeholder': {
-      color: colorChips.grayScale[400],
+    '& .MuiInputBase-input': {
+      p: 0,
+      fontFamily: 'pretendard',
+      fontSize: { xs: '14px', md: '20px' },
+      fontWeight: 400,
+      color: colorChips.black[400],
+      '&::placeholder': {
+        color: colorChips.grayScale[400],
+        opacity: 1,
+      },
     },
   };
 
@@ -52,12 +69,7 @@ export default function SearchBar({
       InputProps={{
         startAdornment: !isModal && (
           <InputAdornment position="start">
-            <Image
-              src="/assets/images/input-icon/search-36x36.svg"
-              alt="검색 아이콘"
-              width={iconSize}
-              height={iconSize}
-            />
+            <Image src="/assets/images/input-icon/search-36x36.svg" alt="search" width={iconSize} height={iconSize} />
           </InputAdornment>
         ),
         endAdornment: isModal && (
@@ -70,16 +82,20 @@ export default function SearchBar({
                   sx={{
                     p: 0,
                     '&:hover': {
-                      backgroundColor: 'transparent',
+                      backgroundColor: colorChips.background.f7f7f7,
                     },
                     cursor: 'pointer',
                   }}
                 >
-                  <Image
-                    src="/assets/images/x-icon/x-circle-36x36.svg"
-                    alt="지우기 아이콘"
-                    width={iconSize}
-                    height={iconSize}
+                  <CloseIcon
+                    sx={{
+                      width: closeIconSize,
+                      height: closeIconSize,
+                      color: colorChips.grayScale[200],
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
                   />
                 </IconButton>
               )}
@@ -96,7 +112,7 @@ export default function SearchBar({
               >
                 <Image
                   src="/assets/images/input-icon/search-36x36.svg"
-                  alt="검색 아이콘"
+                  alt="search"
                   width={iconSize}
                   height={iconSize}
                 />
@@ -106,9 +122,8 @@ export default function SearchBar({
         ),
         sx: {
           backgroundColor: isModal ? colorChips.background['fafafa'] : colorChips.background['f7f7f7'],
+          border: 'none',
           borderRadius: '16px',
-          p: isMd ? '14px 16px' : '14px 24px',
-          height: 48,
         },
       }}
       sx={inputStyle}
