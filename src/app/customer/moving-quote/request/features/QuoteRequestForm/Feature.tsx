@@ -5,7 +5,7 @@ import { RequestAreaFeature } from '../RequestArea/Feature';
 import { useCustomerRequestPost } from '../../core/hooks/useCustomerRequestPost';
 
 export const QuoteRequestFormFeature = () => {
-  const { params, updateParams } = useCustomerRequestPost();
+  const { params, updateParams, handleSubmit } = useCustomerRequestPost();
   const { moveType, moveDate, startAddress, endAddress } = params;
 
   // TODO: 단계별로 채팅하듯이 올라오는 애니메이션 추가
@@ -21,7 +21,12 @@ export const QuoteRequestFormFeature = () => {
     >
       <RequestTypeFeature moveType={moveType} updateParams={updateParams} />
       <RequestDateFeature moveDate={moveDate} updateParams={updateParams} />
-      <RequestAreaFeature startAddress={startAddress} endAddress={endAddress} updateParams={updateParams} />
+      <RequestAreaFeature
+        startAddress={startAddress}
+        endAddress={endAddress}
+        updateParams={updateParams}
+        handleSubmit={handleSubmit}
+      />
     </Stack>
   );
 };

@@ -3,51 +3,142 @@ import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
 import { CustomerRequestPayload } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
+import { EditButton } from '../../core/components/EditButton';
+import { SelectAddressButton } from './components/SelectAddressButton';
+import { useState } from 'react';
+import { SelectAddressModal } from './components/SelectAddressModal';
 
 interface RequestAreaFeatureProps {
   startAddress: string;
   endAddress: string;
   updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
+  handleSubmit: () => void;
 }
 
-// TODO: 주소 출/도착 입력 컴포넌트 만들기
-// 주소 api 담는거 일단은 스트링 통쨰로 보내고, 혹시 나중에 분리해서 받는게 필요해질수도있으니 일단 라이브러리 응답값 저장만 해두기로함.
-// 주소까지 하고 post 요청 보내보기
-
-export const RequestAreaFeature = ({ startAddress, endAddress, updateParams }: RequestAreaFeatureProps) => {
-  const { requestStep, decreaseStep } = useRequestStepStore();
+export const RequestAreaFeature = ({
+  startAddress,
+  endAddress,
+  updateParams,
+  handleSubmit,
+}: RequestAreaFeatureProps) => {
+  const [isStartModalOpen, setIsStartModalOpen] = useState(false);
+  const [isEndModalOpen, setIsEndModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { requestStep, decreaseStep, increaseStep } = useRequestStepStore();
 
   const areaQ = '이사 지역을 선택해주세요.';
 
-  // 주소 선택한 경우 각각 수정하기 버튼 보여주기
+  // 주소 선택완료한 경우 각각 수정하기 버튼 보여주기
   const hasStartAddress = startAddress.length > 0;
   const hasEndAddress = endAddress.length > 0;
 
-  // 주소 선택완료, 프로그레스 스텝 4인 경우(타입, 날짜, 주소 모두 선택완료 상태) 견적확정 버튼 보여주기
-  const showSubmitButton = hasStartAddress && hasEndAddress && requestStep === 4;
+  // 주소 선택완료, 프로그레스 스텝 5인 경우(타입, 날짜, 주소 모두 선택완료 상태) 견적확정 버튼 보여주기
+  const showSubmitButton = hasStartAddress && hasEndAddress && requestStep === 5;
+  const submitButtonDisabled = !hasStartAddress || !hasEndAddress || isEditing;
 
+  const handleChangeStartAddress = (address: string) => {
+    updateParams('startAddress', address);
+    increaseStep();
+  };
+  const handleChangeEndAddress = (address: string) => {
+    updateParams('endAddress', address);
+    increaseStep();
+  };
   const handleClickEdit = () => {
+    setIsEditing(true);
     decreaseStep();
+  };
+  const handleCloseEditModal = () => {
+    setIsEditing(false);
+    increaseStep(); // 수정 모달에서 그냥 취소하고 나온 경우 다시 스텝 +1
+  };
+  const handleCloseStartModal = () => {
+    if (isEditing) {
+      handleCloseEditModal();
+    }
+    setIsStartModalOpen(false);
+  };
+  const handleCloseEndModal = () => {
+    if (isEditing) {
+      handleCloseEditModal();
+    }
+    setIsEndModalOpen(false);
   };
 
   return (
-    <Stack
-      direction="column"
-      width="100%"
-      height="100%"
-      alignItems="flex-start"
-      justifyContent="center"
-      gap={{ xs: '8px', md: '24px' }}
-    >
-      <TextFieldChat text={areaQ} align="left" color="white" />
+    <>
+      <Stack
+        direction="column"
+        width="100%"
+        height="100%"
+        alignItems="flex-start"
+        justifyContent="center"
+        gap={{ xs: '8px', md: '24px' }}
+      >
+        <TextFieldChat text={areaQ} align="left" color="white" />
 
-      <Stack direction="row" width="100%" maxWidth="630px" justifyContent="flex-end">
-        <TextFieldChat isText={false} align="right" color="white">
-          {/* 주소 선택 */}
+        <Stack direction="row" width="100%" justifyContent="flex-end">
+          <TextFieldChat isText={false} align="right" color="white">
+            <Stack direction="column" width="100%" height="100%" gap="24px">
+              {/* 출발지 주소 선택 */}
+              <Stack sx={wrapperSx}>
+                <SelectAddressButton
+                  optionType="start"
+                  isSelected={hasStartAddress}
+                  selectedAddress={startAddress}
+                  onClick={() => setIsStartModalOpen(true)}
+                />
+                {hasStartAddress && <EditButton onClick={handleClickEdit} />}
+              </Stack>
 
-          {showSubmitButton && <SolidButton text="견적 확정하기" onClick={handleClickEdit} />}
-        </TextFieldChat>
+              {/* 도착지 주소 선택 */}
+              <Stack sx={wrapperSx}>
+                <SelectAddressButton
+                  optionType="end"
+                  isSelected={hasEndAddress}
+                  selectedAddress={endAddress}
+                  onClick={() => setIsEndModalOpen(true)}
+                />
+                {hasEndAddress && <EditButton onClick={handleClickEdit} />}
+              </Stack>
+            </Stack>
+
+            {/* 견적 확정 버튼 */}
+            {showSubmitButton && (
+              <SolidButton text="견적 확정하기" onClick={handleSubmit} disabled={submitButtonDisabled} />
+            )}
+          </TextFieldChat>
+        </Stack>
       </Stack>
-    </Stack>
+
+      {/* 출발지 선택 모달 */}
+      {isStartModalOpen && (
+        <SelectAddressModal
+          optionType="start"
+          isOpen={isStartModalOpen}
+          onChange={handleChangeStartAddress}
+          onClose={handleCloseStartModal}
+        />
+      )}
+
+      {/* 도착지 선택 모달 */}
+      {isEndModalOpen && (
+        <SelectAddressModal
+          optionType="end"
+          isOpen={isEndModalOpen}
+          onChange={handleChangeEndAddress}
+          onClose={handleCloseEndModal}
+        />
+      )}
+    </>
   );
+};
+
+const wrapperSx = {
+  flexDirection: 'column',
+  width: '100%',
+  height: '100%',
+  alignItems: 'flex-end',
+  justifyContent: 'flex-start',
+  gap: '8px',
 };

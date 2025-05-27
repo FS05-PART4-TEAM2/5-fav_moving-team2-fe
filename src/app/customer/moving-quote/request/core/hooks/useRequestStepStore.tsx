@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface RequestStepStore {
-  requestStep: 1 | 2 | 3 | 4;
+  requestStep: 1 | 2 | 3 | 4 | 5;
   increaseStep: () => void;
   decreaseStep: () => void;
 }
@@ -10,7 +10,7 @@ export const useRequestStepStore = create<RequestStepStore>()((set, get) => ({
   requestStep: 1,
   increaseStep: () =>
     set((state) => ({
-      requestStep: state.requestStep < 4 ? ((state.requestStep + 1) as typeof state.requestStep) : state.requestStep,
+      requestStep: state.requestStep < 5 ? ((state.requestStep + 1) as typeof state.requestStep) : state.requestStep,
     })),
   decreaseStep: () =>
     set((state) => ({
