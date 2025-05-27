@@ -20,8 +20,8 @@ export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatur
 
   // 컴포넌트 마운트 시 메시지들을 순차적으로 보여주기
   useEffect(() => {
-    const timer1 = setTimeout(() => setVisibleMessages(1), 300);
-    const timer2 = setTimeout(() => setVisibleMessages(2), 800);
+    const timer1 = setTimeout(() => setVisibleMessages(1), 50);
+    const timer2 = setTimeout(() => setVisibleMessages(2), 400);
 
     return () => {
       clearTimeout(timer1);
