@@ -24,6 +24,7 @@ import Card, { UserData } from '@/shared/components/Card/Card';
 import { UserCardData } from '@/shared/components/Card/CardPresets';
 import DatePicker from '@/shared/components/DatePicker/DatePicker';
 import { Dayjs } from 'dayjs';
+import SearchBar from '@/shared/components/Input/SearchBar';
 
 // Box는 div와 동일, Stack은 flex가 적용된 div입니다.
 // Typo, colorChips 아래와같이 사용하시면 됩니다.
@@ -205,7 +206,11 @@ const TabBarTest1 = () => {
       {/* <ProgressBar type="review" percentage={30} />
       </Stack> */}
       <Stack />
-      <DatePicker onSelect={handleDate} />
+      <Stack width="600px" gap="20px">
+        <SearchBar isModal={false} onSearch={(text) => console.log('검색:', text)} />
+        <SearchBar isModal={true} onSearch={(text) => console.log('모달 검색:', text)} />
+      </Stack>
+      {/* <DatePicker onSelect={handleDate} /> */}
     </Stack>
   );
 };
