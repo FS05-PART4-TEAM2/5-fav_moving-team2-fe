@@ -1,5 +1,6 @@
 import customAxios from '@/lib/customAxios';
-import { LoginPayload, SignupPayload } from '@/shared/types/types';
+import { GlobalResponse, LoginPayload, SignupPayload } from '@/shared/types/types';
+import { AxiosResponse } from 'axios';
 
 export async function OAuthLogin(provider: 'google' | 'kakao' | 'naver', userType: 'customer' | 'mover') {
   const res = await customAxios.get(`/api/auth/${provider}/${userType}/login`);
@@ -16,6 +17,8 @@ export async function signup(userType: 'customer' | 'mover', payload: SignupPayl
   return res.data;
 }
 
-export async function logout(): Promise<void> {
-  await customAxios.post('/api/auth/logout');
+type LogoutResponse = GlobalResponse & AxiosResponse;
+export async function logout(): Promise<LogoutResponse> {
+  const res = await customAxios.post('/api/auth/logout');
+  return res.data;
 }

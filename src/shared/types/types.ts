@@ -1,6 +1,13 @@
 export type UserType = 'customer' | 'mover' | 'temp';
 export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
-export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED'; // TODO: 여기 확인필요
+export type QuotationStatus = 'pending' | 'confirmed' | 'completed' | 'deleted';
+
+export interface GlobalResponse {
+  success: boolean;
+  message: string;
+  data: any;
+  errorCode: string;
+}
 
 export interface LoginPayload {
   email: string;
@@ -45,6 +52,7 @@ export interface AuthResponseCustomer {
   customer: CustomerUser;
 }
 
+// 일반유저 견적 요청
 export interface CustomerRequestPayload {
   moveType: MovingType | null;
   moveDate: string;
@@ -53,7 +61,8 @@ export interface CustomerRequestPayload {
   customerId: string;
 }
 
-export interface CustomerRequestResponseData {
+// 일반유저 견적 요청 응답
+export interface CustomerRequestResponseMessage {
   id: string;
   moveType: MovingType;
   moveDate: string;
@@ -62,7 +71,7 @@ export interface CustomerRequestResponseData {
   endAddress: string;
   status: QuotationStatus;
   customerId: string;
-  assignMover: string | null; // TODO: 여기 배열로 가는지 확인필요
+  assignMover: string[] | null;
   confirmedMoverId: string | null;
   createdAt: string;
   updatedAt: string;
@@ -72,9 +81,10 @@ export interface CustomerRequestResponseData {
 export interface CustomerRequestResponse {
   success: boolean;
   message: string;
-  data: CustomerRequestResponseData;
+  data: CustomerRequestResponseMessage;
 }
 
+// 도로명주소 검색 오픈API 응답
 export interface SearchAddressResponseCommon {
   errorMessage: string;
   countPerPage: string;
