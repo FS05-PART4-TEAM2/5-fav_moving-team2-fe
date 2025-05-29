@@ -37,7 +37,7 @@ export const HeaderProfile = ({
     onToggle();
     router.push(path);
   };
-  // TODO: 로그아웃 api 토큰 수정되면 다시 테스트해보기
+
   const handleClickLogout = async () => {
     const res = await logout();
     if (res.success) {
