@@ -66,7 +66,7 @@ export const HeaderProfile = ({
             cursor: 'pointer',
             borderRadius: '50%',
             objectFit: 'cover',
-            border: hasProfileImg ? `1.5px solid ${colorChips.black[400]}` : 'none',
+            border: hasProfileImg ? `2px solid ${colorChips.primary[400]}` : 'none',
           }}
           priority
         />

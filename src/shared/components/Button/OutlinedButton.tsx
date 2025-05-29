@@ -50,7 +50,8 @@ export const OutlinedButton = ({
         justifyContent: justifyContent,
         textTransform: 'none',
         '&:hover': {
-          backgroundColor: buttonType === 'default' ? colorChips.primary[50] : 'transparent',
+          backgroundColor: buttonType === 'default' ? colorChips.primary[100] : 'transparent',
+          boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)', // TODO :여기 Solid 버튼이랑 최대한 맞춰보기
         },
         '&:disabled': {
           backgroundColor: 'transparent',

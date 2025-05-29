@@ -1,6 +1,6 @@
 export type UserType = 'customer' | 'mover' | 'temp';
 export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
-export type QuotationStatus = 'pending' | 'confirmed' | 'completed' | 'deleted';
+export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'DELETED';
 
 export interface GlobalResponse {
   success: boolean;
@@ -125,4 +125,37 @@ export interface SearchAddressResponse {
     common: SearchAddressResponseCommon;
     juso: SearchAddressResponseJuso[];
   };
+}
+
+export interface OfferMover {
+  id: string;
+  profileImageUrl: string | null;
+  nickname: string;
+  likeCount: number;
+  isLiked: boolean;
+  totalRating: number;
+  reviewCounts: number;
+  intro: string;
+  career: number;
+  completedQuotationCount: number;
+}
+
+export interface Quotation {
+  id: string;
+  createdAt: string;
+  moveDate: string;
+  startAddress: string;
+  endAddress: string;
+}
+
+// 일반유저 내견적관리 응답 데이터
+export interface CustomerQuoteHistoryData {
+  id: string;
+  isAssigned: boolean; // 지정요청 여부
+  moveType: MovingType;
+  offerMover: OfferMover;
+  quotation: Quotation;
+  price: number | null;
+  isCompleted: boolean; // 견적 완료 여부
+  isConfirmedMover: boolean; // 유저가 확정한 견적 여부
 }

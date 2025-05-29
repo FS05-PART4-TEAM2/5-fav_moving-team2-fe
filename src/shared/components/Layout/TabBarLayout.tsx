@@ -118,6 +118,7 @@ const headerContainerSx = {
   zIndex: 99999,
   width: '100%',
   height: 'fit-content',
+  alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: colorChips.grayScale[50],
   borderBottom: `1px solid ${colorChips.line.f2f2f2}`,

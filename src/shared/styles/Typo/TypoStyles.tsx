@@ -8,6 +8,17 @@ interface TypoStyles {
 // 혹시 빠진게 있다면 여기에 추가하고 Typo.tsx TypoClassName 에도 추가해주세요
 // 만약 반응형으로 폰트 사이즈가 달라진다면 스타일에 미디어쿼리 적용할 수 있어요.
 export const typographyStyles: TypoStyles = {
+  text_B_18to24: {
+    fontFamily: 'pretendard',
+    fontSize: '24px',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    lineHeight: '32px',
+    '@media (max-width: 1200px)': {
+      fontSize: '18px',
+      lineHeight: '26px',
+    },
+  },
   text_SB_12to14: {
     fontFamily: 'pretendard',
     fontSize: '14px',
@@ -52,6 +63,17 @@ export const typographyStyles: TypoStyles = {
       lineHeight: '20px',
     },
   },
+  text_M_13to16: {
+    fontFamily: 'pretendard',
+    fontSize: '16px',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: '26px',
+    '@media (max-width: 1200px)': {
+      fontSize: '13px',
+      lineHeight: '22px',
+    },
+  },
   text_SB_14to18: {
     fontFamily: 'pretendard',
     fontSize: '18px',
@@ -68,6 +90,17 @@ export const typographyStyles: TypoStyles = {
     fontSize: '18px',
     fontStyle: 'normal',
     fontWeight: 500,
+    lineHeight: '26px',
+    '@media (max-width: 1200px)': {
+      fontSize: '14px',
+      lineHeight: '24px',
+    },
+  },
+  text_R_14to18: {
+    fontFamily: 'pretendard',
+    fontSize: '18px',
+    fontStyle: 'normal',
+    fontWeight: 400,
     lineHeight: '26px',
     '@media (max-width: 1200px)': {
       fontSize: '14px',

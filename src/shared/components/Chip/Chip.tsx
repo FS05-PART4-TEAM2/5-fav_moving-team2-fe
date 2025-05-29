@@ -6,7 +6,7 @@ import Image from 'next/image';
 export const Category = {
   small: {
     type: '소형이사',
-    src: './assets/images/chip-icon/box-20x20.svg',
+    src: '/assets/images/chip-icon/box-20x20.svg',
     alt: '소형 이사 아이콘',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
@@ -27,7 +27,7 @@ export const Category = {
   },
   home: {
     type: '가정이사',
-    src: './assets/images/chip-icon/home-20x20.svg',
+    src: '/assets/images/chip-icon/home-20x20.svg',
     alt: '가정 이사 아이콘',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
@@ -48,7 +48,7 @@ export const Category = {
   },
   office: {
     type: '사무실이사',
-    src: './assets/images/chip-icon/office-20x20.svg',
+    src: '/assets/images/chip-icon/office-20x20.svg',
     alt: '사무실 이사 아이콘',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
@@ -69,7 +69,7 @@ export const Category = {
   },
   select: {
     type: '지정 견적 요청',
-    src: './assets/images/chip-icon/file-20x20-red.svg',
+    src: '/assets/images/chip-icon/file-20x20-red.svg',
     alt: '지정 견적 아이콘',
     color: colorChips.secondary.red[200],
     bgColor: colorChips.secondary.red[100],
@@ -172,7 +172,6 @@ interface ChipProps {
 
 export default function Chip({ type, children, sx, onClick, ...props }: ChipProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const item = Category[type];
@@ -180,7 +179,7 @@ export default function Chip({ type, children, sx, onClick, ...props }: ChipProp
   const hasIcon = 'src' in item;
   const border = 'borderColor' in item ? `1px solid ${item.borderColor}` : 'none';
   const boxShadow = 'shadow' in item ? item.shadow : 'none';
-  const typoClass = isMobile && 'mobileClassName' in item ? item.mobileClassName : item.className;
+  const typoClass = isTablet && 'mobileClassName' in item ? item.mobileClassName : item.className;
 
   return (
     <MuiChip
@@ -192,11 +191,7 @@ export default function Chip({ type, children, sx, onClick, ...props }: ChipProp
           {hasIcon && (
             <Image src={item.src} alt={item.alt ?? ''} width={isTablet ? 20 : 24} height={isTablet ? 20 : 24} />
           )}
-          {hasIcon && isMobile ? null : typeof label === 'string' ? (
-            <Typo className={typoClass} content={label} />
-          ) : (
-            label
-          )}
+          {typeof label === 'string' ? <Typo className={typoClass} content={label} /> : label}
         </Stack>
       }
       sx={{
