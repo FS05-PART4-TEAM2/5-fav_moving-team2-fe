@@ -1,7 +1,13 @@
-// 사용하는 타입을 여기에 모아서 쓰는게 좋을 것 같아요(컴포넌트는 깔끔하게)
-
-// TODO: 이거 나중에 api 타입잡고 파일 추가되면 유저쪽에 가져가야할듯
 export type UserType = 'customer' | 'mover' | 'temp';
+export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
+export type QuotationStatus = 'pending' | 'confirmed' | 'completed' | 'deleted';
+
+export interface GlobalResponse {
+  success: boolean;
+  message: string;
+  data: any;
+  errorCode: string;
+}
 
 export interface LoginPayload {
   email: string;
@@ -44,4 +50,79 @@ export interface AuthResponseCustomer {
   accessToken: string;
   refreshToken: string;
   customer: CustomerUser;
+}
+
+// 일반유저 견적 요청
+export interface CustomerRequestPayload {
+  moveType: MovingType | null;
+  moveDate: string;
+  startAddress: string;
+  endAddress: string;
+  customerId: string;
+}
+
+// 일반유저 견적 요청 응답
+export interface CustomerRequestResponseMessage {
+  id: string;
+  moveType: MovingType;
+  moveDate: string;
+  price: number | null;
+  startAddress: string;
+  endAddress: string;
+  status: QuotationStatus;
+  customerId: string;
+  assignMover: string[] | null;
+  confirmedMoverId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface CustomerRequestResponse {
+  success: boolean;
+  message: string;
+  data: CustomerRequestResponseMessage;
+}
+
+// 도로명주소 검색 오픈API 응답
+export interface SearchAddressResponseCommon {
+  errorMessage: string;
+  countPerPage: string;
+  totalCount: string;
+  errorCode: string;
+  currentPage: string;
+}
+
+export interface SearchAddressResponseJuso {
+  roadAddr: string; // 전체도로명주소
+  jibunAddr: string; // 지번주소
+  zipNo: string; // 우편번호
+  siNm: string; // 시도명
+  sggNm: string; // 시군구명
+  rn: string; // 도로명
+  roadAddrPart1: string;
+  roadAddrPart2: string;
+  detBdNmList: string;
+  engAddr: string;
+  emdNm: string;
+  emdNo: string;
+  bdNm: string;
+  admCd: string;
+  udrtYn: string;
+  lnbrMnnm: string;
+  lnbrSlno: string;
+  buldMnnm: string;
+  bdKdcd: string;
+  liNm: string;
+  rnMgtSn: string;
+  mtYn: string;
+  bdMgtSn: string;
+  buldSlno: string;
+}
+
+export interface SearchAddressResponse {
+  results: {
+    common: SearchAddressResponseCommon;
+    juso: SearchAddressResponseJuso[];
+  };
 }
