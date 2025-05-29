@@ -20,6 +20,9 @@ export const NavMenuDrawer = ({ userType, isNavMenuOpen, onClose }: NavItemProps
 
   // 현재 보고있는 페이지 경로와 일치하는지 확인
   const isActiveRoute = (path: string) => {
+    if (pathname === '/') {
+      return true; // 랜딩페이지에서는 기본 black
+    }
     return pathname?.startsWith(path) || false;
   };
 

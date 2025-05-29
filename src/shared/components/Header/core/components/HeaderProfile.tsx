@@ -5,6 +5,8 @@ import { UserType } from '@/shared/types/types';
 import { Collapse, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { logout } from '@/shared/core/Auth/service';
+import useUserStore from '@/shared/store/useUserStore';
 
 interface HeaderProfileProps {
   isDesktop: boolean;
@@ -25,6 +27,7 @@ export const HeaderProfile = ({
   openDropdown,
   onToggle,
 }: HeaderProfileProps) => {
+  const { logout: clearUserStore } = useUserStore();
   const router = useRouter();
   const hasProfileImg = profileImgSrc !== null;
   const imgSrc = hasProfileImg ? profileImgSrc : '/assets/images/profile-icon/login-default-36x36.svg';
@@ -34,9 +37,15 @@ export const HeaderProfile = ({
     onToggle();
     router.push(path);
   };
-  const handleClickLogout = () => {
-    // TODO: 로그아웃 로직 붙이기
-    // handleLogout();
+  // TODO: 로그아웃 api 토큰 수정되면 다시 테스트해보기
+  const handleClickLogout = async () => {
+    const res = await logout();
+    if (res.success) {
+      router.push('/'); // 로그아웃 후 랜딩페이지로 이동
+      clearUserStore(); // 유저스토어 초기화
+    } else {
+      alert('다시 시도해주세요.');
+    }
     onToggle();
   };
 

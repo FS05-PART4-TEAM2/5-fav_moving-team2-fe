@@ -96,9 +96,12 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           if (!customer.isProfile) {
             router.push(PATH.customer.profile);
           } else if (!customer.hasQuotation) {
-            router.push(PATH.customer.myPage);
+            // 활성견적 x : 견적요청 페이지
+            router.push(PATH.customer.movingQuoteRequest);
+          } else {
+            // 활성견적 o : 내견적관리 페이지
+            router.push(PATH.customer.movingQuoteHistory);
           }
-          router.push(PATH.customer.movingQuoteRequest);
         }
         if (userType === 'mover') {
           const mover = res?.data?.mover;
