@@ -3,6 +3,7 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import theme from '@/shared/theme';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 interface MoveDataBaseProps {
   moveDate: string;
@@ -16,7 +17,7 @@ interface MoveDataBaseProps {
 export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBaseProps) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const formattedDate = (date: string): string => {
-    return dayjs(date).format('YYYY.MM.DD(dd)');
+    return dayjs(date).locale('ko').format('YYYY.MM.DD(dd)');
   };
 
   return (
