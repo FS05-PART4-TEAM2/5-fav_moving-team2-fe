@@ -48,7 +48,7 @@ export const mockList: CustomerQuoteHistoryData = {
 
 export const receivedQuoteList: CustomerQuoteHistoryData[] = [
   {
-    quotationId: '4f594741-6175-4ad14e-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
+    quotationId: '4f594741-6175-4adasd14e-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
     requestedAt: '2023-04-10T15:32:08.000Z', //견적 요청일
     moveType: 'SMALL_MOVE',
     moveDate: '2023-05-29T15:32:08.000Z', // 서비스 이용일
@@ -92,7 +92,7 @@ export const receivedQuoteList: CustomerQuoteHistoryData[] = [
     ],
   },
   {
-    quotationId: '4f594741-617asdfsdf5-414e-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
+    quotationId: '4f594741-617asdfsdfg5-414e-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
     requestedAt: '2025-01-29T15:32:08.000Z', //견적 요청일
     moveType: 'FAMILY_MOVE',
     moveDate: '2025-02-12T15:32:08.000Z', // 서비스 이용일
@@ -153,7 +153,7 @@ export const receivedQuoteList: CustomerQuoteHistoryData[] = [
     ],
   },
   {
-    quotationId: '4f594741adf-6175-4ad14easdf-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
+    quotationId: '4f594741adf-6175aasd-4ad14easdf-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
     requestedAt: '2024-08-15T15:32:08.000Z', //견적 요청일
     moveType: 'OFFICE_MOVE',
     moveDate: '2024-09-25T15:32:08.000Z', // 서비스 이용일
