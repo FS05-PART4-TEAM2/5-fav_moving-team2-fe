@@ -15,7 +15,7 @@ export default function ProfileFormPassword({ mode }: ProfileFormPasswordProps) 
 
   return (
     <>
-      <Stack gap={!isBaseInfo ? '' : isMd ? '20px' : '32px'}>
+      <Stack gap={isMd ? '20px' : '32px'}>
         <Stack component="section" spacing={2}>
           <Typo
             className={isMd ? 'text_SB_16' : 'text_SB_20'}
