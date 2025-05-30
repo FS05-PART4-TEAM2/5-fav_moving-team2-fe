@@ -41,5 +41,5 @@ const cardWrapperSx = {
   height: '100%',
   alignItems: 'center',
   justifyContent: 'flex-start',
-  gap: { xs: '8px', sm: '16px', md: '32px' },
+  gap: { xs: '0px', sm: '16px', md: '32px' },
 };

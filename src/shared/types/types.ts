@@ -127,64 +127,36 @@ export interface SearchAddressResponse {
   };
 }
 
-export interface OfferMover {
-  id: string;
-  profileImageUrl: string | null;
-  nickname: string;
-  likeCount: number;
-  isLiked: boolean;
-  totalRating: number;
-  reviewCounts: number;
-  intro: string;
-  career: number;
-  completedQuotationCount: number;
+// 일반유저 내견적관리 응답 데이터
+export interface CustomerQuoteHistoryData extends CustomerQuoteData {
+  offers: ReceivedOffers[];
 }
 
-export interface Quotation {
-  id: string;
-  createdAt: string;
-  moveDate: string;
+// 유저가 요청한 견적 정보
+export interface CustomerQuoteData {
+  quotationId: string; // 일반유저가 요청한 견적 id
+  requestedAt: string; //견적 요청일
+  moveType: MovingType;
+  moveDate: string; // 서비스 이용일
   startAddress: string;
   endAddress: string;
 }
 
-// 일반유저 내견적관리 - 대기중견적 데이터
-export interface CustomerPendingQutoeData {
-  id: string;
-  isAssigned: boolean; // 지정요청 여부
-  moveType: MovingType;
-  offerMover: OfferMover;
-  quotation: Quotation;
-  price: number | null;
-  isCompleted: boolean; // 견적 완료 여부
-  isConfirmedMover: boolean; // 유저가 확정한 견적 여부
-}
-
+// 기사가 보낸 견적 정보
 export interface ReceivedOffers {
   offerId: string; // 기사가 보낸 견적 id
   moverId: string; // 기사 id
+  moverNickname: string;
+  moverProfileImageUrl: string | null;
   isAssigned: boolean; // 지정견적요청 여부
   isConfirmedMover: boolean; // 유저가 확정한 견적 여부
+  isCompleted: boolean; // 서비스 이용 완료(이사날짜 지났는지) 여부
   price: number;
-  profileImageUrl: string | null;
-  nickname: string;
   likeCount: number;
   isLiked: boolean;
   totalRating: number;
   reviewCounts: number;
   intro: string;
   career: number;
-  completedQuotationCount: number;
-}
-
-// 일반유저 내견적관리 - 받았떤 견적 데이터
-export interface CustomerReceivedQuoteData {
-  quotationId: string; // 일반유저가 요청한 견적 id
-  isCompleted: boolean; // 서비스 이용 완료(이사날짜 지났는지) 여부
-  requestData: string; //견적 요청일
-  moveType: MovingType;
-  moveData: string; // 서비스 이용일
-  startAddress: string;
-  endAddress: string;
-  offers: ReceivedOffers[];
+  confirmedQuotationCount: number;
 }

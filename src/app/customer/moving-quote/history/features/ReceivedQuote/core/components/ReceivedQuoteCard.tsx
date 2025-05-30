@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
-import { CustomerReceivedQuoteData } from '@/shared/types/types';
+import { CustomerQuoteHistoryData } from '@/shared/types/types';
 
-export const ReceivedQuoteCard = ({ data }: { data: CustomerReceivedQuoteData }) => {
+export const ReceivedQuoteCard = ({ data }: { data: CustomerQuoteHistoryData }) => {
   return (
     <Stack sx={cardContainerSx}>
       <Stack sx={dataWrapperSx}>

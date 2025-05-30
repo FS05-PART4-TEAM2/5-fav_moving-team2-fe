@@ -4,12 +4,12 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import { useMediaQuery } from '@mui/material';
 interface MoverProfileBaseProps {
-  name: string;
+  nickname: string;
   profileImage: string | null;
   totalRating: number; // 총 평점
   reviewCounts: number; // 리뷰 개수
   career: number; // 경력
-  completedQuotationCount: number; // 확정 견적 개수
+  confirmedQuotationCount: number; // 확정 견적 개수
   likeCount: number; // 좋아요 개수
   isLiked: boolean; // 좋아요 여부
   likeColor?: 'black' | 'pink';
@@ -21,12 +21,12 @@ interface MoverProfileBaseProps {
  * @description 기사님 찾기, 기사님 상세, 대기중견적, 견적 상세, 받았던견적, 찜한기사님... 에서 사용
  */
 export function MoverProfileBase({
-  name,
+  nickname,
   profileImage,
   totalRating,
   reviewCounts,
   career,
-  completedQuotationCount,
+  confirmedQuotationCount,
   likeCount,
   isLiked,
   likeColor = 'black',
@@ -61,7 +61,7 @@ export function MoverProfileBase({
       <Stack width="100%" direction="column" gap="8px" alignItems="flex-start">
         {/* 닉네임 & 좋아요 */}
         <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
-          <Typo className="text_SB_14to18" content={`${name} 기사님`} color={colorChips.black[300]} />
+          <Typo className="text_SB_14to18" content={`${nickname} 기사님`} color={colorChips.black[300]} />
           <Stack direction="row" alignItems="center" gap={{ xs: '2px', md: '4px' }}>
             <Image src={likeIconSrc} alt="like" width={24} height={24} />
             <Typo content={likeCount.toString()} className="text_M_14to18" color={colorChips.primary[400]} />
@@ -100,7 +100,7 @@ export function MoverProfileBase({
           <Stack sx={borderRightSx} />
           {/* 확정 견적 개수 */}
           <Stack direction="row" gap={{ xs: '4px', md: '6px' }}>
-            <Typo content={`${completedQuotationCount}건`} className="text_M_13to16" color={colorChips.black[300]} />
+            <Typo content={`${confirmedQuotationCount}건`} className="text_M_13to16" color={colorChips.black[300]} />
             <Typo content="확정" className="text_M_13to16" color={colorChips.grayScale[300]} />
           </Stack>
         </Stack>

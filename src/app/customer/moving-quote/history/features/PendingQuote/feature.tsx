@@ -7,19 +7,21 @@ export const PendingQuoteFeature = () => {
   // TODO: 대기중 견적 api 연결하기
   //   const data = [];
   const data = mockList;
+  const hasOffers = data.offers.length > 0;
+  const offers = data.offers;
 
   return (
     <Stack sx={contentContainerSx}>
-      {data.length === 0 ? (
-        // 대기중 견적 데이터 없는 경우
-        <EmptyDataView type="pending" />
-      ) : (
+      {hasOffers ? (
         // 대기중 견적 데이터 있는 경우
         <Stack sx={cardGridSx}>
-          {data.map((item) => (
-            <PendingQuoteCard key={item.id} data={item} />
+          {offers.map((item) => (
+            <PendingQuoteCard key={item.offerId} customerQuoteData={data} receivedOffer={item} />
           ))}
         </Stack>
+      ) : (
+        // 대기중 견적 데이터 없는 경우
+        <EmptyDataView type="pending" />
       )}
     </Stack>
   );
@@ -33,10 +35,7 @@ const contentContainerSx = {
   direction: 'column',
   alignItems: 'center',
   justifyContent: 'flex-start',
-  py: {
-    xs: '32px',
-    md: '40px',
-  },
+  py: { xs: '32px', md: '40px' },
   px: '24px',
 };
 

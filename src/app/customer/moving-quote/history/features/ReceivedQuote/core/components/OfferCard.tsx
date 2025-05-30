@@ -22,12 +22,12 @@ export const OfferCard = ({ data, moveType }: OfferListProps) => {
   };
 
   const profileBaseProps = {
-    name: data.nickname,
-    profileImage: data.profileImageUrl,
+    nickname: data.moverNickname,
+    profileImage: data.moverProfileImageUrl,
     totalRating: data.totalRating,
     reviewCounts: data.reviewCounts,
     career: data.career,
-    completedQuotationCount: data.completedQuotationCount,
+    confirmedQuotationCount: data.confirmedQuotationCount,
     likeCount: data.likeCount,
     isLiked: data.isLiked,
     likeColor: 'pink' as const,

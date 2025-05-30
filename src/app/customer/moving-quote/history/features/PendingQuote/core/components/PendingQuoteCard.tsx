@@ -1,4 +1,4 @@
-import { CustomerPendingQutoeData } from '@/shared/types/types';
+import { CustomerQuoteData, ReceivedOffers } from '@/shared/types/types';
 import { Stack } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
@@ -9,35 +9,45 @@ import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import Chip from '@/shared/components/Chip/Chip';
 import { useRouter } from 'next/navigation';
 
-export const PendingQuoteCard = ({ data }: { data: CustomerPendingQutoeData }) => {
+interface PendingQuoteCardProps {
+  customerQuoteData: CustomerQuoteData;
+  receivedOffer: ReceivedOffers;
+}
+
+export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQuoteCardProps) => {
   const router = useRouter();
 
-  const formattedPrice = `${data.price?.toLocaleString() ?? '0'}원`;
-  const chipMoveType = data.moveType === 'SMALL_MOVE' ? 'small' : data.moveType === 'FAMILY_MOVE' ? 'home' : 'office';
+  const formattedPrice = `${receivedOffer.price?.toLocaleString() ?? '0'}원`;
+  const chipMoveType =
+    customerQuoteData.moveType === 'SMALL_MOVE'
+      ? 'small'
+      : customerQuoteData.moveType === 'FAMILY_MOVE'
+      ? 'home'
+      : 'office';
 
   const handleClickConfirm = () => {
     // TODO: api 연결하기
     console.log('견적 확정하기');
   };
   const handleClickDetail = () => {
-    router.push(`/customer/moving-quote/history/${data.id}`);
+    router.push(`/customer/moving-quote/history/${customerQuoteData.quotationId}`);
   };
 
   const profileBaseProps = {
-    name: data.offerMover.nickname,
-    profileImage: data.offerMover.profileImageUrl,
-    totalRating: data.offerMover.totalRating,
-    reviewCounts: data.offerMover.reviewCounts,
-    career: data.offerMover.career,
-    completedQuotationCount: data.offerMover.completedQuotationCount,
-    likeCount: data.offerMover.likeCount,
-    isLiked: data.offerMover.isLiked,
+    nickname: receivedOffer.moverNickname,
+    profileImage: receivedOffer.moverProfileImageUrl,
+    totalRating: receivedOffer.totalRating,
+    reviewCounts: receivedOffer.reviewCounts,
+    career: receivedOffer.career,
+    confirmedQuotationCount: receivedOffer.confirmedQuotationCount,
+    likeCount: receivedOffer.likeCount,
+    isLiked: receivedOffer.isLiked,
     likeColor: 'pink' as const,
   };
   const moveDataBaseProps = {
-    moveDate: data.quotation.moveDate,
-    startAddress: data.quotation.startAddress,
-    endAddress: data.quotation.endAddress,
+    moveDate: customerQuoteData.moveDate,
+    startAddress: customerQuoteData.startAddress,
+    endAddress: customerQuoteData.endAddress,
   };
 
   return (
@@ -47,7 +57,7 @@ export const PendingQuoteCard = ({ data }: { data: CustomerPendingQutoeData }) =
           <Chip type="wait" />
           <Chip type={chipMoveType} />
           {/* 지정요청일 경우 */}
-          {data.isAssigned && <Chip type="select" />}
+          {receivedOffer.isAssigned && <Chip type="select" />}
         </Stack>
         <MoverProfileBase {...profileBaseProps} />
         <MoveDataBase {...moveDataBaseProps} />
