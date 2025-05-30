@@ -144,6 +144,6 @@ const contentContainerSx = {
   width: '100%',
   maxWidth: '1448px',
   margin: '0 auto',
-  padding: '0 24px',
+  // padding: '0 24px',
   overflowY: 'scroll',
 };

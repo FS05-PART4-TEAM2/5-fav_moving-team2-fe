@@ -1,13 +1,12 @@
 import { Stack } from '@mui/material';
-import { colorChips } from '@/shared/styles/colorChips';
-import { Typo } from '@/shared/styles/Typo/Typo';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
-import { mockList } from '../../core/constants';
+import { receivedQuoteList } from '../../core/constants';
+import { ReceivedQuoteCard } from './core/components/ReceivedQuoteCard';
 
 export const ReceivedQuoteFeature = () => {
   // TODO: 받았던 견적 api 연결하기
   // const data = [];
-  const data = mockList;
+  const data = receivedQuoteList;
 
   return (
     <Stack sx={contentContainerSx}>
@@ -16,7 +15,11 @@ export const ReceivedQuoteFeature = () => {
         <EmptyDataView type="received" />
       ) : (
         // 받았던 견적 데이터 있는 경우
-        <Typo content="받았던 견적" className="text_M_16" color={colorChips.black[400]} />
+        <Stack sx={cardWrapperSx}>
+          {data.map((item) => (
+            <ReceivedQuoteCard key={item.quotationId} data={item} />
+          ))}
+        </Stack>
       )}
     </Stack>
   );
@@ -30,4 +33,13 @@ const contentContainerSx = {
   direction: 'column',
   alignItems: 'center',
   justifyContent: 'flex-start',
+};
+
+const cardWrapperSx = {
+  flexDirection: 'column',
+  width: '100%',
+  height: '100%',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  gap: { xs: '8px', sm: '16px', md: '32px' },
 };

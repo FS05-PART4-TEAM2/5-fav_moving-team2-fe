@@ -1,4 +1,4 @@
-import { CustomerQuoteHistoryData } from '@/shared/types/types';
+import { CustomerPendingQutoeData } from '@/shared/types/types';
 import { Stack } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
@@ -9,7 +9,7 @@ import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import Chip from '@/shared/components/Chip/Chip';
 import { useRouter } from 'next/navigation';
 
-export const PendingQuoteCard = ({ data }: { data: CustomerQuoteHistoryData }) => {
+export const PendingQuoteCard = ({ data }: { data: CustomerPendingQutoeData }) => {
   const router = useRouter();
 
   const formattedPrice = `${data.price?.toLocaleString() ?? '0'}원`;

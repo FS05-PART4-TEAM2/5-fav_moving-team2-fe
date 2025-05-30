@@ -37,7 +37,7 @@ const contentContainerSx = {
     xs: '32px',
     md: '40px',
   },
-  px: '2px',
+  px: '24px',
 };
 
 const cardGridSx = {

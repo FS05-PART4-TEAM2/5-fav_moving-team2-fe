@@ -5,11 +5,12 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack } from '@mui/material';
 import { useTabBarType } from '@/shared/context/TabBarProvider';
 
+// 최상위 stack에 paddingX="24px" 넣기
 export default function CustomerReviewPage() {
   const { tabBarType } = useTabBarType();
 
   return (
-    <Stack justifyContent="center" alignItems="center" gap="20px" padding="20px" height="100%">
+    <Stack justifyContent="center" alignItems="center" gap="20px" paddingX="24px" height="100%">
       <Stack
         direction="column"
         width="100%"
