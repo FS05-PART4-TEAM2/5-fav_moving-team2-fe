@@ -36,6 +36,8 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
     headers: headers as Record<string, string>,
     body: ['GET', 'HEAD'].includes(method!.toUpperCase())
       ? undefined
+      : data instanceof FormData
+      ? data
       : typeof data === 'string'
       ? data
       : JSON.stringify(data),
@@ -60,9 +62,6 @@ const customAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || '',
   withCredentials: true,
   adapter: fetchAdapter,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 customAxios.interceptors.request.use((config) => {
@@ -71,6 +70,10 @@ customAxios.interceptors.request.use((config) => {
     if (token && config.headers && typeof config.headers.set === 'function') {
       config.headers.set('Authorization', `Bearer ${token}`);
     }
+  }
+  const isFormData = config.data instanceof FormData;
+  if (!isFormData && config.headers && typeof config.headers.set === 'function') {
+    config.headers.set('Content-Type', 'application/json');
   }
   return config;
 });

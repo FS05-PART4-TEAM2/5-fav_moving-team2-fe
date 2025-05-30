@@ -52,6 +52,44 @@ export interface AuthResponseCustomer {
   customer: CustomerUser;
 }
 
+// UI 전용
+export interface FormUIFields {
+  region: string[];
+  service: string[];
+  profileImage?: File;
+}
+
+// customer 프로필 타입
+export interface CustomerProfileForm extends FormUIFields {
+  profileImage?: File;
+  username?: string;
+  currPassword?: string;
+  newPassword?: string;
+  phoneNumber: string;
+  wantService: string[];
+  livingPlace: string[];
+}
+
+// mover 프로필 타입 (기본정보 수정 제외)
+export interface MoverProfileForm extends FormUIFields {
+  profileImage?: File;
+  nickname: string;
+  career: string;
+  intro: string;
+  detailDescription: string;
+  serviceList: string[];
+  serviceArea: string[];
+}
+
+// mover 기본정보 수정 타입
+export interface MoverBaseInfoForm {
+  username: string;
+  email: string;
+  phoneNumber: string;
+  currPassword?: string;
+  newPassword?: string;
+}
+
 // 일반유저 견적 요청
 export interface CustomerRequestPayload {
   moveType: MovingType | null;

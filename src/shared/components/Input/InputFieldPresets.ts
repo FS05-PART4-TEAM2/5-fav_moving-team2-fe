@@ -4,9 +4,10 @@ import { RegisterOptions } from 'react-hook-form';
 // Preset 종류
 export type PresetFieldName =
   | 'username'
-  | 'present'
+  | 'nickname'
+  | 'career'
   | 'intro'
-  | 'description'
+  | 'detailDescription'
   | 'email'
   | 'phoneNumber'
   | 'password'
@@ -32,8 +33,6 @@ const validatePasswordConfirm = (value: string, getPassword: () => string): true
   return value === getPassword() || '비밀번호가 일치하지 않습니다';
 };
 
-// 기사님 프로필에 별명에서 갑자기 이름으로 바뀜 이부분 고려해서 별명 필요시 nickname프리셋 추가
-//  상세 후기, 현재 비번, 새 비번
 export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
   username: {
     placeholder: '성함을 입력해 주세요',
@@ -56,7 +55,28 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
       },
     },
   },
-  present: {
+  nickname: {
+    placeholder: '사이트에 노출될 이름을 입력해 주세요',
+    type: 'text',
+    autoComplete: 'name',
+    defaultValue: '',
+    rules: {
+      required: '사이트에 노출될 이름을 입력해 주세요',
+      minLength: {
+        value: 2,
+        message: '이름은 최소 2자 이상이어야 합니다',
+      },
+      maxLength: {
+        value: 20,
+        message: '이름은 20자 이하로 입력해주세요',
+      },
+      pattern: {
+        value: /^[가-힣a-zA-Z0-9 _\-!@#$%^&*()]{2,20}$/,
+        message: '한글, 영문, 숫자, 공백 및 일부 특수문자만 허용됩니다',
+      },
+    },
+  },
+  career: {
     placeholder: '기사님의 경력을 입력해 주세요',
     type: 'text',
     autoComplete: 'off',
@@ -86,7 +106,7 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
       },
     },
   },
-  description: {
+  detailDescription: {
     placeholder: '상세 설명을 입력해 주세요',
     type: 'text',
     autoComplete: 'off',

@@ -9,7 +9,7 @@ import theme from '@/shared/theme';
 export const UserData = {
   name: '김코드',
   service: ['견적 대기', '소형이사', '지정 견적 요청'],
-  description: '누구보다 빠르게 안전 운송합니다!',
+  detailDescription: '누구보다 빠르게 안전 운송합니다!',
   likeCount: 7942,
   userProfileImage: '/assets/images/profile-icon/avatartion-yellow-01.svg', // 70x64
   review: {
@@ -17,7 +17,7 @@ export const UserData = {
     reviewer: 172,
     averageScore: 4.3,
   },
-  present: 10,
+  career: 10,
   confirmation: 216,
   moveDay: '2025-05-20',
   startPoint: '고양시 덕양구',
@@ -77,7 +77,7 @@ export default function Card({ type, data }: CardProps) {
           <CardHeader
             type={type}
             services={UserData.service}
-            description={UserData.description}
+            detailDescription={UserData.detailDescription}
             name="김코드"
             data={data}
           />

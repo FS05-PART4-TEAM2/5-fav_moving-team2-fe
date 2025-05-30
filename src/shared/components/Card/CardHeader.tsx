@@ -17,7 +17,7 @@ interface CardHeaderProps {
   services: string[];
   moveDay?: string;
   name?: string;
-  description?: string;
+  detailDescription?: string;
   data: UserCardData;
 }
 
@@ -29,7 +29,7 @@ const labelToCategoryKey: Record<string, CategoryKey> = {
   '견적 대기': 'wait',
 };
 
-export default function CardHeader({ type, services, moveDay, description, name, data }: CardHeaderProps) {
+export default function CardHeader({ type, services, moveDay, detailDescription, name, data }: CardHeaderProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isLarge = useMediaQuery(theme.breakpoints.up('md'));
   const router = useRouter();
@@ -59,7 +59,7 @@ export default function CardHeader({ type, services, moveDay, description, name,
   return (
     <Stack direction="column" justifyContent="space-between" sx={{ gap: { sm: '14px', md: '16px' } }}>
       <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' } }}>
-        {description && type !== 'profile' && type !== 'review' ? (
+        {detailDescription && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
               {services.map((label, idx) => {
@@ -96,7 +96,7 @@ export default function CardHeader({ type, services, moveDay, description, name,
               <Stack direction="column" flexWrap="nowrap" sx={{ gap: { xs: '2px', md: '12px' } }}>
                 <Typo className={profileNameText}>{name}</Typo>
                 <Typo className={profileDescriptionText} sx={{ color: colorChips.grayScale[400], textWrap: 'nowrap' }}>
-                  {description}
+                  {detailDescription}
                 </Typo>
               </Stack>
             )}
@@ -125,7 +125,7 @@ export default function CardHeader({ type, services, moveDay, description, name,
         )}
       </Stack>
 
-      {description && ExcludeDescription ? <Typo className={descriptionText}>{description}</Typo> : ''}
+      {detailDescription && ExcludeDescription ? <Typo className={descriptionText}>{detailDescription}</Typo> : ''}
     </Stack>
   );
 }
