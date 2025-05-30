@@ -41,6 +41,28 @@ export const typographyStyles: TypoStyles = {
       lineHeight: '24px',
     },
   },
+  text_R_14to20: {
+    fontFamily: 'pretendard',
+    fontSize: '20px',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: '32px',
+    '@media (max-width: 1200px)': {
+      fontSize: '14px',
+      lineHeight: '24px',
+    },
+  },
+  text_SB_14to20: {
+    fontFamily: 'pretendard',
+    fontSize: '20px',
+    fontStyle: 'normal',
+    fontWeight: 600,
+    lineHeight: '32px',
+    '@media (max-width: 1200px)': {
+      fontSize: '14px',
+      lineHeight: '24px',
+    },
+  },
   text_SB_16to20: {
     fontFamily: 'pretendard',
     fontSize: '20px',

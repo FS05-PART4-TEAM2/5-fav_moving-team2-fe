@@ -8,7 +8,7 @@ import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import Chip from '@/shared/components/Chip/Chip';
 import { useRouter } from 'next/navigation';
-
+import { formattedPrice } from '@/shared/utils/dataFormatter';
 interface PendingQuoteCardProps {
   customerQuoteData: CustomerQuoteData;
   receivedOffer: ReceivedOffers;
@@ -17,7 +17,6 @@ interface PendingQuoteCardProps {
 export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQuoteCardProps) => {
   const router = useRouter();
 
-  const formattedPrice = `${receivedOffer.price?.toLocaleString() ?? '0'}원`;
   const chipMoveType =
     customerQuoteData.moveType === 'SMALL_MOVE'
       ? 'small'
@@ -64,7 +63,7 @@ export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQu
       </Stack>
       <Stack sx={priceWrapperSx}>
         <Typo content="견적 금액" className="text_M_14to18" color={colorChips.black[400]} />
-        <Typo content={formattedPrice} className="text_B_18to24" color={colorChips.black[400]} />
+        <Typo content={formattedPrice(receivedOffer.price)} className="text_B_18to24" color={colorChips.black[400]} />
       </Stack>
       <Stack sx={buttonWrapperSx}>
         <SolidButton text="견적 확정하기" onClick={handleClickConfirm} buttonSize="xs" borderRadius="8px" />
@@ -78,6 +77,7 @@ const cardContainerSx = {
   flexDirection: 'column',
   width: '100%',
   height: '100%',
+  backgroundColor: colorChips.grayScale[50],
   border: `0.5px solid ${colorChips.line.f2f2f2}`,
   borderRadius: '16px',
   padding: { xs: '22px 12px 16px', md: '28px 24px 22px' },

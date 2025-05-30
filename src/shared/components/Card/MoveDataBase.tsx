@@ -2,8 +2,7 @@ import { Stack, useMediaQuery } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import theme from '@/shared/theme';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+import { formatToFullDateWithDay } from '@/shared/utils/dataFormatter';
 
 interface MoveDataBaseProps {
   moveDate: string;
@@ -16,9 +15,6 @@ interface MoveDataBaseProps {
  */
 export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBaseProps) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const formattedDate = (date: string): string => {
-    return dayjs(date).locale('ko').format('YYYY.MM.DD(dd)');
-  };
 
   return (
     <Stack
@@ -33,7 +29,7 @@ export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBas
           <Stack sx={chipSx}>
             <Typo content="이사일" className="text_R_14to18" color={colorChips.grayScale[500]} />
           </Stack>
-          <Typo content={formattedDate(moveDate)} className="text_M_14to18" color={colorChips.black[300]} />
+          <Typo content={formatToFullDateWithDay(moveDate)} className="text_M_14to18" color={colorChips.black[300]} />
         </Stack>
         {isDesktop && <Stack sx={borderRightSx} />}
       </Stack>

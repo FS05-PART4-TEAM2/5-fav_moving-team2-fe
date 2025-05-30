@@ -5,6 +5,7 @@ import { MoverProfileBase } from '@/shared/components/Card/MoverProfileBase';
 import Chip from '@/shared/components/Chip/Chip';
 import { useRouter } from 'next/navigation';
 import { ReceivedOffers, MovingType } from '@/shared/types/types';
+import { formattedPrice } from '@/shared/utils/dataFormatter';
 
 interface OfferListProps {
   data: ReceivedOffers;
@@ -14,7 +15,6 @@ interface OfferListProps {
 export const OfferCard = ({ data, moveType }: OfferListProps) => {
   const router = useRouter();
 
-  const formattedPrice = `${data.price?.toLocaleString() ?? '0'}원`;
   const chipMoveType = moveType === 'SMALL_MOVE' ? 'small' : moveType === 'FAMILY_MOVE' ? 'home' : 'office';
 
   const handleClickDetail = () => {
@@ -36,16 +36,17 @@ export const OfferCard = ({ data, moveType }: OfferListProps) => {
   return (
     <Stack sx={cardContainerSx} onClick={handleClickDetail}>
       <Stack sx={chipWrapperSx}>
-        {/* 확정견적인 경우 - TODO: 뷰 확인필요 */}
-        {data.isConfirmedMover && <Chip type="select">확정 견적</Chip>}
+        {/* 확정견적인 경우 */}
+        {data.isConfirmedMover && <Chip type="confirmed" />}
         <Chip type={chipMoveType} />
         {/* 지정요청일 경우 */}
         {data.isAssigned && <Chip type="select" />}
       </Stack>
+      <Typo content={data.intro} className="text_SB_14to20" color={colorChips.black[300]} />
       <MoverProfileBase {...profileBaseProps} />
       <Stack sx={priceWrapperSx}>
         <Typo content="견적 금액" className="text_M_14to18" color={colorChips.black[400]} />
-        <Typo content={formattedPrice} className="text_B_18to24" color={colorChips.black[400]} />
+        <Typo content={formattedPrice(data.price)} className="text_B_18to24" color={colorChips.black[400]} />
       </Stack>
     </Stack>
   );
