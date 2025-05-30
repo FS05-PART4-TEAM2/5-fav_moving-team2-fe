@@ -15,8 +15,8 @@ export const ToastPopup = ({ isOpen, onClose, message }: ToastPopupProps) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const toastIcon = isDesktop
-    ? './assets/images/info-icon/info-24x24-blue.svg'
-    : './assets/images/info-icon/info-16x16-blue.svg';
+    ? '/assets/images/info-icon/info-24x24-blue.svg'
+    : '/assets/images/info-icon/info-16x16-blue.svg';
   const toastIconSize = isDesktop ? 24 : 16;
   const toastMsgSize = isDesktop ? 'text_SB_16' : 'text_SB_13';
   const [show, setShow] = useState(false);

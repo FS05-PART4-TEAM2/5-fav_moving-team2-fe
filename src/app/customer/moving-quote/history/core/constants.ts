@@ -1,5 +1,33 @@
 import { CustomerQuoteHistoryData } from '@/shared/types/types';
 
+export const mockDetail: CustomerQuoteHistoryData = {
+  quotationId: '4f594741-6175-4ad14e-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
+  requestedAt: '2025-05-29T15:32:08.000Z', //견적 요청일
+  moveType: 'SMALL_MOVE',
+  moveDate: '2025-05-29T15:32:08.000Z', // 서비스 이용일
+  startAddress: '서울시 중구', // 출발지
+  endAddress: '경기도 수원시', // 도착지
+  offers: [
+    {
+      offerId: '4f594741adfdf-6175-414e-8ed6-0a607ca6909a', // 기사가 보낸 견적 id
+      moverId: 'b293525a-26c8asdf-48ff-b3ea-f5fd35a77818', // 기사 id
+      isAssigned: true, // 지정견적요청 여부
+      isConfirmedMover: false, // 유저가 확정한 견적 여부
+      isCompleted: false, // 서비스 이용 완료(이사날짜 지났는지) 여부
+      price: 1800000,
+      moverProfileImageUrl: '/assets/images/profile-icon/avatartion-blue-02.svg',
+      moverNickname: 'syga',
+      likeCount: 10,
+      isLiked: true,
+      totalRating: 5,
+      reviewCounts: 22,
+      intro: '친절하게 :)',
+      career: 10,
+      confirmedQuotationCount: 16,
+    },
+  ],
+};
+
 export const mockList: CustomerQuoteHistoryData = {
   quotationId: '4f594741-6175-4ad14e-8ed6-0a607ca6909a', // 일반유저가 요청한 견적 id
 
