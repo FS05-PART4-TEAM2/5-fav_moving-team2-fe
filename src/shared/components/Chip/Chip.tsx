@@ -124,7 +124,7 @@ export const Category = {
   },
   moveType: {
     type: '지역',
-    radius: '16px',
+    radius: '100px',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
     borderColor: colorChips.primary[300],
@@ -142,7 +142,7 @@ export const Category = {
   },
   region: {
     type: '지역',
-    radius: '16px',
+    radius: '100px',
     color: colorChips.primary[400],
     bgColor: colorChips.background['fafafa'],
     borderColor: colorChips.grayScale[100],

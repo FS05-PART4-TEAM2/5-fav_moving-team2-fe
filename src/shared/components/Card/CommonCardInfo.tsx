@@ -133,7 +133,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                         paddingRight: isMdDown ? '8px' : '16px',
                       }}
                     >
-                      {UserData.present}년
+                      {UserData.career}년
                     </Typo>
                   </Stack>
                   <Stack direction="row" gap="6px" sx={{ textWrap: 'nowrap' }}>
