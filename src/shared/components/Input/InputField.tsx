@@ -9,6 +9,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { fieldPresets, PresetFieldName, presetValidators } from './InputFieldPresets';
 import { SxProps, Theme } from '@mui/material';
+import { colorChips } from '@/shared/styles/colorChips';
 
 type InputFieldProps<T extends FieldValues> = {
   name: Path<T> & PresetFieldName;
@@ -54,6 +55,9 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
           autoComplete={preset.autoComplete}
           error={!!fieldState.error}
           helperText={fieldState.error?.message}
+          multiline={name === 'detailDescription'}
+          minRows={name === 'detailDescription' ? 6 : undefined}
+          maxRows={name === 'detailDescription' ? 12 : undefined}
           InputProps={{
             ...override?.InputProps,
             endAdornment: isPasswordField ? (
@@ -75,11 +79,44 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 fontSize: '16px',
                 lineHeight: '26px',
                 backgroundColor: override.backgroundColor ?? 'white',
+                ...(name === 'detailDescription' && {
+                  height: '160px',
+                  alignItems: 'start',
+                }),
                 [theme.breakpoints.up('md')]: {
                   fontSize: '20px',
                   lineHeight: '32px',
                 },
               },
+              '& .MuiInputBase-inputMultiline':
+                name === 'detailDescription'
+                  ? {
+                      overflowY: 'auto',
+                      height: '100% !important',
+                      boxSizing: 'border-box',
+                      fontFamily: 'pretendard',
+                      fontSize: '16px',
+                      lineHeight: '26px',
+                      [theme.breakpoints.up('md')]: {
+                        fontSize: '20px',
+                        lineHeight: '32px',
+                      },
+
+                      '&::-webkit-scrollbar': {
+                        width: '6px',
+                      },
+                      '&::-webkit-scrollbar-track': {
+                        backgroundColor: 'transparent',
+                      },
+                      '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: colorChips.grayScale[300],
+                        borderRadius: '3px',
+                      },
+
+                      scrollbarWidth: 'thin',
+                      scrollbarColor: `${colorChips.grayScale[300]}, transparent`,
+                    }
+                  : {},
               '& .MuiFormHelperText-root': {
                 textAlign: 'right',
                 marginLeft: 0,

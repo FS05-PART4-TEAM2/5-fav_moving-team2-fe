@@ -18,7 +18,7 @@ export type PresetCardName =
 export interface UserCardData {
   name?: string;
   service?: string[];
-  description?: string;
+  detailDescription?: string;
   likeCount?: number;
   userProfileImage?: string;
   review?: {
@@ -26,7 +26,7 @@ export interface UserCardData {
     reviewer?: number;
     averageScore?: number;
   };
-  present?: number;
+  career?: number;
   confirmation?: number;
   moveDay?: string;
   startPoint?: string;

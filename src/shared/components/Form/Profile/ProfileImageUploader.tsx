@@ -37,7 +37,7 @@ export default function ProfileImageUploader() {
 
       <Typo
         className="text_M_13"
-        sx={{ color: errors.profileImage ? 'error.main' : '#7C7C7C' }}
+        style={{ color: errors.profileImage ? 'error.main' : colorChips.grayScale[400], textWrap: 'nowrap' }}
         content={
           typeof errors.profileImage?.message === 'string'
             ? `* ${errors.profileImage.message}`

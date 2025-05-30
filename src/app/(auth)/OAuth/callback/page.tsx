@@ -19,7 +19,7 @@ export default function OAuthCallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // TODO: 유저 정보 저장하는 로직
+    // TODO: 유저 정보 저장하는 로직 & 일반 로그인 처럼 로직 구현
     const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
     localStorage.removeItem('redirectAfterLogin');
     router.replace(redirectPath);

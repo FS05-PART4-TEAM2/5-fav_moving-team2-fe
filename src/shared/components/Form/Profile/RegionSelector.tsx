@@ -28,14 +28,14 @@ export default function RegionSelector({ userType }: RegionSelectorProps) {
       : '* 내가 사는 지역은 수정 기능에서 변경할 수 있습니다';
 
   return (
-    <Stack component="section" spacing={1} pt={isMd ? '20px' : '32px'}>
+    <Stack component="section" spacing={1}>
       <Stack direction="row" gap="4px">
         <Typo className={isMd ? 'text_SB_16' : 'text_SB_20'} style={{ color: colorChips.black[300] }} content={title} />
         <Typo className={isMd ? 'text_SB_16' : 'text_SB_20'} style={{ color: colorChips.primary[300] }} content="*" />
       </Stack>
       <Typo
         className={isMd ? 'text_M_13' : 'text_M_16'}
-        sx={{ color: errors.region ? 'error.main' : '#7C7C7C' }}
+        style={{ color: errors.region ? 'error.main' : colorChips.grayScale[400], textWrap: 'nowrap' }}
         content={helperText}
       />
 

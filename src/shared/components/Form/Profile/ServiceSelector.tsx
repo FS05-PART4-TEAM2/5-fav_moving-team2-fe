@@ -26,15 +26,7 @@ export default function ServiceSelector({ userType }: ServiceSelectorProps) {
     typeof errors.service?.message === 'string' ? `* ${errors.service.message}` : '* 이용할 서비스를 선택해 주세요';
 
   return (
-    <Stack
-      component="section"
-      spacing={1}
-      py={isMd ? '20px' : '32px'}
-      sx={{
-        borderTop: `1px solid ${colorChips.line['f2f2f2']}`,
-        borderBottom: `1px solid ${colorChips.line['f2f2f2']}`,
-      }}
-    >
+    <Stack component="section" spacing={1}>
       <Stack direction="row" gap="4px">
         <Typo className={isMd ? 'text_SB_16' : 'text_SB_20'} style={{ color: colorChips.black[300] }} content={title} />
         <Typo className={isMd ? 'text_SB_16' : 'text_SB_20'} style={{ color: colorChips.primary[300] }} content="*" />
@@ -42,7 +34,7 @@ export default function ServiceSelector({ userType }: ServiceSelectorProps) {
 
       <Typo
         className={isMd ? 'text_M_13' : 'text_M_16'}
-        sx={{ color: errors.service ? 'error.main' : '#7C7C7C' }}
+        style={{ color: errors.service ? 'error.main' : colorChips.grayScale[400], textWrap: 'nowrap' }}
         content={helperText}
       />
 
