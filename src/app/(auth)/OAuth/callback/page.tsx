@@ -5,8 +5,11 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { CircularProgress } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { keyframes } from '@emotion/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import useUserStore from '@/shared/store/useUserStore';
+import { PATH } from '@/shared/constants';
+import { OAuthProfile } from '@/shared/core/Auth/service';
 
 const blink = keyframes`
   0%   { opacity: 0; }
@@ -16,14 +19,86 @@ const blink = keyframes`
 `;
 
 export default function OAuthCallbackPage() {
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const { setUserInfo, setCustomerData, setMoverData } = useUserStore();
 
   useEffect(() => {
-    // TODO: 유저 정보 저장하는 로직 & 일반 로그인 처럼 로직 구현
-    const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
-    localStorage.removeItem('redirectAfterLogin');
-    router.replace(redirectPath);
-  }, [router]);
+    const accessToken = searchParams.get('accessToken');
+    const refreshToken = searchParams.get('refreshToken');
+    const type = searchParams.get('type') as 'customer' | 'mover';
+
+    if (!accessToken || !refreshToken || !type) {
+      console.error('쿼리 파라미터 누락');
+      return;
+    }
+
+    const OAuthLogin = async () => {
+      try {
+        if (process.env.NODE_ENV === 'development') {
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+        }
+
+        const user = await OAuthProfile(type);
+
+        if (type === 'customer') {
+          setUserInfo('customer', {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            profileImage: user.profileImage,
+            isProfile: user.isProfile,
+          });
+
+          setCustomerData({
+            wantService: user.wantService,
+            livingPlace: user.livingPlace,
+            hasQuotation: user.hasQuotation,
+          });
+
+          if (!user.isProfile) {
+            router.push(PATH.customer.profile);
+          } else if (!user.hasQuotation) {
+            router.push(PATH.customer.movingQuoteRequest);
+          } else {
+            router.push(PATH.customer.movingQuoteHistory);
+          }
+        }
+
+        if (type === 'mover') {
+          setUserInfo('mover', {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            profileImage: user.profileImage,
+            isProfile: user.isProfile,
+          });
+
+          setMoverData({
+            nickname: user.nickname,
+            serviceArea: user.serviceArea,
+            serviceList: user.serviceList,
+            intro: user.intro,
+            career: user.career,
+            detailDescription: user.detailDescription,
+          });
+
+          if (!user.isProfile) {
+            router.push(PATH.mover.profile);
+          } else {
+            router.push(PATH.mover.movingQuoteRequest);
+          }
+        }
+      } catch (error) {
+        console.error('유저 정보 처리 중 오류 발생:', error);
+      }
+    };
+
+    OAuthLogin();
+  }, []);
 
   return (
     <Stack width="100vw" height="100vh" justifyContent="center" alignItems="center" gap="16px">
