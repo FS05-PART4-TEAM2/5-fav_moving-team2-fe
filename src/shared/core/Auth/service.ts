@@ -7,6 +7,11 @@ export async function OAuthLogin(provider: 'google' | 'kakao' | 'naver', userTyp
   return res;
 }
 
+export async function OAuthProfile(type: 'customer' | 'mover') {
+  const res = await customAxios.get(`/api/profile/${type}`);
+  return res.data;
+}
+
 export async function login(userType: 'customer' | 'mover', payload: LoginPayload) {
   const res = await customAxios.post(`/api/auth/${userType}/login`, payload);
   return res.data;
