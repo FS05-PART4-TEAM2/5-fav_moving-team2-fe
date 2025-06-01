@@ -4,9 +4,9 @@ import { useTheme, useMediaQuery, Chip as MuiChip, Stack } from '@mui/material';
 import Image from 'next/image';
 
 export const Category = {
-  small: {
+  SMALL_MOVE: {
     type: '소형이사',
-    src: './assets/images/chip-icon/box-20x20.svg',
+    src: '/assets/images/chip-icon/box-20x20.svg',
     alt: '소형 이사 아이콘',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
@@ -25,9 +25,9 @@ export const Category = {
       md: '34px',
     },
   },
-  home: {
+  FAMILY_MOVE: {
     type: '가정이사',
-    src: './assets/images/chip-icon/home-20x20.svg',
+    src: '/assets/images/chip-icon/home-20x20.svg',
     alt: '가정 이사 아이콘',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
@@ -46,9 +46,9 @@ export const Category = {
       md: '34px',
     },
   },
-  office: {
+  OFFICE_MOVE: {
     type: '사무실이사',
-    src: './assets/images/chip-icon/office-20x20.svg',
+    src: '/assets/images/chip-icon/office-20x20.svg',
     alt: '사무실 이사 아이콘',
     color: colorChips.primary[300],
     bgColor: colorChips.primary[100],
@@ -69,7 +69,7 @@ export const Category = {
   },
   select: {
     type: '지정 견적 요청',
-    src: './assets/images/chip-icon/file-20x20-red.svg',
+    src: '/assets/images/chip-icon/file-20x20-red.svg',
     alt: '지정 견적 아이콘',
     color: colorChips.secondary.red[200],
     bgColor: colorChips.secondary.red[100],

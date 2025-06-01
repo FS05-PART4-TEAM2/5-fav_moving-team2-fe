@@ -19,29 +19,39 @@ interface CardHeaderProps {
   name?: string;
   detailDescription?: string;
   data: UserCardData;
+  isModal?: boolean;
 }
 
 const labelToCategoryKey: Record<string, CategoryKey> = {
-  소형이사: 'small',
-  가정이사: 'home',
-  사무실이사: 'office',
+  소형이사: 'SMALL_MOVE',
+  가정이사: 'FAMILY_MOVE',
+  사무실이사: 'OFFICE_MOVE',
   '지정 견적 요청': 'select',
   '견적 대기': 'wait',
 };
 
-export default function CardHeader({ type, services, moveDay, detailDescription, name, data }: CardHeaderProps) {
+export default function CardHeader({
+  type,
+  services,
+  moveDay,
+  detailDescription,
+  name,
+  data,
+  isModal,
+}: CardHeaderProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isLarge = useMediaQuery(theme.breakpoints.up('md'));
   const router = useRouter();
 
-  const extraInfo =
-    type === 'finishReview' && data.moveDay
+  const extraInfo = !isModal
+    ? type === 'finishReview' && data.moveDay
       ? dayjs(data.moveDay).format('YYYY.MM.DD')
       : type === 'confirmRequest'
       ? dayjs(data.moveDay).format('YYYY.MM.DD')
       : type === 'request'
       ? dayjs(data.moveDay).fromNow()
-      : '';
+      : ''
+    : '';
 
   const extraInfoText = isMobile ? 'text_R_12' : 'text_R_14';
   const descriptionText = isMobile ? 'text_SB_14' : 'text_SB_24';
@@ -57,7 +67,11 @@ export default function CardHeader({ type, services, moveDay, detailDescription,
     type !== 'finishReview';
 
   return (
-    <Stack direction="column" justifyContent="space-between" sx={{ gap: { sm: '14px', md: '16px' } }}>
+    <Stack
+      direction="column"
+      justifyContent="space-between"
+      sx={{ gap: { sm: '14px', md: '16px' }, ...(isModal ? { mt: { sm: '26px', md: '40px' } } : {}) }}
+    >
       <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' } }}>
         {detailDescription && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">

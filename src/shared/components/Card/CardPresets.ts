@@ -16,6 +16,7 @@ export type PresetCardName =
   | 'review'; // 리뷰 카드
 
 export interface UserCardData {
+  id?: string;
   name?: string;
   service?: string[];
   detailDescription?: string;
@@ -27,13 +28,14 @@ export interface UserCardData {
     averageScore?: number;
   };
   career?: number;
+  comment?: string;
   confirmation?: number;
   moveDay?: string;
   startPoint?: string;
   endPoint?: string;
   provideService?: string[];
   region?: string[];
-  QuoteAmount?: number;
+  quoteAmount?: number;
   reviewContent?: string;
   createTime?: string;
 }

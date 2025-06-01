@@ -66,7 +66,7 @@ export const OutlinedButton = ({
         <Stack direction="row" justifyContent="center" alignItems="center" gap={{ xs: '4px', md: '8px' }}>
           <Typo className="button_text" content={text} />
           {hasIcon && (
-            <Image src={'./assets/images/writing-icon/writing-24x24-gray.svg'} alt="writing" width={24} height={24} />
+            <Image src={'/assets/images/writing-icon/writing-24x24-gray.svg'} alt="writing" width={24} height={24} />
           )}
         </Stack>
       )}
