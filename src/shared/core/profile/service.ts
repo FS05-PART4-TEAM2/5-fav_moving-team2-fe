@@ -1,12 +1,17 @@
 import customAxios from '@/lib/customAxios';
+import { AxiosRequestConfig } from 'axios';
 
 export async function updateCustomerProfile(formData: FormData) {
-  const res = await customAxios.put('/api/profile/customer', formData);
+  const res = await customAxios.put('/api/profile/customer', formData, {
+    useMultipart: true,
+  } as AxiosRequestConfig & { useMultipart: boolean });
   return res.data;
 }
 
 export async function updateMoverProfile(formData: FormData) {
-  const res = await customAxios.put('/api/profile/mover', formData);
+  const res = await customAxios.put('/api/profile/mover', formData, {
+    useMultipart: true,
+  } as AxiosRequestConfig & { useMultipart: boolean });
   return res.data;
 }
 
