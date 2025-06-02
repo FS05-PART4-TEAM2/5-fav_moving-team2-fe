@@ -2,13 +2,15 @@ import { Stack } from '@mui/material';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
 import { PendingQuoteCard } from './core/components/PendingQuoteCard';
 import { mockList } from '../../core/constants';
+import useUserStore from '@/shared/store/useUserStore';
 
 export const PendingQuoteFeature = () => {
+  const { customerData } = useUserStore();
+  const hasQuotation = customerData?.hasQuotation ?? false;
   // TODO: 대기중 견적 api 연결하기
-  //   const data = [];
   const data = mockList;
-  const hasOffers = data.offers.length > 0;
-  const offers = data.offers;
+  const hasOffers = data?.offers?.length > 0;
+  const offers = data?.offers;
 
   return (
     <Stack sx={contentContainerSx}>
@@ -21,7 +23,7 @@ export const PendingQuoteFeature = () => {
         </Stack>
       ) : (
         // 대기중 견적 데이터 없는 경우
-        <EmptyDataView type="pending" />
+        <EmptyDataView type="pending" hasQuotation={hasQuotation} />
       )}
     </Stack>
   );
