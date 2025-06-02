@@ -24,11 +24,11 @@ export default function Page() {
     console.log('like');
   };
 
-  // TODO: 공유URL 수정
-  const shareUrl = `/customer/moving-quote/history/${offerId}`;
-  const toastMsg = '확정하지 않은 견적이에요!';
-
   const data = mockDetail;
+  const moverId = data.offers[0].moverId;
+  // TODO: 공유URL 수정 - 기사님 상세
+  const shareUrl = `/customer/search-mover/${moverId}`;
+  const toastMsg = '확정하지 않은 견적이에요!';
   const isPending = !data.offers[0].isCompleted; // isCompleted가 false인 경우 : 대기중인 견적
   const isConfirmed = data.offers[0].isConfirmedMover; // 확정견적
   const isAssigned = data.offers[0].isAssigned; // 지정요청
@@ -86,7 +86,7 @@ export default function Page() {
           {!isDesktop && (
             <>
               {/* 데스크탑 아닐때는 공유버튼 여기 */}
-              <ShareButtons title="견적서 공유하기" shareUrl={shareUrl} isDesktop={isDesktop} />
+              <ShareButtons title="기사님 공유하기" shareUrl={shareUrl} isDesktop={isDesktop} />
               <Stack sx={dividerSx} />
             </>
           )}
