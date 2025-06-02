@@ -4,6 +4,7 @@ import axios, { AxiosAdapter, AxiosRequestConfig, AxiosResponse, InternalAxiosRe
 type URLQueryParams = Record<string, string | number | boolean>;
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+  useMultipart?: boolean;
   fetchOptions?: RequestInit & {
     next?: {
       revalidate?: number;
@@ -16,7 +17,7 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
   // 내부 요청 처리 타입 보강
   const internalConfig = config as ExtendedAxiosRequestConfig;
 
-  const { url, method, headers, data, params, fetchOptions } = internalConfig;
+  const { url, method = 'GET', headers, data, params, fetchOptions, useMultipart } = internalConfig;
 
   // url쿼리 문자열 붙이기
   const buildURLWithParams = (url: string, params?: URLQueryParams): string => {
@@ -31,16 +32,35 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
   //전체 url
   const fullUrl = buildURLWithParams((internalConfig.baseURL ?? '') + url!, params);
 
+  let requestHeaders: Record<string, string> = {};
+
+  if (headers instanceof Headers) {
+    headers.forEach((value, key) => {
+      requestHeaders[key] = value;
+    });
+  } else if (headers && typeof headers === 'object') {
+    requestHeaders = { ...(headers as Record<string, string>) };
+  }
+
+  //  Content-Type이 Multipart 경우 Content-Type를 지워 브라우저가 유추하게 유도
+  if (useMultipart) {
+    delete requestHeaders['Content-Type'];
+  } else if (method !== 'GET' && method !== 'HEAD') {
+    requestHeaders['Content-Type'] = 'application/json';
+  }
+
+  const body = ['GET', 'HEAD'].includes(method.toUpperCase())
+    ? undefined
+    : data instanceof FormData
+    ? data
+    : typeof data === 'string'
+    ? data
+    : JSON.stringify(data);
+
   const response = await fetch(fullUrl, {
     method,
-    headers: headers as Record<string, string>,
-    body: ['GET', 'HEAD'].includes(method!.toUpperCase())
-      ? undefined
-      : data instanceof FormData
-      ? data
-      : typeof data === 'string'
-      ? data
-      : JSON.stringify(data),
+    headers: requestHeaders,
+    body,
     credentials: 'include',
     ...fetchOptions,
   });
@@ -67,14 +87,19 @@ const customAxios = axios.create({
 customAxios.interceptors.request.use((config) => {
   if (process.env.NODE_ENV === 'development') {
     const token = localStorage.getItem('accessToken');
-    if (token && config.headers && typeof config.headers.set === 'function') {
-      config.headers.set('Authorization', `Bearer ${token}`);
+
+    if (token) {
+      if (config.headers && typeof config.headers.set === 'function') {
+        config.headers.set('Authorization', `Bearer ${token}`);
+      } else {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${token}`,
+        } as typeof config.headers;
+      }
     }
   }
-  const isFormData = config.data instanceof FormData;
-  if (!isFormData && config.headers && typeof config.headers.set === 'function') {
-    config.headers.set('Content-Type', 'application/json');
-  }
+
   return config;
 });
 
