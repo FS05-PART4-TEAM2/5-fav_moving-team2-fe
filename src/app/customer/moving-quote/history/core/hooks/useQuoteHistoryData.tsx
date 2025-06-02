@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { getPendingQuotesApi } from '../service/getPendingQuotesApi';
 import { getReceivedQuotesApi } from '../service/getReceivedQuotesApi';
 import { CustomerQuoteHistoryData } from '@/shared/types/types';
@@ -77,5 +77,49 @@ export const useQuoteHistoryData = () => {
     }
   };
 
-  return { dataCache, loadingStates, loadPendingQuotes, loadReceivedQuotes };
+  // 강제 리패치 - 견적 확정 후 데이터 갱신용
+  const refreshPendingQuotes = async () => {
+    try {
+      setLoadingStates((prev) => ({ ...prev, pendingQuotes: true }));
+      const response = await getPendingQuotesApi();
+
+      if (response.success) {
+        setDataCache((prev) => ({ ...prev, pendingQuotes: response.data }));
+      }
+    } catch (err) {
+      console.error('대기중 견적 새로고침 실패:', err);
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, pendingQuotes: false }));
+    }
+  };
+
+  const refreshReceivedQuotes = async () => {
+    try {
+      setLoadingStates((prev) => ({ ...prev, receivedQuotes: true }));
+      const response = await getReceivedQuotesApi();
+
+      if (response.success) {
+        setDataCache((prev) => ({ ...prev, receivedQuotes: response.data }));
+      }
+    } catch (err) {
+      console.error('받았던 견적 새로고침 실패:', err);
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, receivedQuotes: false }));
+    }
+  };
+
+  // 견적 확정 후 전체 데이터 갱신
+  const refreshAllQuotes = async () => {
+    await Promise.all([refreshPendingQuotes(), refreshReceivedQuotes()]);
+  };
+
+  return {
+    dataCache,
+    loadingStates,
+    loadPendingQuotes,
+    loadReceivedQuotes,
+    refreshPendingQuotes,
+    refreshReceivedQuotes,
+    refreshAllQuotes,
+  };
 };

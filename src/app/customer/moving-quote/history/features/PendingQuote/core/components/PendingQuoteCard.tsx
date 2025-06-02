@@ -9,6 +9,8 @@ import { OutlinedButton } from '@/shared/components/Button/OutlinedButton';
 import Chip from '@/shared/components/Chip/Chip';
 import { useRouter } from 'next/navigation';
 import { formattedPrice } from '@/shared/utils/dataFormatter';
+import { useQuoteConfirm } from '../../../../core/hooks/useQuoteConfirm';
+
 interface PendingQuoteCardProps {
   customerQuoteData: CustomerQuoteData;
   receivedOffer: ReceivedOffers;
@@ -16,6 +18,7 @@ interface PendingQuoteCardProps {
 
 export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQuoteCardProps) => {
   const router = useRouter();
+  const { handleConfirm } = useQuoteConfirm(receivedOffer.offerId);
 
   const chipMoveType =
     customerQuoteData.moveType === 'SMALL_MOVE'
@@ -24,12 +27,8 @@ export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQu
       ? 'home'
       : 'office';
 
-  const handleClickConfirm = () => {
-    // TODO: api 연결하기
-    console.log('견적 확정하기');
-  };
   const handleClickDetail = () => {
-    router.push(`/customer/moving-quote/history/${customerQuoteData.quotationId}`);
+    router.push(`/customer/moving-quote/history/${receivedOffer.offerId}`);
   };
 
   const profileBaseProps = {
@@ -66,7 +65,7 @@ export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQu
         <Typo content={formattedPrice(receivedOffer.price)} className="text_B_18to24" color={colorChips.black[400]} />
       </Stack>
       <Stack sx={buttonWrapperSx}>
-        <SolidButton text="견적 확정하기" onClick={handleClickConfirm} buttonSize="xs" borderRadius="8px" />
+        <SolidButton text="견적 확정하기" onClick={handleConfirm} buttonSize="xs" borderRadius="8px" />
         <OutlinedButton text="상세보기" onClick={handleClickDetail} buttonSize="xs" borderRadius="8px" />
       </Stack>
     </Stack>

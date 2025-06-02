@@ -5,7 +5,6 @@ import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack, useMediaQuery, useTheme, CircularProgress } from '@mui/material';
 import { useParams } from 'next/navigation';
-import { QuoteConfirmButton } from './core/components/QuoteConfirmButton';
 import { MoverProfileBase } from '@/shared/components/Card/MoverProfileBase';
 import { formattedPrice, formatToFullDateWithTime, formatToYYMMDD } from '@/shared/utils/dataFormatter';
 import { QuoteDetailCard } from '../core/components/QuoteDetailCard';
@@ -13,6 +12,8 @@ import Chip from '@/shared/components/Chip/Chip';
 import Image from 'next/image';
 import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
 import { useOfferDetailData } from './core/hooks/useOfferDetailData';
+import { SolidButton } from '@/shared/components/Button/SolidButton';
+import { useQuoteConfirm } from '../core/hooks/useQuoteConfirm';
 
 export default function Page() {
   const params = useParams();
@@ -21,6 +22,7 @@ export default function Page() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const { data, isLoading } = useOfferDetailData(offerId);
+  const { handleConfirm } = useQuoteConfirm(offerId);
 
   // 로딩 중일 때
   if (isLoading) {
@@ -116,7 +118,7 @@ export default function Page() {
         {/* 데스크탑 */}
         {isDesktop && (
           <Stack flexShrink={0} width="330px" direction="column" gap="80px">
-            {isPending && <QuoteConfirmButton />}
+            {isPending && <SolidButton text={'견적 확정하기'} onClick={handleConfirm} />}
             <ShareButtons title="견적서 공유하기" shareUrl={shareUrl} isDesktop={isDesktop} />
           </Stack>
         )}
@@ -126,7 +128,7 @@ export default function Page() {
           <Stack sx={likeButtonSx} onClick={handleLikeClick}>
             <Image src={likeIconSrc} alt="like" width={24} height={24} />
           </Stack>
-          <QuoteConfirmButton />
+          <SolidButton text={'견적 확정하기'} onClick={handleConfirm} />
         </Stack>
       )}
     </>
