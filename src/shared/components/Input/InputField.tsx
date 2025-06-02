@@ -52,7 +52,6 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
       name={name}
       control={control}
       rules={resolvedRules}
-      defaultValue={name === 'quoteAmount' ? ('' as T[typeof name]) : (preset.defaultValue as T[typeof name])}
       render={({ field, fieldState }) => (
         <TextField
           {...field}

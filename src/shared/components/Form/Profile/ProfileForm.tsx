@@ -15,7 +15,8 @@ import { CustomerProfileForm, MoverBaseInfoForm, MoverProfileForm } from '@/shar
 import { updateCustomerProfile, updateMoverBaseInfo, updateMoverProfile } from '@/shared/core/profile/service';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { PATH } from '@/shared/constants';
+import { PATH, REGIONS, SERVICE_TYPES } from '@/shared/constants';
+import useUserStore from '@/shared/store/useUserStore';
 
 interface ProfileFormProps {
   mode: 'create' | 'modify' | 'baseInfo';
@@ -26,6 +27,7 @@ interface ProfileFormProps {
 type FormTypes = CustomerProfileForm | MoverProfileForm | MoverBaseInfoForm;
 
 export default function ProfileForm({ mode, userType, defaultValues }: ProfileFormProps) {
+  const { customerData } = useUserStore();
   const methods = useForm<FormTypes>({
     mode: 'onChange',
     defaultValues: defaultValues ?? {
@@ -74,6 +76,9 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
   // TODO alert부분 나중에 모달로 수정하면 좋을듯
   const onSubmit = async (data: FormTypes) => {
+    const getServiceKey = (label: string) => SERVICE_TYPES.find((s) => s.label === label)?.key ?? '';
+    const getRegionKey = (label: string) => REGIONS.find((r) => r.label === label)?.key ?? '';
+
     try {
       // mover 기본 수정 일떄
       if (isBaseInfo && !isCustomer) {
@@ -92,13 +97,16 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
       // Customer + 등록 일때
       if (isCustomer && isCreate) {
         const d = data as CustomerProfileForm;
+        const serviceKeys = (d.service ?? []).map(getServiceKey).filter(Boolean);
+        const regionKeys = (d.region ?? []).map(getRegionKey).filter(Boolean);
+
         const formData = new FormData();
 
         if (d.profileImage && d.profileImage instanceof File) {
           formData.append('profileImage', d.profileImage);
         }
-        formData.append('wantService', (d.service ?? []).join(','));
-        formData.append('livingPlace', (d.region ?? []).join(','));
+        formData.append('wantService', serviceKeys.join(','));
+        formData.append('livingPlace', regionKeys.join(','));
 
         const res = await updateCustomerProfile(formData);
 
@@ -106,9 +114,9 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           throw new Error(res?.message ?? '프로필 등록에 실패했습니다.');
         }
 
-        const customer = res.data.customer;
+        const hasQuotation = customerData?.hasQuotation;
 
-        if (!customer.hasQuotation) {
+        if (!hasQuotation) {
           router.push(PATH.customer.movingQuoteRequest);
           return;
         }
@@ -121,6 +129,8 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
       if (isCustomer && isModify) {
         const d = data as CustomerProfileForm;
         const formData = new FormData();
+        const serviceKeys = (d.service ?? []).map(getServiceKey).filter(Boolean);
+        const regionKeys = (d.region ?? []).map(getRegionKey).filter(Boolean);
 
         if (d.username) formData.append('username', d.username);
         if (d.currPassword) formData.append('currPassword', d.currPassword);
@@ -129,8 +139,8 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           formData.append('profileImage', d.profileImage);
         }
         formData.append('phoneNumber', d.phoneNumber);
-        formData.append('wantService', (d.service ?? []).join(','));
-        formData.append('livingPlace', (d.region ?? []).join(','));
+        formData.append('wantService', serviceKeys.join(','));
+        formData.append('livingPlace', regionKeys.join(','));
 
         const res = await updateCustomerProfile(formData);
 
@@ -146,6 +156,10 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
       // mover 생성 / 수정 일때
       if (!isCustomer && !isBaseInfo) {
         const d = data as MoverProfileForm;
+
+        const serviceKeys = (d.service ?? []).map(getServiceKey).filter(Boolean);
+        const regionKeys = (d.region ?? []).map(getRegionKey).filter(Boolean);
+
         const formData = new FormData();
 
         if (d.profileImage && d.profileImage instanceof File) {
@@ -155,8 +169,8 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         formData.append('career', d.career);
         formData.append('intro', d.intro);
         formData.append('detailDescription', d.detailDescription);
-        formData.append('serviceList', (d.service ?? []).join(','));
-        formData.append('serviceArea', (d.region ?? []).join(','));
+        formData.append('serviceList', serviceKeys.join(','));
+        formData.append('serviceArea', regionKeys.join(','));
 
         const res = await updateMoverProfile(formData);
 
