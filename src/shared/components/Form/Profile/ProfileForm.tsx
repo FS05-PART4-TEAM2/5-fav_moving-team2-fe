@@ -165,7 +165,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         }
 
         if (isModify) {
-          router.back;
+          router.back();
           return;
         }
 
