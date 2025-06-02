@@ -1,24 +1,36 @@
-import { Stack } from '@mui/material';
+import { Stack, CircularProgress } from '@mui/material';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
 import { PendingQuoteCard } from './core/components/PendingQuoteCard';
-import { mockList } from '../../core/constants';
 import useUserStore from '@/shared/store/useUserStore';
+import { CustomerQuoteHistoryData, ReceivedOffers } from '@/shared/types/types';
 
-export const PendingQuoteFeature = () => {
+interface PendingQuoteFeatureProps {
+  data: CustomerQuoteHistoryData[] | null;
+  isLoading: boolean;
+}
+
+export const PendingQuoteFeature = ({ data, isLoading }: PendingQuoteFeatureProps) => {
   const { customerData } = useUserStore();
   const hasQuotation = customerData?.hasQuotation ?? false;
-  // TODO: 대기중 견적 api 연결하기
-  const data = mockList;
-  const hasOffers = data?.offers?.length > 0;
-  const offers = data?.offers;
+
+  const offers = data?.[0]?.offers ?? [];
+  const hasOffers = offers.length > 0;
+
+  if (isLoading) {
+    return (
+      <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <CircularProgress size={80} />
+      </Stack>
+    );
+  }
 
   return (
     <Stack sx={contentContainerSx}>
-      {hasOffers ? (
+      {data && hasOffers ? (
         // 대기중 견적 데이터 있는 경우
         <Stack sx={cardGridSx}>
-          {offers.map((item) => (
-            <PendingQuoteCard key={item.offerId} customerQuoteData={data} receivedOffer={item} />
+          {offers.map((item: ReceivedOffers) => (
+            <PendingQuoteCard key={item.offerId} customerQuoteData={data[0]} receivedOffer={item} />
           ))}
         </Stack>
       ) : (

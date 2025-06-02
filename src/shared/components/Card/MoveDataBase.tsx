@@ -2,7 +2,7 @@ import { Stack, useMediaQuery } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import theme from '@/shared/theme';
-import { formatToFullDateWithDay } from '@/shared/utils/dataFormatter';
+import { formatToFullDateWithDay, getShortAddress } from '@/shared/utils/dataFormatter';
 
 interface MoveDataBaseProps {
   moveDate: string;
@@ -15,6 +15,8 @@ interface MoveDataBaseProps {
  */
 export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBaseProps) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const shortStartAddress = getShortAddress(startAddress);
+  const shortEndAddress = getShortAddress(endAddress);
 
   return (
     <Stack
@@ -40,7 +42,7 @@ export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBas
           <Stack sx={chipSx}>
             <Typo content="출발" className="text_R_14to18" color={colorChips.grayScale[500]} />
           </Stack>
-          <Typo content={startAddress} className="text_M_14to18" color={colorChips.black[300]} />
+          <Typo content={shortStartAddress} className="text_M_14to18" color={colorChips.black[300]} />
         </Stack>
         <Stack sx={borderRightSx} />
         {/* 도착 */}
@@ -48,7 +50,7 @@ export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBas
           <Stack sx={chipSx}>
             <Typo content="도착" className="text_R_14to18" color={colorChips.grayScale[500]} />
           </Stack>
-          <Typo content={endAddress} className="text_M_14to18" color={colorChips.black[300]} />
+          <Typo content={shortEndAddress} className="text_M_14to18" color={colorChips.black[300]} />
         </Stack>
       </Stack>
     </Stack>

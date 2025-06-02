@@ -3,9 +3,8 @@
 import { ShareButtons } from '@/shared/components/Button/ShareButtons';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Stack, useMediaQuery, useTheme, CircularProgress } from '@mui/material';
 import { useParams } from 'next/navigation';
-import { mockDetail } from '../core/constants';
 import { QuoteConfirmButton } from './core/components/QuoteConfirmButton';
 import { MoverProfileBase } from '@/shared/components/Card/MoverProfileBase';
 import { formattedPrice, formatToFullDateWithTime, formatToYYMMDD } from '@/shared/utils/dataFormatter';
@@ -13,18 +12,32 @@ import { QuoteDetailCard } from '../core/components/QuoteDetailCard';
 import Chip from '@/shared/components/Chip/Chip';
 import Image from 'next/image';
 import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
+import { useOfferDetailData } from './core/hooks/useOfferDetailData';
+
 export default function Page() {
   const params = useParams();
   const offerId = params.offerId as string;
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
+  const { data, isLoading } = useOfferDetailData(offerId);
+
+  // 로딩 중일 때
+  if (isLoading) {
+    return (
+      <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <CircularProgress size={80} />
+      </Stack>
+    );
+  }
+
+  if (!data) return null;
+
   const handleLikeClick = () => {
     // TODO: 찜하기 api 추가
     console.log('like');
   };
 
-  const data = mockDetail;
   const moverId = data.offers[0].moverId;
   // TODO: 공유URL 수정 - 기사님 상세
   const shareUrl = `/customer/search-mover/${moverId}`;

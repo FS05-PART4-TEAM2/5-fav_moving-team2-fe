@@ -1,22 +1,30 @@
-import { Stack, useMediaQuery } from '@mui/material';
+import { CircularProgress, Stack, useMediaQuery } from '@mui/material';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
-import { receivedQuoteList } from '../../core/constants';
 import { ReceivedQuoteCard } from './core/components/ReceivedQuoteCard';
 import theme from '@/shared/theme';
 import { colorChips } from '@/shared/styles/colorChips';
+import { CustomerQuoteHistoryData } from '@/shared/types/types';
 
-export const ReceivedQuoteFeature = () => {
+interface ReceivedQuoteFeatureProps {
+  data: CustomerQuoteHistoryData[] | null;
+  isLoading: boolean;
+}
+
+export const ReceivedQuoteFeature = ({ data, isLoading }: ReceivedQuoteFeatureProps) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  // TODO: 받았던 견적 api 연결하기
-  // const data = [];
-  const data = receivedQuoteList;
+  const hasReceivedQuotes = data && data.length > 0;
+
+  if (isLoading) {
+    return (
+      <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <CircularProgress size={80} />
+      </Stack>
+    );
+  }
 
   return (
     <Stack sx={contentContainerSx}>
-      {data.length === 0 ? (
-        // 받았던 견적 데이터 없는 경우
-        <EmptyDataView type="received" />
-      ) : (
+      {hasReceivedQuotes ? (
         // 받았던 견적 데이터 있는 경우
         <Stack sx={cardWrapperSx}>
           {data.map((item, idx) => (
@@ -26,6 +34,9 @@ export const ReceivedQuoteFeature = () => {
             </>
           ))}
         </Stack>
+      ) : (
+        // 받았던 견적 데이터 없는 경우
+        <EmptyDataView type="received" />
       )}
     </Stack>
   );
