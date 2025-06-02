@@ -16,6 +16,7 @@ import { updateCustomerProfile, updateMoverBaseInfo, updateMoverProfile } from '
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/shared/constants';
+import useUserStore from '@/shared/store/useUserStore';
 
 interface ProfileFormProps {
   mode: 'create' | 'modify' | 'baseInfo';
@@ -26,6 +27,7 @@ interface ProfileFormProps {
 type FormTypes = CustomerProfileForm | MoverProfileForm | MoverBaseInfoForm;
 
 export default function ProfileForm({ mode, userType, defaultValues }: ProfileFormProps) {
+  const { customerData } = useUserStore();
   const methods = useForm<FormTypes>({
     mode: 'onChange',
     defaultValues: defaultValues ?? {
@@ -106,9 +108,9 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           throw new Error(res?.message ?? '프로필 등록에 실패했습니다.');
         }
 
-        const customer = res.data.customer;
+        const hasQuotation = customerData?.hasQuotation;
 
-        if (!customer.hasQuotation) {
+        if (!hasQuotation) {
           router.push(PATH.customer.movingQuoteRequest);
           return;
         }
