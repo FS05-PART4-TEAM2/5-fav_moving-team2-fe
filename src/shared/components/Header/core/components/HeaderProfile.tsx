@@ -37,7 +37,7 @@ export const HeaderProfile = ({
     onToggle();
     router.push(path);
   };
-  // TODO: 로그아웃 api 토큰 수정되면 다시 테스트해보기
+
   const handleClickLogout = async () => {
     const res = await logout();
     if (res.success) {
@@ -66,7 +66,7 @@ export const HeaderProfile = ({
             cursor: 'pointer',
             borderRadius: '50%',
             objectFit: 'cover',
-            border: hasProfileImg ? `1.5px solid ${colorChips.black[400]}` : 'none',
+            border: hasProfileImg ? `2px solid ${colorChips.primary[400]}` : 'none',
           }}
           priority
         />

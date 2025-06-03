@@ -1,62 +1,45 @@
 'use client';
 
-import { colorChips } from '@/shared/styles/colorChips';
-import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack } from '@mui/material';
 import { useTabBarType } from '@/shared/context/TabBarProvider';
-import { SolidButton } from '@/shared/components/Button/SolidButton';
-import { useRouter } from 'next/navigation';
+import { PendingQuoteFeature } from './features/PendingQuote/feature';
+import { ReceivedQuoteFeature } from './features/ReceivedQuote/feature';
+import { useEffect } from 'react';
+import { useQuoteHistoryData } from './core/hooks/useQuoteHistoryData';
+import { useSearchParams } from 'next/navigation';
 
 export default function CustomerMovingQuoteHistoryPage() {
-  const { tabBarType } = useTabBarType();
-  const router = useRouter();
+  const { tabBarType, setTabBarType } = useTabBarType();
+  const { dataCache, loadingStates, loadPendingQuotes, loadReceivedQuotes } = useQuoteHistoryData();
+  const searchParams = useSearchParams();
+
+  // URL 파라미터로 탭 설정
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'received') {
+      setTabBarType('receivedQuote');
+    } else if (tab === 'pending') {
+      setTabBarType('pendingQuote');
+    }
+  }, [searchParams, setTabBarType]);
+
+  // 탭 변경 시 해당 데이터가 없으면 로드
+  useEffect(() => {
+    if (tabBarType === 'pendingQuote') {
+      loadPendingQuotes();
+    } else if (tabBarType === 'receivedQuote') {
+      loadReceivedQuotes();
+    }
+  }, [tabBarType]);
 
   return (
-    <Stack justifyContent="center" alignItems="center" gap="20px" padding="20px" height="100%">
-      <Stack
-        direction="column"
-        width="100%"
-        height="100%"
-        alignItems="flex-start"
-        bgcolor={colorChips.background.f7f7f7}
-      >
-        <Typo className="text_B_20" content="일반유저 내견적관리 페이지" />
-        <SolidButton text="견적상세 페이지 이동" onClick={() => router.push('/customer/moving-quote/history/1')} />
-      </Stack>
-      {tabBarType === 'pendingQuote' && <TabBarTest1 />}
-      {tabBarType === 'receivedQuote' && <TabBarTest2 />}
+    <Stack flex={1} justifyContent="center" alignItems="center" height="100%">
+      {tabBarType === 'pendingQuote' && (
+        <PendingQuoteFeature data={dataCache.pendingQuotes} isLoading={loadingStates.pendingQuotes} />
+      )}
+      {tabBarType === 'receivedQuote' && (
+        <ReceivedQuoteFeature data={dataCache.receivedQuotes} isLoading={loadingStates.receivedQuotes} />
+      )}
     </Stack>
   );
 }
-
-const TabBarTest1 = () => {
-  return (
-    <Stack
-      direction="column"
-      width="100%"
-      height="300px"
-      justifyContent="center"
-      alignItems="center"
-      gap="20px"
-      bgcolor={colorChips.primary[100]}
-    >
-      <Typo content="대기 중인 견적" className="text_M_16" color={colorChips.black[400]} />
-    </Stack>
-  );
-};
-
-const TabBarTest2 = () => {
-  return (
-    <Stack
-      direction="column"
-      width="100%"
-      height="300px"
-      justifyContent="center"
-      alignItems="center"
-      gap="20px"
-      bgcolor={colorChips.secondary.red[100]}
-    >
-      <Typo content="받았던 견적" className="text_M_16" color={colorChips.black[400]} />
-    </Stack>
-  );
-};

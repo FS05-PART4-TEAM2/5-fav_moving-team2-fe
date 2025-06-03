@@ -118,6 +118,7 @@ const headerContainerSx = {
   zIndex: 99999,
   width: '100%',
   height: 'fit-content',
+  alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: colorChips.grayScale[50],
   borderBottom: `1px solid ${colorChips.line.f2f2f2}`,
@@ -138,10 +139,11 @@ const mainContainerSx = {
 };
 
 const contentContainerSx = {
+  flex: 1,
   height: '100%',
   width: '100%',
   maxWidth: '1448px',
   margin: '0 auto',
-  padding: '0 24px',
+  // padding: '0 24px',
   overflowY: 'scroll',
 };
