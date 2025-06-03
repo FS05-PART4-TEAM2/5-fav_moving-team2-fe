@@ -204,7 +204,7 @@ export const dropdownButtonPresets = {
     },
     selected: {
       radius: '',
-      color: colorChips.primary[300],
+      color: colorChips.black[400],
       bgColor: '',
       borderColor: '',
       className: 'text_M_14',

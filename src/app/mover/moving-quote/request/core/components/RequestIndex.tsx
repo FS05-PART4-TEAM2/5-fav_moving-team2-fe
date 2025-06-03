@@ -23,11 +23,11 @@ export default function RequestIndex() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedSort, setSelectedSort] = useState('이사 빠른순');
   const [selected, setSelected] = useState<Record<string, boolean>>({
-    소형이사: true,
-    가정이사: true,
-    사무실이사: true,
-    '서비스 가능 지역': true,
-    '지정 견적 요청': true,
+    소형이사: false,
+    가정이사: false,
+    사무실이사: false,
+    '서비스 가능 지역': false,
+    '지정 견적 요청': false,
   });
 
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
