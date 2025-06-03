@@ -3,6 +3,7 @@
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
+import useUserStore from '@/shared/store/useUserStore';
 import { SearchFilterFeature } from './features/SearchFilter/feature';
 import { LikeMoverFeature } from './features/LikeMover/feature';
 import { SearchControllerFeature } from './features/SearchController/feature';
@@ -12,6 +13,7 @@ import { MoverListFeature } from './features/MoverList/feature';
 export default function Page() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const { userType } = useUserStore();
 
   return (
     <Stack sx={pageContainerSx}>
@@ -27,7 +29,10 @@ export default function Page() {
         {isDesktop && (
           <Stack sx={widgetWrapperSx}>
             <SearchFilterFeature />
-            <LikeMoverFeature />
+            {userType === 'customer' && (
+              // 비회원일때는 안보이게
+              <LikeMoverFeature />
+            )}
           </Stack>
         )}
         <Stack sx={listWrapperSx}>
@@ -63,7 +68,7 @@ const listWrapperSx = {
 };
 
 const widgetWrapperSx = {
-  width: '330px',
+  width: '340px',
   height: 'fit-content',
   flexDirection: 'column',
   gap: '48px',

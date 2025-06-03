@@ -183,9 +183,10 @@ interface ChipProps {
   children?: React.ReactNode;
   sx?: object;
   onClick?: () => void;
+  isSmall?: boolean;
 }
 
-export default function Chip({ type, children, sx, onClick, ...props }: ChipProps) {
+export default function Chip({ type, children, sx, onClick, isSmall = false, ...props }: ChipProps) {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -194,7 +195,12 @@ export default function Chip({ type, children, sx, onClick, ...props }: ChipProp
   const hasIcon = 'src' in item;
   const border = 'borderColor' in item ? `1px solid ${item.borderColor}` : 'none';
   const boxShadow = 'shadow' in item ? item.shadow : 'none';
-  const typoClass = isTablet && 'mobileClassName' in item ? item.mobileClassName : item.className;
+
+  const typoClass = isSmall
+    ? 'text_SB_13'
+    : isTablet && 'mobileClassName' in item
+    ? item.mobileClassName
+    : item.className;
 
   return (
     <MuiChip
@@ -204,7 +210,12 @@ export default function Chip({ type, children, sx, onClick, ...props }: ChipProp
       label={
         <Stack direction="row" alignItems="center">
           {hasIcon && (
-            <Image src={item.src} alt={item.alt ?? ''} width={isTablet ? 20 : 24} height={isTablet ? 20 : 24} />
+            <Image
+              src={item.src}
+              alt={item.alt ?? ''}
+              width={isSmall ? 20 : isTablet ? 20 : 24}
+              height={isSmall ? 20 : isTablet ? 20 : 24}
+            />
           )}
           {typeof label === 'string' ? <Typo className={typoClass} content={label} /> : label}
         </Stack>

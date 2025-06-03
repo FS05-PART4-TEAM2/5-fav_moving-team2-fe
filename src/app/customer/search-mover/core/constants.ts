@@ -6,7 +6,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '1',
       idNum: 1,
-      nickName: '김코드 기사님',
+      nickName: '김코드',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'FAMILY_MOVE'],
       isAssigned: false,
@@ -21,7 +21,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '2',
       idNum: 2,
-      nickName: '박안전 기사님',
+      nickName: '박안전',
       profileImage: null,
       serviceList: ['FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: true,
@@ -36,7 +36,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '3',
       idNum: 3,
-      nickName: '이신속 기사님',
+      nickName: '이신속',
       profileImage: null,
       serviceList: ['SMALL_MOVE'],
       isAssigned: false,
@@ -51,7 +51,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '4',
       idNum: 4,
-      nickName: '최프로 기사님',
+      nickName: '최프로',
       profileImage: null,
       serviceList: ['OFFICE_MOVE'],
       isAssigned: false,
@@ -66,7 +66,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '5',
       idNum: 5,
-      nickName: '정친절 기사님',
+      nickName: '정친절',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: false,
@@ -81,7 +81,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '6',
       idNum: 6,
-      nickName: '강믿음 기사님',
+      nickName: '강믿음',
       profileImage: null,
       serviceList: ['FAMILY_MOVE'],
       isAssigned: true,
@@ -96,7 +96,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '7',
       idNum: 7,
-      nickName: '윤깔끔 기사님',
+      nickName: '윤깔끔',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'FAMILY_MOVE'],
       isAssigned: false,
@@ -111,7 +111,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '8',
       idNum: 8,
-      nickName: '장경험 기사님',
+      nickName: '장경험',
       profileImage: null,
       serviceList: ['OFFICE_MOVE'],
       isAssigned: false,
@@ -126,7 +126,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '9',
       idNum: 9,
-      nickName: '임빠름 기사님',
+      nickName: '임빠름',
       profileImage: null,
       serviceList: ['SMALL_MOVE'],
       isAssigned: false,
@@ -141,7 +141,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '10',
       idNum: 10,
-      nickName: '한정성 기사님',
+      nickName: '한정성',
       profileImage: null,
       serviceList: ['FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: true,
@@ -156,7 +156,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '11',
       idNum: 11,
-      nickName: '오세심 기사님',
+      nickName: '오세심',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'FAMILY_MOVE'],
       isAssigned: false,
@@ -171,7 +171,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '12',
       idNum: 12,
-      nickName: '서전문 기사님',
+      nickName: '서전문',
       profileImage: null,
       serviceList: ['OFFICE_MOVE'],
       isAssigned: false,
@@ -186,7 +186,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '13',
       idNum: 13,
-      nickName: '남친화 기사님',
+      nickName: '남친화',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: false,
@@ -201,7 +201,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '14',
       idNum: 14,
-      nickName: '조꼼꼼 기사님',
+      nickName: '조꼼꼼',
       profileImage: null,
       serviceList: ['FAMILY_MOVE'],
       isAssigned: true,
@@ -216,7 +216,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '15',
       idNum: 15,
-      nickName: '배신뢰 기사님',
+      nickName: '배신뢰',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'OFFICE_MOVE'],
       isAssigned: false,
@@ -231,7 +231,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '16',
       idNum: 16,
-      nickName: '문안심 기사님',
+      nickName: '문안심',
       profileImage: null,
       serviceList: ['FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: false,
@@ -246,7 +246,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '17',
       idNum: 17,
-      nickName: '유만족 기사님',
+      nickName: '유만족',
       profileImage: null,
       serviceList: ['SMALL_MOVE'],
       isAssigned: false,
@@ -261,7 +261,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '18',
       idNum: 18,
-      nickName: '홍정직 기사님',
+      nickName: '홍정직',
       profileImage: null,
       serviceList: ['FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: true,
@@ -276,7 +276,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '19',
       idNum: 19,
-      nickName: '김완벽 기사님',
+      nickName: '김완벽',
       profileImage: null,
       serviceList: ['SMALL_MOVE', 'FAMILY_MOVE', 'OFFICE_MOVE'],
       isAssigned: false,
@@ -291,7 +291,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
     {
       id: '20',
       idNum: 20,
-      nickName: '박베테랑 기사님',
+      nickName: '박베테랑',
       profileImage: null,
       serviceList: ['OFFICE_MOVE'],
       isAssigned: false,
@@ -313,7 +313,7 @@ export const mockMoverListResponse: SearchMoverListResponse = {
 export const mockMoverDetailResponse: SearchMoverDetailResponse = {
   id: '1',
   idNum: 1,
-  nickName: '김코드 기사님',
+  nickName: '김코드',
   profileImage: null,
   serviceList: ['SMALL_MOVE', 'FAMILY_MOVE'],
   isAssigned: false,
@@ -347,3 +347,6 @@ export const mockMoverDetailResponse: SearchMoverDetailResponse = {
 언제든지 편하게 연락주세요. 최선을 다해 도와드리겠습니다!`,
   serviceArea: ['SEOUL', 'GYEONGGI', 'INCHEON'],
 };
+
+// 찜한 기사님 목록 (isLiked: true인 기사님 3명)
+export const likeMoverList = mockMoverListResponse.list.filter((mover) => mover.isLiked === true).slice(0, 3);
