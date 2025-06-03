@@ -1,6 +1,25 @@
 export type UserType = 'customer' | 'mover' | 'temp';
 export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
 export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'DELETED';
+export type Region =
+  | 'SEOUL'
+  | 'GYEONGGI'
+  | 'INCHEON'
+  | 'GANGWON'
+  | 'CHUNGBUK'
+  | 'CHUNGNAM'
+  | 'SEJONG'
+  | 'DAEJEON'
+  | 'JEONBUK'
+  | 'JEONNAM'
+  | 'GWANGJU'
+  | 'GYEONGBUK'
+  | 'GYEONGNAM'
+  | 'DAEGU'
+  | 'ULSAN'
+  | 'BUSAN'
+  | 'JEJU';
+export type MoverFilterOption = 'MOSTREVIEW' | 'BESTRATING' | 'HIGHESTEXP' | 'MOSTCONFIRM';
 
 export interface GlobalResponse {
   success: boolean;
@@ -197,4 +216,44 @@ export interface ReceivedOffers {
   intro: string;
   career: number;
   confirmedQuotationCount: number;
+}
+
+export interface SearchMoverListPayload {
+  region?: Region;
+  service?: MovingType;
+  order: MoverFilterOption;
+  keyword: string; // 기사 별명
+  idNumCursor: number; // idNum 커서
+  orderCursor: number; // 정렬 커서
+  limit: number; // 조회 개수
+}
+
+export interface SearchMoverListItem {
+  id: string;
+  idNum: number;
+  nickName: string;
+  profileImage: string | null;
+  serviceList: MovingType[] | null;
+  isAssigned: boolean;
+  isLiked: boolean;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  intro: string;
+  career: number;
+  confirmedCounts: number;
+}
+
+// 기사님찾기 리스트 조회
+export interface SearchMoverListResponse {
+  list: SearchMoverListItem[];
+  orderNextCursor: number;
+  idNumNextCursor: number;
+  hasNext: boolean;
+}
+
+// 기사님 상세조회
+export interface SearchMoverDetailResponse extends SearchMoverListItem {
+  detailDescription: string;
+  serviceArea: Region[] | null;
 }
