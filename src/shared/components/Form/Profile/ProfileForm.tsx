@@ -214,7 +214,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
             mb: DividerSpacingMediaB,
           }}
         />
-        {/* 반응형 방향 설정: row ↔ column */}
+
         <Grid
           container
           spacing={isMd ? 0 : 9}

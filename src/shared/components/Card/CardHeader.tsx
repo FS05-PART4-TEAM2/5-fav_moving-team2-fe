@@ -73,7 +73,7 @@ export default function CardHeader({
       sx={{ gap: { sm: '14px', md: '16px' }, ...(isModal ? { mt: { sm: '26px', md: '40px' } } : {}) }}
     >
       <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' } }}>
-        {detailDescription && type !== 'profile' && type !== 'review' ? (
+        {(services.length > 0 || detailDescription) && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
               {services.map((label, idx) => {

@@ -7,6 +7,7 @@ export type PresetCardName =
   | 'search' // 기사님 찾기
   | 'pickMover' // 찜한 기사님
   | 'quotation' // 견적 내역
+  | 'moveQuotation' // 기사 보낸 견적 내역
   | 'request' // 받은 요청
   | 'confirmRequest' // 확정 견적
   | 'rejectRequest' // 반려 요청

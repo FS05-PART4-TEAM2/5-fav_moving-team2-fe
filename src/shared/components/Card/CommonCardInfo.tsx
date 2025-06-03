@@ -37,7 +37,13 @@ export default function CommonCardInfo({ type, data, onRequestClick, onRejectCli
     return dayjs(date).format('YYYY.MM.DD(dd)');
   };
 
-  if (type === 'request' || type === 'confirmRequest' || type === 'rejectRequest' || type === 'finishRequest') {
+  if (
+    type === 'request' ||
+    type === 'moveQuotation' ||
+    type === 'confirmRequest' ||
+    type === 'rejectRequest' ||
+    type === 'finishRequest'
+  ) {
     return (
       <RequestConfirmCardInfo
         type={type}
