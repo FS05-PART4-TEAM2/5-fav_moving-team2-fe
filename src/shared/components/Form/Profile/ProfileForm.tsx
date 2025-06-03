@@ -15,8 +15,7 @@ import { CustomerProfileForm, MoverBaseInfoForm, MoverProfileForm } from '@/shar
 import { updateCustomerProfile, updateMoverBaseInfo, updateMoverProfile } from '@/shared/core/profile/service';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { PATH, REGIONS, SERVICE_TYPES } from '@/shared/constants';
-import useUserStore from '@/shared/store/useUserStore';
+import { PATH } from '@/shared/constants';
 
 interface ProfileFormProps {
   mode: 'create' | 'modify' | 'baseInfo';

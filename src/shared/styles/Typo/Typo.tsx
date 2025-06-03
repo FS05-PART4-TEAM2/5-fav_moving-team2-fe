@@ -3,12 +3,20 @@ import Typography, { TypographyProps } from '@mui/material/Typography';
 import { typographyStyles } from './TypoStyles';
 
 export type TypoClassName =
+  | 'text_B_20to32'
+  | 'text_B_18to24'
   | 'text_SB_12to14'
   | 'text_R_14to16'
+  | 'text_R_14to20'
+  | 'text_SB_14to20'
+  | 'text_SB_14to24'
   | 'text_SB_16to20'
+  | 'text_SB_16to24'
   | 'text_M_12to16'
+  | 'text_M_13to16'
   | 'text_SB_14to18'
   | 'text_M_14to18'
+  | 'text_R_14to18'
   | 'button_text'
   | 'landing_title'
   | 'text_B_32'

@@ -97,13 +97,28 @@ export const Category = {
     mobileClassName: 'text_SB_13',
     shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
     padding: {
-      xs: '2px 2px',
-      sm: '2px 6px',
+      xs: '2px 6px',
       md: '4px 6px',
     },
     height: {
-      xs: '24px',
-      sm: '26px',
+      xs: '26px',
+      md: '34px',
+    },
+  },
+  confirmed: {
+    type: '확정 견적',
+    radius: '4px',
+    color: colorChips.primary[400],
+    bgColor: colorChips.line['f2f3f8'],
+    className: 'text_SB_16',
+    mobileClassName: 'text_SB_13',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 6px',
+      md: '4px 6px',
+    },
+    height: {
+      xs: '26px',
       md: '34px',
     },
   },
@@ -172,7 +187,6 @@ interface ChipProps {
 
 export default function Chip({ type, children, sx, onClick, ...props }: ChipProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const item = Category[type];
@@ -180,7 +194,7 @@ export default function Chip({ type, children, sx, onClick, ...props }: ChipProp
   const hasIcon = 'src' in item;
   const border = 'borderColor' in item ? `1px solid ${item.borderColor}` : 'none';
   const boxShadow = 'shadow' in item ? item.shadow : 'none';
-  const typoClass = isMobile && 'mobileClassName' in item ? item.mobileClassName : item.className;
+  const typoClass = isTablet && 'mobileClassName' in item ? item.mobileClassName : item.className;
 
   return (
     <MuiChip
@@ -192,11 +206,7 @@ export default function Chip({ type, children, sx, onClick, ...props }: ChipProp
           {hasIcon && (
             <Image src={item.src} alt={item.alt ?? ''} width={isTablet ? 20 : 24} height={isTablet ? 20 : 24} />
           )}
-          {hasIcon && isMobile ? null : typeof label === 'string' ? (
-            <Typo className={typoClass} content={label} />
-          ) : (
-            label
-          )}
+          {typeof label === 'string' ? <Typo className={typoClass} content={label} /> : label}
         </Stack>
       }
       sx={{
