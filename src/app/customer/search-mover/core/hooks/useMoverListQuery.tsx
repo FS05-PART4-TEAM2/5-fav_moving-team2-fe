@@ -5,19 +5,30 @@ import { moverKeys } from '@/shared/utils/queryKeys';
 import { getMoverListApi } from '../service/getMoverListApi';
 
 export const useMoverList = () => {
-  const { params } = useSearchMoverStore();
-  const { region, service, order, keyword, idNumCursor, orderCursor, limit } = params;
-
-  const LIMIT = 10;
+  const { params, updateParams } = useSearchMoverStore();
+  const { region, service, orderBy, keyword, limit } = params;
   const MIN_LOADING_TIME = 500;
 
   const queryClient = useQueryClient();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isFetching } = useInfiniteQuery({
-    queryKey: moverKeys.list({ region, service, order, keyword, idNumCursor, orderCursor, limit }),
-    queryFn: async ({ pageParam }: { pageParam: number | null }) => {
+    queryKey: moverKeys.list({ region, service, orderBy, keyword, limit }),
+    queryFn: async ({
+      pageParam,
+    }: {
+      pageParam: { orderCursor: number | null; idNumCursor: number | null } | null;
+    }) => {
       const startTime = Date.now();
-      const response = await getMoverListApi({ region, service, order, keyword, idNumCursor, orderCursor, limit });
+
+      const response = await getMoverListApi({
+        region,
+        service,
+        orderBy,
+        keyword,
+        orderCursor: pageParam?.orderCursor,
+        idNumCursor: pageParam?.idNumCursor,
+        limit,
+      });
 
       // 최소 로딩 시간 보장
       const elapsedTime = Date.now() - startTime;
@@ -28,9 +39,17 @@ export const useMoverList = () => {
       return response;
     },
     initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.data.orderNextCursor || null,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.data.hasNext) {
+        return undefined;
+      }
+
+      return {
+        orderCursor: lastPage.data.orderNextCursor,
+        idNumCursor: lastPage.data.idNumNextCursor,
+      };
+    },
     staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
@@ -40,15 +59,20 @@ export const useMoverList = () => {
     return Array.from(new Map(allMovers.map((mover) => [mover.id, mover])).values());
   }, [data]);
 
-  // params가 변경될 때만 수동으로 invalidate하는 함수
+  // params가 변경될 때 쿼리를 무효화하고 커서를 초기화하는 함수
   const invalidateMoverList = useCallback(() => {
-    const currentQueryKey = moverKeys.list({ region, service, order, keyword, idNumCursor, orderCursor, limit });
+    const currentQueryKey = moverKeys.list({ region, service, orderBy, keyword, limit });
     queryClient.invalidateQueries({ queryKey: currentQueryKey });
-  }, [queryClient, region, service, order, keyword, idNumCursor, orderCursor, limit]);
 
+    // 파라미터가 변경되면 store의 커서도 초기화
+    updateParams('orderCursor', null);
+    updateParams('idNumCursor', null);
+  }, [queryClient, region, service, orderBy, keyword, limit, updateParams]);
+
+  // 필터 관련 params가 변경될 때만 무효화 (커서 변경은 제외)
   useEffect(() => {
     invalidateMoverList();
-  }, [params]);
+  }, [region, service, orderBy, keyword]);
 
   return {
     movers,

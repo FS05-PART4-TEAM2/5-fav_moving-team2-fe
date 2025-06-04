@@ -222,17 +222,17 @@ export interface ReceivedOffers {
 export interface SearchMoverListPayload {
   region?: RegionType | null;
   service?: MovingType | null;
-  order: MoverFilterOption;
+  orderBy: MoverFilterOption;
   keyword: string; // 기사 별명
-  idNumCursor: number; // idNum 커서
-  orderCursor: number; // 정렬 커서
+  idNumCursor?: number | null; // idNum 커서
+  orderCursor?: number | null; // 정렬 커서
   limit: number; // 조회 개수
 }
 
 export interface SearchMoverListItem {
   id: string;
   idNum: number;
-  nickName: string;
+  nickname: string;
   profileImage: string | null;
   serviceList: MovingType[] | null;
   isAssigned: boolean;

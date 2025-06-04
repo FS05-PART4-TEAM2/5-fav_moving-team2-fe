@@ -13,10 +13,10 @@ interface SearchMoverStore {
 const initialState: SearchMoverListPayload = {
   region: null, // null이 기본값(전체 조회)
   service: null, // null이 기본값(전체 조회)
-  order: 'MOSTREVIEW',
+  orderBy: 'MOSTREVIEW',
   keyword: '',
-  idNumCursor: 0,
-  orderCursor: 0,
+  idNumCursor: null,
+  orderCursor: null,
   limit: 10,
 };
 

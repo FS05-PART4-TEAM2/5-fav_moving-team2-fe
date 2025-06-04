@@ -43,7 +43,7 @@ export const OrderOptionFilter = ({ isOpen = false, onToggle }: OrderOptionFilte
   };
 
   const handleItemSelect = (value: MoverFilterOption) => {
-    updateParams('order', value);
+    updateParams('orderBy', value);
 
     // 선택 후 필터 닫기
     if (onToggle) {
@@ -53,7 +53,7 @@ export const OrderOptionFilter = ({ isOpen = false, onToggle }: OrderOptionFilte
 
   // 버튼에 표시될 텍스트 가져오기
   const getButtonText = () => {
-    const selectedItem = orderOptionFilter.find((item) => item.key === params.order);
+    const selectedItem = orderOptionFilter.find((item) => item.key === params.orderBy);
     return selectedItem ? selectedItem.label : '리뷰 많은순';
   };
 
@@ -75,7 +75,7 @@ export const OrderOptionFilter = ({ isOpen = false, onToggle }: OrderOptionFilte
               <Typo
                 className="text_M_12to14"
                 content={item.label}
-                color={params.order === item.key ? colorChips.primary[300] : colorChips.black[400]}
+                color={params.orderBy === item.key ? colorChips.primary[300] : colorChips.black[400]}
               />
             </Stack>
           ))}

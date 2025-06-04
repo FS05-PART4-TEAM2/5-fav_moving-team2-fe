@@ -9,7 +9,7 @@ import { OrderOptionFilter } from './core/components/OrderOptionFilter';
 type OpenFilterType = 'region' | 'service' | 'order' | null;
 
 export const SearchControllerFeature = () => {
-  const { params, updateParams } = useSearchMoverStore();
+  const { updateParams } = useSearchMoverStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const [openFilter, setOpenFilter] = useState<OpenFilterType>(null);
 
@@ -25,7 +25,6 @@ export const SearchControllerFeature = () => {
 
   const handleChangeKeyword = (keyword: string) => {
     updateParams('keyword', keyword);
-    console.log('키워드 업데이트: ', params);
   };
 
   return (

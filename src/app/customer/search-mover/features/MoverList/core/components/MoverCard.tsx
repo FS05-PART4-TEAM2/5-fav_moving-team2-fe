@@ -11,7 +11,7 @@ export const MoverCard = ({ data }: { data: SearchMoverListItem }) => {
   const moveType = data.serviceList?.[0] ?? 'SMALL_MOVE';
   const chipMoveType = moveType === 'SMALL_MOVE' ? 'small' : moveType === 'FAMILY_MOVE' ? 'home' : 'office';
   const profileBaseProps = {
-    nickname: data.nickName,
+    nickname: data.nickname,
     profileImage: data.profileImage,
     totalRating: data.totalRating,
     reviewCounts: data.reviewCounts,
