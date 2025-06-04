@@ -1,8 +1,7 @@
 export type UserType = 'customer' | 'mover' | 'temp';
-export type MovingType = 'ALL' | 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
+export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
 export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'DELETED';
 export type RegionType =
-  | 'ALL'
   | 'SEOUL'
   | 'GYEONGGI'
   | 'INCHEON'

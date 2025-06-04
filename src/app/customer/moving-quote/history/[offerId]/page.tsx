@@ -28,7 +28,7 @@ export default function Page() {
   if (isLoading) {
     return (
       <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <CircularProgress size={80} />
+        <CircularProgress size={40} />
       </Stack>
     );
   }
@@ -49,7 +49,6 @@ export default function Page() {
   const isAssigned = data.offers[0].isAssigned; // 지정요청
   const moveType =
     data.moveType === 'SMALL_MOVE' ? '소형이사' : data.moveType === 'FAMILY_MOVE' ? '가정이사' : '사무실이사';
-  const chipMoveType = data.moveType === 'SMALL_MOVE' ? 'small' : data.moveType === 'FAMILY_MOVE' ? 'home' : 'office';
   const profileBaseProps = {
     nickname: data.offers[0].moverNickname,
     profileImage: data.offers[0].moverProfileImageUrl,
@@ -79,7 +78,7 @@ export default function Page() {
             <Stack sx={chipWrapperSx}>
               {/* 확정견적인 경우 */}
               {isConfirmed && <Chip type="confirmed" />}
-              <Chip type={chipMoveType} />
+              <Chip type={data.moveType} />
               {/* 지정요청일 경우 */}
               {isAssigned && <Chip type="select" />}
             </Stack>

@@ -8,8 +8,8 @@ import Chip from '@/shared/components/Chip/Chip';
 
 export const MoverCard = ({ data }: { data: SearchMoverListItem }) => {
   const router = useRouter();
+  // 서비스 여러개인 경우 1개만 보여줌
   const moveType = data.serviceList?.[0] ?? 'SMALL_MOVE';
-  const chipMoveType = moveType === 'SMALL_MOVE' ? 'small' : moveType === 'FAMILY_MOVE' ? 'home' : 'office';
   const profileBaseProps = {
     nickname: data.nickname,
     profileImage: data.profileImage,
@@ -29,7 +29,7 @@ export const MoverCard = ({ data }: { data: SearchMoverListItem }) => {
   return (
     <Stack sx={profileBoxSx} onClick={handleClickDetail}>
       <Stack sx={chipWrapperSx}>
-        <Chip type={chipMoveType} />
+        <Chip type={moveType} />
         {/* 지정요청일 경우 */}
         {data.isAssigned && <Chip type="select" />}
       </Stack>

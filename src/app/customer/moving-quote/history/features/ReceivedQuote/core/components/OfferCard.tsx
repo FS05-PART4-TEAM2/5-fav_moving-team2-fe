@@ -14,9 +14,6 @@ interface OfferListProps {
 
 export const OfferCard = ({ data, moveType }: OfferListProps) => {
   const router = useRouter();
-
-  const chipMoveType = moveType === 'SMALL_MOVE' ? 'small' : moveType === 'FAMILY_MOVE' ? 'home' : 'office';
-
   const handleClickDetail = () => {
     router.push(`/customer/moving-quote/history/${data.offerId}`);
   };
@@ -38,7 +35,7 @@ export const OfferCard = ({ data, moveType }: OfferListProps) => {
       <Stack sx={chipWrapperSx}>
         {/* 확정견적인 경우 */}
         {data.isConfirmedMover && <Chip type="confirmed" />}
-        <Chip type={chipMoveType} />
+        <Chip type={moveType} />
         {/* 지정요청일 경우 */}
         {data.isAssigned && <Chip type="select" />}
       </Stack>

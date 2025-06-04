@@ -73,6 +73,9 @@ export const REGIONS: { key: RegionType; label: string }[] = [
   { key: 'JEJU', label: '제주' },
 ];
 
-export const ServiceFilter: { key: MovingType; label: string }[] = [{ key: 'ALL', label: '전체' }, ...SERVICE_TYPES];
+export const ServiceFilter: { key: MovingType | 'ALL'; label: string }[] = [
+  { key: 'ALL', label: '전체' },
+  ...SERVICE_TYPES,
+];
 
-export const RegionFilter: { key: RegionType; label: string }[] = [{ key: 'ALL', label: '전체' }, ...REGIONS];
+export const RegionFilter: { key: RegionType | 'ALL'; label: string }[] = [{ key: 'ALL', label: '전체' }, ...REGIONS];

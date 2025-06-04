@@ -8,8 +8,8 @@ import Chip from '@/shared/components/Chip/Chip';
 
 export const MoverCardSmall = ({ data }: { data: SearchMoverListItem }) => {
   const router = useRouter();
+  // 서비스 여러개인 경우 1개만 보여줌
   const moveType = data.serviceList?.[0] ?? 'SMALL_MOVE';
-  const chipMoveType = moveType === 'SMALL_MOVE' ? 'small' : moveType === 'FAMILY_MOVE' ? 'home' : 'office';
   const hasProfileImage = data.profileImage !== null;
   const imgSrc = data.profileImage ?? '/assets/images/profile-icon/login-default-36x36.svg';
   const filledHeart = '/assets/images/like-icon/like-24x24-black.svg';
@@ -24,7 +24,7 @@ export const MoverCardSmall = ({ data }: { data: SearchMoverListItem }) => {
   return (
     <Stack sx={profileBoxSx} onClick={handleClickDetail}>
       <Stack sx={chipWrapperSx}>
-        <Chip type={chipMoveType} isSmall={true} />
+        <Chip type={moveType} isSmall={true} />
         {/* 지정요청일 경우 */}
         {data.isAssigned && <Chip type="select" isSmall={true} />}
       </Stack>
@@ -48,7 +48,7 @@ export const MoverCardSmall = ({ data }: { data: SearchMoverListItem }) => {
         <Stack width="100%" direction="column" gap="8px" alignItems="flex-start">
           {/* 닉네임 & 좋아요 */}
           <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
-            <Typo className="text_SB_14" content={`${data.nickName} 기사님`} color={colorChips.black[300]} />
+            <Typo className="text_SB_14" content={`${data.nickname} 기사님`} color={colorChips.black[300]} />
             <Stack direction="row" alignItems="center" gap={{ xs: '2px', md: '4px' }}>
               <Image src={likeIconSrc} alt="like" width={20} height={20} />
               <Typo content={data.likeCount.toString()} className="text_M_13" color={colorChips.primary[400]} />

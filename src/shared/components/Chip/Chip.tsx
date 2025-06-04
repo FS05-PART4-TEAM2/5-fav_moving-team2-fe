@@ -4,7 +4,7 @@ import { useTheme, useMediaQuery, Chip as MuiChip, Stack } from '@mui/material';
 import Image from 'next/image';
 
 export const Category = {
-  small: {
+  SMALL_MOVE: {
     type: '소형이사',
     src: '/assets/images/chip-icon/box-20x20.svg',
     alt: '소형 이사 아이콘',
@@ -25,7 +25,7 @@ export const Category = {
       md: '34px',
     },
   },
-  home: {
+  FAMILY_MOVE: {
     type: '가정이사',
     src: '/assets/images/chip-icon/home-20x20.svg',
     alt: '가정 이사 아이콘',
@@ -46,7 +46,7 @@ export const Category = {
       md: '34px',
     },
   },
-  office: {
+  OFFICE_MOVE: {
     type: '사무실이사',
     src: '/assets/images/chip-icon/office-20x20.svg',
     alt: '사무실 이사 아이콘',
