@@ -118,6 +118,17 @@ export const typographyStyles: TypoStyles = {
       lineHeight: '20px',
     },
   },
+  text_M_12to14: {
+    fontFamily: 'pretendard',
+    fontSize: '14px',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: '24px',
+    '@media (max-width: 1200px)': {
+      fontSize: '12px',
+      lineHeight: '20px',
+    },
+  },
   text_M_13to16: {
     fontFamily: 'pretendard',
     fontSize: '16px',

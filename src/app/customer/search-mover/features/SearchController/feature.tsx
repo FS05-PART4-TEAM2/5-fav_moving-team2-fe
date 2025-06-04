@@ -1,19 +1,53 @@
 import { Stack, useMediaQuery } from '@mui/material';
-import SearchBar from '@/shared/components/Input/SearchBar';
-import { colorChips } from '@/shared/styles/colorChips';
-import { Typo } from '@/shared/styles/Typo/Typo';
 import theme from '@/shared/theme';
+import { useState } from 'react';
+import { useSearchMoverStore } from '../../core/hooks/useSearchMoverStore';
+import { SearchOptionFilter } from '../../core/components/SearchOptionFilter';
+import SearchBar from '@/shared/components/Input/SearchBar';
+import { OrderOptionFilter } from './core/components/OrderOptionFilter';
+
+type OpenFilterType = 'region' | 'service' | 'order' | null;
 
 export const SearchControllerFeature = () => {
+  const { params, updateParams } = useSearchMoverStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [openFilter, setOpenFilter] = useState<OpenFilterType>(null);
+
+  const handleFilterToggle = (filterType: OpenFilterType) => {
+    if (openFilter === filterType) {
+      // 같은 필터를 클릭하면 닫기
+      setOpenFilter(null);
+    } else {
+      // 다른 필터를 클릭하면 해당 필터만 열기
+      setOpenFilter(filterType);
+    }
+  };
+
+  const handleChangeKeyword = (keyword: string) => {
+    updateParams('keyword', keyword);
+    console.log('키워드 업데이트: ', params);
+  };
 
   return (
     <Stack sx={searchControllerSx}>
       <Stack sx={filterWrapperSx}>
-        {!isDesktop && <Typo className="text_M_20" content="검색 필터" color={colorChips.black[400]} />}
-        <Typo className="text_M_20" content="정렬 필터" color={colorChips.black[400]} />
+        {!isDesktop && (
+          <Stack direction="row" alignItems="center" gap={{ xs: '8px', sm: '12px' }}>
+            <SearchOptionFilter
+              filterType="region"
+              isOpen={openFilter === 'region'}
+              onToggle={() => handleFilterToggle('region')}
+            />
+            <SearchOptionFilter
+              filterType="service"
+              isOpen={openFilter === 'service'}
+              onToggle={() => handleFilterToggle('service')}
+            />
+          </Stack>
+        )}
+        <OrderOptionFilter isOpen={openFilter === 'order'} onToggle={() => handleFilterToggle('order')} />
       </Stack>
-      <SearchBar onSearch={() => {}} />
+      <SearchBar onSearch={handleChangeKeyword} />
     </Stack>
   );
 };

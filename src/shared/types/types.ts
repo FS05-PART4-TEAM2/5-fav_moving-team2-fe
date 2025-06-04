@@ -1,7 +1,8 @@
 export type UserType = 'customer' | 'mover' | 'temp';
-export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
+export type MovingType = 'ALL' | 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
 export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'DELETED';
-export type Region =
+export type RegionType =
+  | 'ALL'
   | 'SEOUL'
   | 'GYEONGGI'
   | 'INCHEON'
@@ -219,8 +220,8 @@ export interface ReceivedOffers {
 }
 
 export interface SearchMoverListPayload {
-  region?: Region;
-  service?: MovingType;
+  region?: RegionType | null;
+  service?: MovingType | null;
   order: MoverFilterOption;
   keyword: string; // 기사 별명
   idNumCursor: number; // idNum 커서
@@ -255,5 +256,5 @@ export interface SearchMoverListResponse {
 // 기사님 상세조회
 export interface SearchMoverDetailResponse extends SearchMoverListItem {
   detailDescription: string;
-  serviceArea: Region[] | null;
+  serviceArea: RegionType[] | null;
 }

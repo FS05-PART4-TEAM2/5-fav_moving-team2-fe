@@ -1,3 +1,5 @@
+import { MovingType, RegionType } from './types/types';
+
 export const PATH = {
   landing: '/',
   customer: {
@@ -44,3 +46,33 @@ export const Region = [
   '부산',
   '제주',
 ];
+
+export const SERVICE_TYPES: { key: MovingType; label: string }[] = [
+  { key: 'SMALL_MOVE', label: '소형이사' },
+  { key: 'FAMILY_MOVE', label: '가정이사' },
+  { key: 'OFFICE_MOVE', label: '사무실이사' },
+];
+
+export const REGIONS: { key: RegionType; label: string }[] = [
+  { key: 'SEOUL', label: '서울' },
+  { key: 'GYEONGGI', label: '경기' },
+  { key: 'INCHEON', label: '인천' },
+  { key: 'GANGWON', label: '강원' },
+  { key: 'CHUNGBUK', label: '충북' },
+  { key: 'CHUNGNAM', label: '충남' },
+  { key: 'SEJONG', label: '세종' },
+  { key: 'DAEJEON', label: '대전' },
+  { key: 'JEONBUK', label: '전북' },
+  { key: 'JEONNAM', label: '전남' },
+  { key: 'GWANGJU', label: '광주' },
+  { key: 'GYEONGBUK', label: '경북' },
+  { key: 'GYEONGNAM', label: '경남' },
+  { key: 'DAEGU', label: '대구' },
+  { key: 'ULSAN', label: '울산' },
+  { key: 'BUSAN', label: '부산' },
+  { key: 'JEJU', label: '제주' },
+];
+
+export const ServiceFilter: { key: MovingType; label: string }[] = [{ key: 'ALL', label: '전체' }, ...SERVICE_TYPES];
+
+export const RegionFilter: { key: RegionType; label: string }[] = [{ key: 'ALL', label: '전체' }, ...REGIONS];

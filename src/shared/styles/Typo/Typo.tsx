@@ -13,6 +13,7 @@ export type TypoClassName =
   | 'text_SB_16to20'
   | 'text_SB_16to24'
   | 'text_M_12to16'
+  | 'text_M_12to14'
   | 'text_M_13to16'
   | 'text_SB_14to18'
   | 'text_M_14to18'
