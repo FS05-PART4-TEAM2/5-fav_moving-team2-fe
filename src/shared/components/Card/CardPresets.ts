@@ -16,6 +16,7 @@ export type PresetCardName =
   | 'review'; // 리뷰 카드
 
 export interface UserCardData {
+  id?: 'string';
   name?: string;
   service?: string[];
   detailDescription?: string;

@@ -1,17 +1,19 @@
 'use client';
 
 import { colorChips } from '@/shared/styles/colorChips';
-import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack } from '@mui/material';
 import { useTabBarType } from '@/shared/context/TabBarProvider';
-import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { useRouter } from 'next/navigation';
+import QuoteOffer from './core/components/QuoteOffer';
+import RejectedQuot from './core/components/RejectedQuot';
 
 // 최상위 stack에 paddingX="24px" 넣기
 export default function MoverMovingQuoteHistoryPage() {
   const { tabBarType } = useTabBarType();
   const router = useRouter();
 
+  //TODO : 리엑트 쿼리 연결 / type 일반 = "quotation", 완료 = "finishRequest", 거절 = "rejectRequest"
+  //        견적 대기, 지정 견적 등등 확인해서 서비스로 넘겨줘야함 / Card도 넘겨주는 값 생각
   return (
     <Stack justifyContent="center" alignItems="center" gap="20px" paddingX="24px" height="100%">
       <Stack
@@ -20,44 +22,9 @@ export default function MoverMovingQuoteHistoryPage() {
         height="100%"
         alignItems="flex-start"
         bgcolor={colorChips.background.f7f7f7}
-      >
-        <Typo className="text_B_20" content="기사님 내 견적 관리 페이지" />
-        <SolidButton text="견적상세 페이지 이동" onClick={() => router.push('/mover/moving-quote/history/1')} />
-      </Stack>
-      {tabBarType === 'quoteOffer' && <TabBarTest1 />}
-      {tabBarType === 'rejectedQuote' && <TabBarTest2 />}
+      ></Stack>
+      {tabBarType === 'quoteOffer' && <QuoteOffer />}
+      {tabBarType === 'rejectedQuote' && <RejectedQuot />}
     </Stack>
   );
 }
-
-const TabBarTest1 = () => {
-  return (
-    <Stack
-      direction="column"
-      width="100%"
-      height="300px"
-      justifyContent="center"
-      alignItems="center"
-      gap="20px"
-      bgcolor={colorChips.primary[100]}
-    >
-      <Typo content="보낸 견적 조회" className="text_M_16" color={colorChips.black[400]} />
-    </Stack>
-  );
-};
-
-const TabBarTest2 = () => {
-  return (
-    <Stack
-      direction="column"
-      width="100%"
-      height="300px"
-      justifyContent="center"
-      alignItems="center"
-      gap="20px"
-      bgcolor={colorChips.secondary.red[100]}
-    >
-      <Typo content="반려 요청" className="text_M_16" color={colorChips.black[400]} />
-    </Stack>
-  );
-};

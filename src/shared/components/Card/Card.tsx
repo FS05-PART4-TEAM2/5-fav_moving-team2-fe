@@ -5,28 +5,8 @@ import { PresetCardName, UserCardData } from './CardPresets';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { OutlinedButton } from '../Button/OutlinedButton';
 import theme from '@/shared/theme';
-
-export const UserData = {
-  name: '김코드',
-  service: ['견적 대기', '소형이사', '지정 견적 요청'],
-  detailDescription: '누구보다 빠르게 안전 운송합니다!',
-  likeCount: 7942,
-  userProfileImage: '/assets/images/profile-icon/avatartion-yellow-01.svg', // 70x64
-  review: {
-    content: '완전 친절하고 싸고 어쩌구 저쩌구 이것저것 길게 설명과 중간에 칭찬',
-    reviewer: 172,
-    averageScore: 4.3,
-  },
-  career: 10,
-  confirmation: 216,
-  moveDay: '2025-05-20',
-  startPoint: '고양시 덕양구',
-  endPoint: '서울시 강남구',
-  provideService: ['소형이사', '가정이사'],
-  region: ['서울', '경기'],
-  QuoteAmount: 274000,
-  createTime: '2025-05-22',
-};
+import { useRouter } from 'next/navigation';
+import { PATH } from '@/shared/constants';
 
 interface CardProps {
   type: PresetCardName;
@@ -35,6 +15,8 @@ interface CardProps {
 
 export default function Card({ type, data }: CardProps) {
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const router = useRouter();
+
   return (
     <Box position="relative">
       {(type === 'rejectRequest' || type === 'finishRequest') && (
@@ -59,8 +41,11 @@ export default function Card({ type, data }: CardProps) {
             </Typo>
 
             {type === 'finishRequest' && (
-              // TODO: 여기 onClick 처리 수정해야겠네요
-              <OutlinedButton text="견적 상세보기" width="100%" onClick={() => console.log('견적 상세보기')} />
+              <OutlinedButton
+                text="견적 상세보기"
+                width="100%"
+                onClick={() => router.push(`${PATH.mover.movingQuoteHistory}/${data.id}`)}
+              />
             )}
           </Stack>
         </Box>
@@ -76,8 +61,8 @@ export default function Card({ type, data }: CardProps) {
         <Stack>
           <CardHeader
             type={type}
-            services={UserData.service}
-            detailDescription={UserData.detailDescription}
+            services={data.service ?? []}
+            detailDescription={data.detailDescription}
             name="김코드"
             data={data}
           />
