@@ -18,7 +18,9 @@ export type PresetFieldName =
   | 'review'
   | 'currentPassword'
   | 'newPassword'
-  | 'newPasswordConfirm';
+  | 'newPasswordConfirm'
+  | 'quoteAmount'
+  | 'quoteInfo';
 
 type FieldPreset = {
   placeholder: string;
@@ -251,6 +253,32 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     rules: {
       required: '새 비밀번호 확인이 필요합니다',
       validate: () => true,
+    },
+  },
+
+  quoteAmount: {
+    type: 'text',
+    defaultValue: '',
+    placeholder: '견적가 입력',
+    autoComplete: 'off',
+    rules: {
+      required: '견적 금액을 입력해주세요',
+      pattern: {
+        value: /^[0-9]+$/,
+        message: '숫자만 입력해주세요',
+      },
+    },
+  },
+  quoteInfo: {
+    type: 'text',
+    defaultValue: '',
+    placeholder: '최소 10자 이상 입력해주세요',
+    autoComplete: 'off',
+    rules: {
+      maxLength: {
+        value: 200,
+        message: '200자 이하로 입력해주세요',
+      },
     },
   },
 };

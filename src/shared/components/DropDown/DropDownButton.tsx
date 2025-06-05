@@ -3,7 +3,7 @@ import { useTheme, useMediaQuery, Button } from '@mui/material';
 import { dropdownButtonPresets } from './DropDownButtonPresete';
 
 interface DropDownButtonProps {
-  category: 'region' | 'service' | 'sort' | 'profile' | 'alarm';
+  category: 'region' | 'service' | 'sort' | 'profile' | 'alarm' | 'moveSort';
   label: string;
   selected?: boolean;
   isOpen: boolean;
@@ -17,6 +17,7 @@ export default function DropDownButton({ category, label, selected = false, isOp
   const preset = dropdownButtonPresets[category][selected ? 'selected' : 'default'];
   const padding = isMobile ? preset.padding.sm : preset.padding.md;
   const className = isMobile ? preset.mobileClassName : preset.className;
+  const isMoveSort = category === 'moveSort';
 
   const iconSrc = isOpen
     ? '/assets/images/direction-icon/up-20x20.svg'
@@ -45,7 +46,7 @@ export default function DropDownButton({ category, label, selected = false, isOp
               color: preset.color,
               padding,
               borderRadius: preset.radius,
-              border: `1px solid ${preset.borderColor}`,
+              border: isMoveSort ? '' : `1px solid ${preset.borderColor}`,
               boxShadow: preset.shadow,
               gap: '6px',
             }),
