@@ -2,7 +2,7 @@
 
 import { colorChips } from '@/shared/styles/colorChips';
 import { Stack } from '@mui/material';
-import { useTabBarType } from '@/shared/context/TabBarProvider';
+import { TabBarProvider, useTabBarType } from '@/shared/context/TabBarProvider';
 import { useRouter } from 'next/navigation';
 import QuoteOffer from './core/components/QuoteOffer';
 import RejectedQuot from './core/components/RejectedQuot';

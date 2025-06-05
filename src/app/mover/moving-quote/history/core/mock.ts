@@ -1,7 +1,7 @@
 import { PresetCardName, UserCardData } from '@/shared/components/Card/CardPresets';
 
 export const mockQuotation: {
-  type: Extract<PresetCardName, 'moveQuotation' | 'finishRequest'>;
+  type: Extract<PresetCardName, 'moveQuotation' | 'finishRequest' | 'refuse'>;
   data: UserCardData;
 }[] = [
   {
@@ -15,6 +15,7 @@ export const mockQuotation: {
       createTime: '2025-06-01T03',
       quoteAmount: 100000,
       comment: '스케줄 상 불가합니다.',
+      price: 100000,
       confirmation: 0,
       career: 2,
       provideService: ['SMALL_MOVE', 'FAMILY_MOVE'],
@@ -52,7 +53,7 @@ export const mockQuotation: {
     },
   },
   {
-    type: 'finishRequest',
+    type: 'refuse',
     data: {
       id: 'q3',
       name: '이영희',
@@ -147,7 +148,7 @@ export const mockQuotation: {
     },
   },
   {
-    type: 'finishRequest',
+    type: 'refuse',
     data: {
       id: 'q7',
       name: '한지민',
@@ -194,7 +195,7 @@ export const mockQuotation: {
     },
   },
   {
-    type: 'moveQuotation',
+    type: 'refuse',
     data: {
       id: 'q9',
       name: '류준열',

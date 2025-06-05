@@ -22,6 +22,7 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const showButtons = type === 'request';
+  const isConfirmRequest = type === 'confirmRequest';
   const formatted = (date: string): string => {
     return dayjs(date).format('YYYY.MM.DD(dd)');
   };
@@ -349,6 +350,8 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
             }}
           />
         </Stack>
+      ) : isConfirmRequest ? (
+        ''
       ) : (
         <Stack direction="row" justifyContent="flex-end" alignItems="center" gap={isMdDown ? '8px' : '16px'}>
           <Typo className={isMdDown ? 'text_M_14' : 'text_M_18'} style={{ color: colorChips.black[400] }}>

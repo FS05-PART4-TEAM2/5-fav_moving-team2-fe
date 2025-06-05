@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { Stack } from '@mui/material';
 import FilterCheckList from '@/shared/components/DropDown/FilterCheckList';
-import { TabBar } from '@/shared/components/Tab/TabBar';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 
 interface Item {
@@ -18,22 +16,19 @@ interface FilterModalProps {
   onChange: (label: string, checked: boolean) => void;
   onCheckAll: (group: '이사유형' | '필터') => (checked: boolean) => void;
   onClose: () => void;
+  currentTab: 'move' | 'filter';
 }
 
-export default function FilterModal({ moveTypeItems, filterItems, onChange, onCheckAll, onClose }: FilterModalProps) {
-  const [currentTab, setCurrentTab] = useState<'move' | 'filter'>('move');
-
+export default function FilterModal({
+  moveTypeItems,
+  filterItems,
+  onChange,
+  onCheckAll,
+  onClose,
+  currentTab,
+}: FilterModalProps) {
   return (
     <Stack spacing={3} width="100%">
-      <TabBar
-        currentVal={currentTab}
-        firstVal="move"
-        firstLabel="이사유형"
-        secondVal="filter"
-        secondLabel="필터"
-        handleChange={(val) => setCurrentTab(val as 'move' | 'filter')}
-      />
-
       {currentTab === 'move' ? (
         <FilterCheckList
           title="이사유형"

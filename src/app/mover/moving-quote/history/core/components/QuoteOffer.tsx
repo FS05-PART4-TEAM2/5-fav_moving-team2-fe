@@ -11,7 +11,7 @@ export default function QuoteOffer() {
     <Grid container spacing={2}>
       {mockQuotation.map(({ type, data }) => (
         <Grid key={data.id} size={{ xs: 12, md: 6 }}>
-          <Card type={type} data={data} />
+          <Card type={type} data={data} height={isMd ? ' ' : '260px'} />
         </Grid>
       ))}
     </Grid>

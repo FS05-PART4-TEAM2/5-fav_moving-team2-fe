@@ -30,20 +30,21 @@ export default function CommonCardInfo({ type, data, onRequestClick, onRejectCli
   const isWaitRequest = type === 'waitRequest';
   const isWriteReview = type === 'writeReview';
   const isFinishReview = type === 'finishReview';
+  const isConfirmRequest = type === 'confirmRequest';
   const ExcludeLike = !isProfile && !isWriteReview && !isFinishReview;
+  const isRequestConfirm =
+    type === 'request' ||
+    type === 'confirmRequest' ||
+    type === 'rejectRequest' ||
+    type === 'finishRequest' ||
+    type === 'refuse';
 
   const formatted = (date: string): string => {
     if (isWriteReview) dayjs(date).format('YYYY.MM.DD');
     return dayjs(date).format('YYYY.MM.DD(dd)');
   };
 
-  if (
-    type === 'request' ||
-    type === 'moveQuotation' ||
-    type === 'confirmRequest' ||
-    type === 'rejectRequest' ||
-    type === 'finishRequest'
-  ) {
+  if (isRequestConfirm) {
     return (
       <RequestConfirmCardInfo
         type={type}
@@ -90,7 +91,12 @@ export default function CommonCardInfo({ type, data, onRequestClick, onRejectCli
                 position: 'relative',
               }}
             >
-              <Image src={data.userProfileImage ?? ''} alt="user profile Image" fill style={{ objectFit: 'cover' }} />
+              <Image
+                src={data.userProfileImage || '/assets/images/profile-icon/login-default-36x36.svg'}
+                alt="user profile Image"
+                fill
+                style={{ objectFit: 'cover' }}
+              />
             </Stack>
           ) : null}
           <Stack direction="column">
@@ -381,7 +387,7 @@ export default function CommonCardInfo({ type, data, onRequestClick, onRejectCli
           </Stack>
         </>
       )}
-      {(isWaitRequest || isQuotation) && (
+      {!isConfirmRequest && (isWaitRequest || isQuotation) && (
         <Stack
           direction="row"
           justifyContent="flex-end"

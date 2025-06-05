@@ -46,8 +46,6 @@ export default function CardHeader({
   const extraInfo = !isModal
     ? type === 'finishReview' && data.moveDay
       ? dayjs(data.moveDay).format('YYYY.MM.DD')
-      : type === 'confirmRequest'
-      ? dayjs(data.moveDay).format('YYYY.MM.DD')
       : type === 'request'
       ? dayjs(data.moveDay).fromNow()
       : ''
