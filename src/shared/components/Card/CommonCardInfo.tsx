@@ -37,6 +37,7 @@ export default function CommonCardInfo({ type, data, onRequestClick, onRejectCli
     type === 'confirmRequest' ||
     type === 'rejectRequest' ||
     type === 'finishRequest' ||
+    type === 'moveQuotation' ||
     type === 'refuse';
 
   const formatted = (date: string): string => {
