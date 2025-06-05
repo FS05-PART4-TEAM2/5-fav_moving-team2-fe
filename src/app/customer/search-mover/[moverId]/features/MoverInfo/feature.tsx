@@ -15,6 +15,7 @@ interface MoverInfoProps {
   isDesktop: boolean;
   reviewData: MoverDetailReviewResponse;
   handleChangePage: (event: React.ChangeEvent<unknown>, value: number) => void;
+  isReviewLoading: boolean;
 }
 
 export const MoverInfoFeature = ({
@@ -24,6 +25,7 @@ export const MoverInfoFeature = ({
   shareLinkTitle,
   reviewData,
   handleChangePage,
+  isReviewLoading,
 }: MoverInfoProps) => {
   const isAssigned = data.isAssigned;
   const hasReview = data.reviewCounts > 0;
@@ -95,7 +97,12 @@ export const MoverInfoFeature = ({
       {/* 리뷰 */}
       <Stack direction="column" width="100%" gap="32px">
         <Typo content={reviewSectionTitle} className="text_SB_16to24" color={colorChips.black[400]} />
-        <MoverReviewFeature data={reviewData} hasReview={hasReview} handleChangePage={handleChangePage} />
+        <MoverReviewFeature
+          data={reviewData}
+          hasReview={hasReview}
+          handleChangePage={handleChangePage}
+          isReviewLoading={isReviewLoading}
+        />
       </Stack>
     </Stack>
   );

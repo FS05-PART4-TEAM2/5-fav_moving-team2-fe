@@ -10,7 +10,7 @@ interface MoverDetailResponse {
 export async function getMoverDetailApi(moverId: string) {
   const res = await customAxios.get<MoverDetailResponse>(`/api/mover/${moverId}`, {
     fetchOptions: {
-      cache: 'force-cache',
+      // 기본 캐시 설정 사용 (revalidateTag와 호환)
       next: {
         tags: ['mover-detail'],
       },

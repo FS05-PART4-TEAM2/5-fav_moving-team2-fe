@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, CircularProgress } from '@mui/material';
 import { ReviewStats } from './core/components/ReviewStats';
 import { ReviewCard } from './core/components/ReviewCard';
 import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
@@ -11,9 +11,19 @@ interface MoverReviewFeatureProps {
   data: MoverDetailReviewResponse;
   hasReview: boolean;
   handleChangePage: (event: React.ChangeEvent<unknown>, value: number) => void;
+  isReviewLoading: boolean;
 }
 
-export const MoverReviewFeature = ({ data, hasReview, handleChangePage }: MoverReviewFeatureProps) => {
+export const MoverReviewFeature = ({ data, hasReview, handleChangePage, isReviewLoading }: MoverReviewFeatureProps) => {
+  // 리뷰 로딩 중일 때
+  if (isReviewLoading) {
+    return (
+      <Stack direction="column" width="100%" alignItems="center" justifyContent="center" gap="24px" paddingY="80px">
+        <CircularProgress size={40} />
+      </Stack>
+    );
+  }
+
   if (!hasReview) {
     return (
       <Stack direction="column" width="100%" alignItems="center" justifyContent="center" gap="24px" paddingY="80px">

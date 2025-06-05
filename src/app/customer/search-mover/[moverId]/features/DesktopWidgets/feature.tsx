@@ -2,12 +2,10 @@ import { ShareButtons } from '@/shared/components/Button/ShareButtons';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { UserType } from '@/shared/types/types';
 import { Stack } from '@mui/material';
 import Image from 'next/image';
 
 interface DesktopWidgetsFeatureProps {
-  userType: UserType;
   nickname: string;
   isDesktop: boolean;
   isAssigned: boolean;
@@ -19,7 +17,6 @@ interface DesktopWidgetsFeatureProps {
 }
 
 export const DesktopWidgetsFeature = ({
-  userType,
   nickname,
   isAssigned,
   isDesktop,
@@ -33,25 +30,23 @@ export const DesktopWidgetsFeature = ({
 
   return (
     <Stack flexShrink={0} width="360px" direction="column" gap="80px">
-      {/* 찜하기, 지정요청 버튼 - 일반유저 로그인 시 보임 */}
-      {userType === 'customer' && (
-        <Stack direction="column" width="100%" gap="22px">
-          <Typo
-            className="text_SB_20"
-            content={desktopButtonsTitle}
-            color={colorChips.black[400]}
-            customStyle={{
-              wordBreak: 'keep-all',
-              wordWrap: 'break-word',
-            }}
-          />
-          <Stack sx={desktopLikeButtonSx} onClick={handleLikeClick}>
-            <Image src={likeIconSrc} alt="like" width={24} height={24} />
-            <Typo className="text_SB_20" content={'기사님 찜하기'} color={colorChips.black[400]} />
-          </Stack>
-          <SolidButton text={'지정 견적 요청하기'} onClick={handleAssignRequest} disabled={isAssigned} />
+      {/* 찜하기, 지정요청 버튼 */}
+      <Stack direction="column" width="100%" gap="22px">
+        <Typo
+          className="text_SB_20"
+          content={desktopButtonsTitle}
+          color={colorChips.black[400]}
+          customStyle={{
+            wordBreak: 'keep-all',
+            wordWrap: 'break-word',
+          }}
+        />
+        <Stack sx={desktopLikeButtonSx} onClick={handleLikeClick}>
+          <Image src={likeIconSrc} alt="like" width={24} height={24} />
+          <Typo className="text_SB_20" content={'기사님 찜하기'} color={colorChips.black[400]} />
         </Stack>
-      )}
+        <SolidButton text={'지정 견적 요청하기'} onClick={handleAssignRequest} disabled={isAssigned} />
+      </Stack>
       <ShareButtons title={shareLinkTitle} shareUrl={shareUrl} isDesktop={isDesktop} textStyle="text_SB_14to20" />
     </Stack>
   );

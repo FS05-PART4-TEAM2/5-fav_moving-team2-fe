@@ -287,3 +287,14 @@ export interface MoverDetailReviewResponse {
   totalPages: number;
   currentPage: number;
 }
+
+export interface AssignMoverResponse {
+  id: string;
+  status: QuotationStatus;
+  rejectedReason: string | null; // TODO: 이유 타입 정의
+  moverId: string;
+  customerId: string;
+  quotationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
