@@ -18,7 +18,7 @@ type AlarmItem = {
   title: string;
   createTime: string;
 };
-
+const MoveSortItems = ['이사 빠른순', '요청일 빠른순'];
 const SortItems = ['평점 높은순', '경력 높은순', '리뷰 많은순', '확정 많은순'];
 const AlarmItems: AlarmItem[] = [
   { title: '김코드 기사님의 소형이사 견적이 도착했어요', createTime: '2시간 전' },
@@ -39,6 +39,7 @@ export default function DropDownList({ type, selectedItem, onSelect, onClose }: 
   const isSort = type === 'sort';
   const isProfile = type === 'profile';
   const isAlarm = type === 'alarm';
+  const isMoveSort = type === 'moveSort';
 
   const items = isRegion
     ? Region
@@ -46,6 +47,8 @@ export default function DropDownList({ type, selectedItem, onSelect, onClose }: 
     ? Service
     : isSort
     ? SortItems
+    : isMoveSort
+    ? MoveSortItems
     : isProfile
     ? ProfileItems
     : isAlarm

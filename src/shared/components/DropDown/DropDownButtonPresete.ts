@@ -184,4 +184,40 @@ export const dropdownButtonPresets = {
       },
     },
   },
+  moveSort: {
+    default: {
+      radius: '',
+      color: colorChips.black[400],
+      bgColor: '',
+      borderColor: '',
+      className: 'text_M_14',
+      mobileClassName: 'text_M_12',
+      shadow: '',
+      padding: {
+        sm: '',
+        md: '',
+      },
+      height: {
+        sm: '',
+        md: '',
+      },
+    },
+    selected: {
+      radius: '',
+      color: colorChips.black[400],
+      bgColor: '',
+      borderColor: '',
+      className: 'text_M_14',
+      mobileClassName: 'text_M_12',
+      shadow: '',
+      padding: {
+        sm: '',
+        md: '',
+      },
+      height: {
+        sm: '',
+        md: '',
+      },
+    },
+  },
 };

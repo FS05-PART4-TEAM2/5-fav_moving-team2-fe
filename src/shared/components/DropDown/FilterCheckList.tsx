@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Checkbox, FormControlLabel, Stack } from '@mui/material';
+import { Checkbox, FormControlLabel, Stack } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 
@@ -16,6 +16,7 @@ interface FilterCheckListProps {
   onChange: (label: string, checked: boolean) => void;
   onCheckAll?: (checked: boolean) => void;
   checkAll?: boolean;
+  isModal?: boolean;
 }
 
 export default function FilterCheckList({
@@ -24,36 +25,57 @@ export default function FilterCheckList({
   onChange,
   onCheckAll,
   checkAll = false,
+  isModal,
 }: FilterCheckListProps) {
   return (
-    <Box
+    <Stack
       sx={{
-        width: 328,
+        width: isModal ? '100%' : 328,
         backgroundColor: 'white',
-        borderRadius: 2,
-        boxShadow: 2,
-        padding: '16px 24px',
+        borderRadius: isModal ? '' : 2,
+        boxShadow: isModal ? '' : 2,
+        padding: isModal ? '' : '16px 24px',
       }}
     >
       <Stack
+        width="100%"
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        pb={2}
-        mb={2}
+        pb={isModal ? '' : 2}
+        mb={isModal ? '' : 2}
         borderBottom={`1px solid ${colorChips.line['f2f2f2']}`}
       >
-        <Typo className="text_SB_16">{title}</Typo>
-        <FormControlLabel
-          control={<Checkbox size="small" checked={checkAll} onChange={(e) => onCheckAll?.(e.target.checked)} />}
-          label="전체선택"
-          sx={{
-            '.MuiFormControlLabel-label': {
-              fontSize: 14,
-              color: '#aaa',
-            },
-          }}
-        />
+        {isModal ? (
+          <label
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+              cursor: 'pointer',
+            }}
+          >
+            <Typo className="text_M_14" color={colorChips.grayScale[300]}>
+              전체선택
+            </Typo>
+            <Checkbox size="small" checked={checkAll} onChange={(e) => onCheckAll?.(e.target.checked)} />
+          </label>
+        ) : (
+          <>
+            {!isModal && <Typo className="text_SB_16" content={title} />}
+            <FormControlLabel
+              control={<Checkbox size="small" checked={checkAll} onChange={(e) => onCheckAll?.(e.target.checked)} />}
+              label="전체선택"
+              sx={{
+                '.MuiFormControlLabel-label': {
+                  fontSize: 14,
+                  color: colorChips.grayScale[300],
+                },
+              }}
+            />
+          </>
+        )}
       </Stack>
 
       <Stack spacing={1}>
@@ -70,6 +92,6 @@ export default function FilterCheckList({
           </Stack>
         ))}
       </Stack>
-    </Box>
+    </Stack>
   );
 }
