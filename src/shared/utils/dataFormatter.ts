@@ -13,6 +13,10 @@ export const formatToYYMMDD = (date: string): string => {
   return dayjs(date).locale('ko').format('YY.MM.DD');
 };
 
+export const formatWithDash = (date: string): string => {
+  return dayjs(date).locale('ko').format('YYYY-MM-DD');
+};
+
 export const formattedPrice = (price: number): string => {
   return `${price.toLocaleString()}원`;
 };

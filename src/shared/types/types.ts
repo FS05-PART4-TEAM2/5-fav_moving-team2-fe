@@ -257,3 +257,33 @@ export interface SearchMoverDetailResponse extends SearchMoverListItem {
   detailDescription: string;
   serviceArea: RegionType[] | null;
 }
+
+export interface MoverReviewListItem {
+  id: string;
+  content: string;
+  rating: number;
+  moverId: string;
+  quotationId: string;
+  customerId: string;
+  customerNick: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface reviewRating {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+}
+
+// 기사 리뷰 리스트 조회
+export interface MoverDetailReviewResponse {
+  list: MoverReviewListItem[];
+  ratingCounts: reviewRating;
+  ratingPercentages: reviewRating;
+  totalRating: number;
+  totalPages: number;
+  currentPage: number;
+}

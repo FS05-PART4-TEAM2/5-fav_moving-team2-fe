@@ -140,7 +140,7 @@ const contentContainerSx = {
   gap: { xs: '0px', md: '120px' },
   height: '100%',
   paddingTop: { xs: '16px', sm: '24px' },
-  paddingBottom: '40px',
+  paddingBottom: '110px', // 모바일 플로팅버튼 높이 포함
   paddingX: '24px',
 };
 
