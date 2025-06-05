@@ -16,6 +16,7 @@ import { PATH } from '@/shared/constants';
 import { CommonModal } from '@/shared/components/Modal/CommonModal';
 import { revalidateMoverDetail } from './core/service/revalidateMoverDetail';
 import { Typo } from '@/shared/styles/Typo/Typo';
+import { useCustomerLikeMover } from '@/shared/hooks/useCustomerLikeMover';
 
 export default function Page() {
   const router = useRouter();
@@ -29,6 +30,19 @@ export default function Page() {
 
   const { data: moverInfo, isLoading: isMoverInfoLoading } = useMoverDetailData(moverId);
   const { data: reviewData, isLoading: isReviewLoading, handleChangePage } = useMoverReviewList(moverId);
+
+  // 찜하기 훅
+  const {
+    isLiked,
+    likeCount,
+    isLoading: isLikeLoading,
+    handleLikeClick,
+  } = useCustomerLikeMover({
+    initialStatus: moverInfo?.isLiked || false,
+    initialLikeCount: moverInfo?.likeCount || 0,
+    moverId,
+    revalidateFn: revalidateMoverDetail,
+  });
 
   // 초기 로딩시에만 페이지 전체 로딩 표시 (둘 다 로딩 중일 때)
   if ((isMoverInfoLoading && isReviewLoading) || (!moverInfo && !reviewData)) {
@@ -46,13 +60,10 @@ export default function Page() {
   // TODO: 공유URL 수정 - 현재페이지
   const shareUrl = `/customer/search-mover/${moverId}`;
   const shareLinkTitle = '나만 알기엔 아쉬운 기사님인가요?';
-  const likeIconSrc = moverInfo.isLiked
+  const likeIconSrc = isLiked
     ? '/assets/images/like-icon/like-24x24-black.svg'
     : '/assets/images/like-icon/like-24x24-white.svg';
-  const handleLikeClick = () => {
-    // TODO: 찜하기 api 추가 - 비회원 요청시 로그인페이지로 이동
-    console.log('like');
-  };
+
   // 지정 견적 요청
   const handleAssignRequest = async () => {
     if (userType === 'temp') {
@@ -87,6 +98,8 @@ export default function Page() {
   const displayMoverInfo = {
     ...moverInfo,
     isAssigned: moverInfo.isAssigned || isOptimisticAssigned,
+    isLiked: isLiked, // 찜하기 상태 업데이트
+    likeCount: likeCount, // 찜 개수 업데이트
   };
 
   const moverInfoProps = {
@@ -120,7 +133,14 @@ export default function Page() {
       {/* 모바일 찜하기, 지정견적요청 버튼 */}
       {!isDesktop && (
         <Stack sx={mobileButtonWrapperSx}>
-          <Stack sx={likeButtonSx} onClick={handleLikeClick}>
+          <Stack
+            sx={{
+              ...likeButtonSx,
+              cursor: isLikeLoading ? 'not-allowed' : 'pointer',
+              opacity: isLikeLoading ? 0.7 : 1,
+            }}
+            onClick={handleLikeClick}
+          >
             <Image src={likeIconSrc} alt="like" width={24} height={24} />
           </Stack>
           <SolidButton
