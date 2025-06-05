@@ -3,6 +3,7 @@
 import { colorChips } from '@/shared/styles/colorChips';
 import { CircularProgress, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
+import useUserStore from '@/shared/store/useUserStore';
 import Image from 'next/image';
 import { useMoverDetailData } from './core/hooks/useMoverDetailData';
 import { useMoverReviewList } from './features/MoverReview/core/hooks/useMoverReviewList';
@@ -15,9 +16,10 @@ export default function Page() {
   const moverId = params.moverId as string;
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const { userType } = useUserStore();
 
   const { data: moverInfo, isLoading: isMoverInfoLoading } = useMoverDetailData(moverId);
-  const { data: reviewData, isLoading: isReviewLoading } = useMoverReviewList(moverId);
+  const { data: reviewData, isLoading: isReviewLoading, handleChangePage } = useMoverReviewList(moverId);
 
   // 로딩 중일 때
   if (isMoverInfoLoading || isReviewLoading) {
@@ -53,8 +55,10 @@ export default function Page() {
     shareUrl: shareUrl,
     shareLinkTitle: shareLinkTitle,
     reviewData: reviewData,
+    handleChangePage: handleChangePage,
   };
   const widgetProps = {
+    userType: userType,
     nickname: moverInfo.nickname,
     isAssigned: moverInfo.isAssigned,
     isDesktop: isDesktop,
@@ -72,8 +76,8 @@ export default function Page() {
         {/* 데스크탑 찜하기, 지정견적요청, 공유 버튼*/}
         {isDesktop && <DesktopWidgetsFeature {...widgetProps} />}
       </Stack>
-      {/* 모바일 찜하기, 지정견적요청 버튼*/}
-      {!isDesktop && (
+      {/* 모바일 찜하기, 지정견적요청 버튼 - 일반유저 로그인 시 보임*/}
+      {!isDesktop && userType === 'customer' && (
         <Stack sx={mobileButtonWrapperSx}>
           <Stack sx={likeButtonSx} onClick={handleLikeClick}>
             <Image src={likeIconSrc} alt="like" width={24} height={24} />

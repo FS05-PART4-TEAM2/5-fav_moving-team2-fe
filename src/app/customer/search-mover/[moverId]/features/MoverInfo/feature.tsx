@@ -7,15 +7,24 @@ import Chip from '@/shared/components/Chip/Chip';
 import { ShareButtons } from '@/shared/components/Button/ShareButtons';
 import { SERVICE_TYPES, REGIONS } from '@/shared/constants';
 import { MoverReviewFeature } from '../MoverReview/feature';
+
 interface MoverInfoProps {
   data: SearchMoverDetailResponse;
   shareUrl: string;
   shareLinkTitle: string;
   isDesktop: boolean;
   reviewData: MoverDetailReviewResponse;
+  handleChangePage: (event: React.ChangeEvent<unknown>, value: number) => void;
 }
 
-export const MoverInfoFeature = ({ data, isDesktop, shareUrl, shareLinkTitle, reviewData }: MoverInfoProps) => {
+export const MoverInfoFeature = ({
+  data,
+  isDesktop,
+  shareUrl,
+  shareLinkTitle,
+  reviewData,
+  handleChangePage,
+}: MoverInfoProps) => {
   const isAssigned = data.isAssigned;
   const hasReview = data.reviewCounts > 0;
   const reviewSectionTitle = `리뷰 (${data.reviewCounts})`;
@@ -86,7 +95,7 @@ export const MoverInfoFeature = ({ data, isDesktop, shareUrl, shareLinkTitle, re
       {/* 리뷰 */}
       <Stack direction="column" width="100%" gap="32px">
         <Typo content={reviewSectionTitle} className="text_SB_16to24" color={colorChips.black[400]} />
-        <MoverReviewFeature data={reviewData} hasReview={hasReview} />
+        <MoverReviewFeature data={reviewData} hasReview={hasReview} handleChangePage={handleChangePage} />
       </Stack>
     </Stack>
   );

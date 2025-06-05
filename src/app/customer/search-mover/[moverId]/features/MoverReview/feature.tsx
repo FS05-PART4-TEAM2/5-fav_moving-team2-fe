@@ -10,12 +10,10 @@ import Image from 'next/image';
 interface MoverReviewFeatureProps {
   data: MoverDetailReviewResponse;
   hasReview: boolean;
+  handleChangePage: (event: React.ChangeEvent<unknown>, value: number) => void;
 }
 
-export const MoverReviewFeature = ({ data, hasReview }: MoverReviewFeatureProps) => {
-  // TODO; 페이지 업데이트 추가
-  const handleChangePage = () => {};
-
+export const MoverReviewFeature = ({ data, hasReview, handleChangePage }: MoverReviewFeatureProps) => {
   if (!hasReview) {
     return (
       <Stack direction="column" width="100%" alignItems="center" justifyContent="center" gap="24px" paddingY="80px">
