@@ -7,14 +7,15 @@ export type PresetCardName =
   | 'search' // 기사님 찾기
   | 'pickMover' // 찜한 기사님
   | 'quotation' // 견적 내역
-  | 'moveQuotation' // 기사 보낸 견적 내역
+  | 'moveQuotation' // 견적 내역
   | 'request' // 받은 요청
   | 'confirmRequest' // 확정 견적
   | 'rejectRequest' // 반려 요청
   | 'finishRequest' // 이사완료
   | 'writeReview' // 작성 가능한 리뷰
   | 'finishReview' // 내가 작성한 리뷰
-  | 'review'; // 리뷰 카드
+  | 'review' // 리뷰 카드
+  | 'refuse'; //유저에 의해 거절
 
 export interface UserCardData {
   id?: string;
@@ -23,6 +24,7 @@ export interface UserCardData {
   detailDescription?: string;
   likeCount?: number;
   userProfileImage?: string;
+  price?: number;
   review?: {
     content?: string;
     reviewer?: number;

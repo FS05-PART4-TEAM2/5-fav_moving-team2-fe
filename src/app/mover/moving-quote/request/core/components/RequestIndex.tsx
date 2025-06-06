@@ -16,9 +16,11 @@ import { ResponsiveModal } from '@/shared/components/Modal/ResponsiveModal';
 import FilterModal from './FilterModal';
 import FilterButton from './FilterButton';
 import { SERVICE_TYPES } from '@/shared/constants';
+import { TabBar } from '@/shared/components/Tab/TabBar';
 
 export default function RequestIndex() {
   const [modalType, setModalType] = useState<'request' | 'reject' | 'filter' | null>(null);
+  const [currentTab, setCurrentTab] = useState<'move' | 'filter'>('move');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedSort, setSelectedSort] = useState('이사 빠른순');
@@ -166,13 +168,28 @@ export default function RequestIndex() {
 
         {/* 모달 - 필터 체크박스 */}
         {modalType === 'filter' && isMd && (
-          <ResponsiveModal modalTitle="" isOpen handleClickClose={handleCloseModal}>
+          <ResponsiveModal
+            modalTitle=""
+            customModalTitle={
+              <TabBar
+                currentVal={currentTab}
+                firstVal="move"
+                firstLabel="이사유형"
+                secondVal="filter"
+                secondLabel="필터"
+                handleChange={(val) => setCurrentTab(val as 'move' | 'filter')}
+              />
+            }
+            isOpen
+            handleClickClose={handleCloseModal}
+          >
             <FilterModal
               moveTypeItems={CheckboxMoveType}
               filterItems={CheckboxFilterType}
               onChange={handleFilterChange}
               onCheckAll={handleCheckAll}
               onClose={handleCloseModal}
+              currentTab={currentTab}
             />
           </ResponsiveModal>
         )}
