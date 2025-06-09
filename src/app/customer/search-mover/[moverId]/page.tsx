@@ -1,169 +1,84 @@
-'use client';
-
-import { useState } from 'react';
-import { colorChips } from '@/shared/styles/colorChips';
-import { CircularProgress, Stack, useMediaQuery, useTheme } from '@mui/material';
-import { useParams, useRouter } from 'next/navigation';
-import useUserStore from '@/shared/store/useUserStore';
-import Image from 'next/image';
-import { useMoverDetailData } from './core/hooks/useMoverDetailData';
-import { useMoverReviewList } from './features/MoverReview/core/hooks/useMoverReviewList';
-import { SolidButton } from '@/shared/components/Button/SolidButton';
+import { Metadata } from 'next';
+import { Stack } from '@mui/material';
+import { getMoverDetailApi } from './core/service/getMoverDetailApi';
 import { MoverInfoFeature } from './features/MoverInfo/feature';
-import { DesktopWidgetsFeature } from './features/DesktopWidgets/feature';
-import { postAssignMoverApi } from './core/service/postAssignMoverApi';
-import { PATH } from '@/shared/constants';
-import { CommonModal } from '@/shared/components/Modal/CommonModal';
-import { Typo } from '@/shared/styles/Typo/Typo';
-import { useCustomerLikeMover } from '@/shared/hooks/useCustomerLikeMover';
-import { revalidateMoverDetail } from '@/shared/utils/revalidateTags';
+import { ClientInteractions } from './components/ClientInteractions';
+import { notFound } from 'next/navigation';
 
-export default function Page() {
-  const router = useRouter();
-  const params = useParams();
-  const moverId = params.moverId as string;
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isOptimisticAssigned, setIsOptimisticAssigned] = useState(false); // 낙관적 UI 상태
-  const { userType, customerData } = useUserStore();
+interface PageProps {
+  params: Promise<{
+    moverId: string;
+  }>;
+}
 
-  const { data: moverInfo, isLoading: isMoverInfoLoading } = useMoverDetailData(moverId);
-  const { data: reviewData, isLoading: isReviewLoading, handleChangePage } = useMoverReviewList(moverId);
+// 동적 메타태그 생성 TODO: 여기 요구사항에 맞게 수정
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  try {
+    const { moverId } = await params;
+    const response = await getMoverDetailApi(moverId);
 
-  // 찜하기 훅
-  const {
-    isLiked,
-    likeCount,
-    isLoading: isLikeLoading,
-    handleLikeClick,
-  } = useCustomerLikeMover({
-    initialStatus: moverInfo?.isLiked || false,
-    initialLikeCount: moverInfo?.likeCount || 0,
-    moverId,
-  });
+    if (!response.success) {
+      return {
+        title: '기사님을 찾을 수 없습니다',
+        description: '요청하신 기사님 정보를 찾을 수 없습니다.',
+      };
+    }
 
-  // 초기 로딩시에만 페이지 전체 로딩 표시 (둘 다 로딩 중일 때)
-  if ((isMoverInfoLoading && isReviewLoading) || (!moverInfo && !reviewData)) {
-    return (
-      <Stack height="100vh">
-        <Stack flex={1} alignItems="center" justifyContent="center">
-          <CircularProgress size={40} />
-        </Stack>
-      </Stack>
-    );
+    const moverInfo = response.data;
+
+    return {
+      title: `무빙 : ${moverInfo.nickname} 기사님`,
+      description: `${moverInfo.intro} | 경력 ${moverInfo.career}년 | 평점 ${moverInfo.totalRating.toFixed(1)}`,
+      openGraph: {
+        title: `${moverInfo.nickname} 기사님`,
+        description: moverInfo.intro,
+        images: moverInfo.profileImage ? [moverInfo.profileImage] : [],
+      },
+    };
+  } catch (error) {
+    return {
+      title: '무빙 : 기사님 정보',
+      description: '기사님 상세 정보를 확인해보세요.',
+    };
   }
+}
 
-  if (!moverInfo || !reviewData) return null;
+export default async function Page({ params }: PageProps) {
+  const { moverId } = await params;
 
-  // TODO: 공유URL 수정 - 현재페이지
-  const shareUrl = `/customer/search-mover/${moverId}`;
-  const shareLinkTitle = '나만 알기엔 아쉬운 기사님인가요?';
-  const likeIconSrc = isLiked
-    ? '/assets/images/like-icon/like-24x24-black.svg'
-    : '/assets/images/like-icon/like-24x24-white.svg';
+  try {
+    // 서버에서 기사님 정보만 페치
+    const moverResponse = await getMoverDetailApi(moverId);
 
-  // 지정 견적 요청
-  const handleAssignRequest = async () => {
-    if (userType === 'temp') {
-      // 비회원 요청시 로그인페이지로 이동
-      alert('로그인 후 이용해주세요.');
-      router.push(PATH.customer.login);
-      return;
-    }
-    // 로그인한 일반유저 활성견적 없는 경우 - 견적 생성 모달 띄우기
-    if (!customerData?.hasQuotation) {
-      setIsOpenModal(true);
-      return;
+    if (!moverResponse.success) {
+      notFound();
     }
 
-    try {
-      const res = await postAssignMoverApi(moverId);
-      if (res.success) {
-        alert('기사님 지정 요청이 저장되었습니다!');
+    const moverInfo = moverResponse.data;
 
-        // 낙관적 UI 업데이트 - 지정요청 chip 표시, 버튼 비활성화
-        setIsOptimisticAssigned(true);
+    // TODO: 공유URL 수정 - 현재페이지
+    const shareUrl = `/customer/search-mover/${moverId}`;
+    const shareLinkTitle = '나만 알기엔 아쉬운 기사님인가요?';
 
-        // 캐시 무효화 (다음 접근시 새 데이터 사용)
-        await revalidateMoverDetail();
-      }
-    } catch (error) {
-      alert('다시 시도해 주세요.');
-    }
-  };
+    const moverInfoProps = {
+      data: moverInfo,
+      shareUrl: shareUrl,
+      shareLinkTitle: shareLinkTitle,
+      moverId: moverId, // 리뷰 데이터 대신 moverId 전달
+    };
 
-  // 낙관적 UI를 위한 moverInfo 객체 수정
-  const displayMoverInfo = {
-    ...moverInfo,
-    isAssigned: moverInfo.isAssigned || isOptimisticAssigned,
-    isLiked: isLiked, // 찜하기 상태 업데이트
-    likeCount: likeCount, // 찜 개수 업데이트
-  };
-
-  const moverInfoProps = {
-    data: displayMoverInfo,
-    isDesktop: isDesktop,
-    shareUrl: shareUrl,
-    shareLinkTitle: shareLinkTitle,
-    reviewData: reviewData,
-    handleChangePage: handleChangePage,
-    isReviewLoading: isReviewLoading, // 리뷰 로딩 상태 전달
-  };
-  const widgetProps = {
-    userType: userType,
-    nickname: displayMoverInfo.nickname,
-    isAssigned: displayMoverInfo.isAssigned,
-    isDesktop: isDesktop,
-    likeIconSrc: likeIconSrc,
-    shareUrl: shareUrl,
-    shareLinkTitle: shareLinkTitle,
-    handleLikeClick: handleLikeClick,
-    handleAssignRequest: handleAssignRequest,
-  };
-
-  return (
-    <>
-      <Stack sx={contentContainerSx}>
-        <MoverInfoFeature {...moverInfoProps} />
-        {/* 데스크탑 찜하기, 지정견적요청, 공유 버튼*/}
-        {isDesktop && <DesktopWidgetsFeature {...widgetProps} />}
-      </Stack>
-      {/* 모바일 찜하기, 지정견적요청 버튼 */}
-      {!isDesktop && (
-        <Stack sx={mobileButtonWrapperSx}>
-          <Stack
-            sx={{
-              ...likeButtonSx,
-              cursor: isLikeLoading ? 'not-allowed' : 'pointer',
-              opacity: isLikeLoading ? 0.7 : 1,
-            }}
-            onClick={handleLikeClick}
-          >
-            <Image src={likeIconSrc} alt="like" width={24} height={24} />
-          </Stack>
-          <SolidButton
-            text={'지정 견적 요청하기'}
-            onClick={handleAssignRequest}
-            disabled={displayMoverInfo.isAssigned}
-          />
+    return (
+      <>
+        <Stack sx={contentContainerSx}>
+          <MoverInfoFeature {...moverInfoProps} />
+          {/* 클라이언트 인터랙션 컴포넌트 */}
+          <ClientInteractions moverId={moverId} shareUrl={shareUrl} shareLinkTitle={shareLinkTitle} />
         </Stack>
-      )}
-      {/* 활성견적 없는 경우 모달 */}
-      {isOpenModal && (
-        <CommonModal
-          modalTitle="지정 견적 요청하기"
-          isOpen={isOpenModal}
-          handleClickClose={() => setIsOpenModal(false)}
-        >
-          <Stack sx={modalContentSx}>
-            <Typo content="일반 견적 요청을 먼저 진행해 주세요." className="text_M_18" color={colorChips.black[300]} />
-            <SolidButton text={'일반 견적 요청하기'} onClick={() => router.push(PATH.customer.movingQuoteRequest)} />
-          </Stack>
-        </CommonModal>
-      )}
-    </>
-  );
+      </>
+    );
+  } catch (error) {
+    notFound();
+  }
 }
 
 const contentContainerSx = {
@@ -173,36 +88,4 @@ const contentContainerSx = {
   height: '100%',
   paddingTop: { xs: '16px', sm: '24px' },
   paddingBottom: '110px', // 모바일 플로팅버튼 높이 포함
-};
-
-const mobileButtonWrapperSx = {
-  position: 'fixed',
-  bottom: '0',
-  width: 'calc(100% - 48px)',
-  height: '74px',
-  paddingY: '10px',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-  backgroundColor: colorChips.grayScale[50],
-};
-
-const likeButtonSx = {
-  flexShrink: 0,
-  width: '54px',
-  height: '54px',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: colorChips.grayScale[50],
-  borderRadius: '16px',
-  border: `1px solid ${colorChips.line.e6e6e6}`,
-  cursor: 'pointer',
-};
-
-const modalContentSx = {
-  width: '100%',
-  flexDirection: 'column',
-  gap: { xs: '24px', md: '40px' },
-  marginTop: { xs: '30px', md: '40px' },
 };

@@ -15,7 +15,8 @@ import { colorChips } from '@/shared/styles/colorChips';
 import AuthFormOAuth from './AuthFormOAuth';
 import { login, signup } from '@/shared/core/Auth/service';
 import { LoginPayload, SignupPayload } from '@/shared/types/types';
-
+import { invalidateQueryKeys } from '@/shared/utils/invalidateQueryKeys';
+import { useQueryClient } from '@tanstack/react-query';
 interface AuthFormProps {
   mode: 'login' | 'signup';
   userType: 'customer' | 'mover';
@@ -24,6 +25,7 @@ interface AuthFormProps {
 type FormValues = LoginPayload & Partial<SignupPayload> & { passwordConfirm?: string };
 
 export default function AuthForm({ mode, userType }: AuthFormProps) {
+  const queryClient = useQueryClient();
   const methods = useForm<FormValues>();
   const {
     watch,
@@ -86,6 +88,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             livingPlace: customer.livingPlace,
             hasQuotation: customer.hasQuotation,
           });
+
+          invalidateQueryKeys(queryClient);
 
           //development 일때만 로컬에 저장
           if (process.env.NODE_ENV === 'development') {

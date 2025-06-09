@@ -1,44 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getMoverDetailApi } from '../service/getMoverDetailApi';
-import { useRouter } from 'next/navigation';
-import { SearchMoverDetailResponse } from '@/shared/types/types';
-import { withMinLoadingTime } from '@/shared/utils/loadingUtils';
+import { useQuery } from '@tanstack/react-query';
+import { getMoverDetailClientApi } from '../service/getMoverDetailClientApi';
+import { moverKeys } from '@/shared/utils/queryKeys';
 
 export const useMoverDetailData = (moverId: string) => {
-  const router = useRouter();
-  const [data, setData] = useState<SearchMoverDetailResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: moverKeys.detail(moverId),
+    queryFn: () => getMoverDetailClientApi(moverId),
+    enabled: !!moverId, // moverId가 있을 때만 쿼리 실행
+    select: (response) => (response.success ? response.data : null),
+    staleTime: 1000 * 60 * 60 * 24, // 별도 refetch 없으면 24시간 동안 fresh
+    retry: 1,
+  });
 
-  const fetchData = useCallback(async () => {
-    if (!moverId) return;
-
-    setIsLoading(true);
-
-    try {
-      const response = await withMinLoadingTime(getMoverDetailApi(moverId));
-
-      if (response.success) {
-        setData(response.data);
-      } else {
-        router.back();
-      }
-    } catch (err) {
-      router.back();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [moverId, router]);
-
-  useEffect(() => {
-    // moverId가 없거나 이미 로딩했으면 중단
-    if (!moverId || hasLoaded) {
-      return;
-    }
-
-    setHasLoaded(true);
-    fetchData();
-  }, [moverId, hasLoaded, fetchData]);
-
-  return { data, isLoading };
+  return { data, isLoading, refetch };
 };

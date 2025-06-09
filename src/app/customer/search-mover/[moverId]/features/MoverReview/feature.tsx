@@ -8,15 +8,15 @@ import { colorChips } from '@/shared/styles/colorChips';
 import Image from 'next/image';
 
 interface MoverReviewFeatureProps {
-  data: MoverDetailReviewResponse;
+  data: MoverDetailReviewResponse | null;
   hasReview: boolean;
   handleChangePage: (event: React.ChangeEvent<unknown>, value: number) => void;
   isReviewLoading: boolean;
 }
 
 export const MoverReviewFeature = ({ data, hasReview, handleChangePage, isReviewLoading }: MoverReviewFeatureProps) => {
-  // 리뷰 로딩 중일 때
-  if (isReviewLoading) {
+  // 리뷰 로딩 중이거나 데이터가 없을 때
+  if (isReviewLoading || !data) {
     return (
       <Stack direction="column" width="100%" alignItems="center" justifyContent="center" gap="24px" paddingY="80px">
         <CircularProgress size={40} />

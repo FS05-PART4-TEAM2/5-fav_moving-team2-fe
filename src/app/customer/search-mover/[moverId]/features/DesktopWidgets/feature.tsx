@@ -7,7 +7,6 @@ import Image from 'next/image';
 
 interface DesktopWidgetsFeatureProps {
   nickname: string;
-  isDesktop: boolean;
   isAssigned: boolean;
   likeIconSrc: string;
   shareUrl: string;
@@ -19,7 +18,6 @@ interface DesktopWidgetsFeatureProps {
 export const DesktopWidgetsFeature = ({
   nickname,
   isAssigned,
-  isDesktop,
   likeIconSrc,
   shareUrl,
   shareLinkTitle,
@@ -29,7 +27,7 @@ export const DesktopWidgetsFeature = ({
   const desktopButtonsTitle = `${nickname} 기사님에게 지정 견적을 요청해보세요!`;
 
   return (
-    <Stack flexShrink={0} width="360px" direction="column" gap="80px">
+    <Stack sx={desktopContainerSx} flexShrink={0} width="360px" direction="column" gap="80px">
       {/* 찜하기, 지정요청 버튼 */}
       <Stack direction="column" width="100%" gap="22px">
         <Typo
@@ -47,9 +45,13 @@ export const DesktopWidgetsFeature = ({
         </Stack>
         <SolidButton text={'지정 견적 요청하기'} onClick={handleAssignRequest} disabled={isAssigned} />
       </Stack>
-      <ShareButtons title={shareLinkTitle} shareUrl={shareUrl} isDesktop={isDesktop} textStyle="text_SB_14to20" />
+      <ShareButtons title={shareLinkTitle} shareUrl={shareUrl} isDesktop={true} textStyle="text_SB_14to20" />
     </Stack>
   );
+};
+
+const desktopContainerSx = {
+  display: { xs: 'none', md: 'flex' }, // 데스크탑에서만 표시
 };
 
 const desktopLikeButtonSx = {

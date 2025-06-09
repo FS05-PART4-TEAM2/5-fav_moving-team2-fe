@@ -1,6 +1,5 @@
 'use client';
 
-import { QueryProvider } from '@/shared/context/QueryProvider';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
@@ -17,33 +16,31 @@ export default function Page() {
   const { userType } = useUserStore();
 
   return (
-    <QueryProvider>
-      <Stack sx={pageContainerSx}>
+    <Stack sx={pageContainerSx}>
+      {isDesktop && (
+        <Typo
+          className="text_SB_24"
+          content="기사님 찾기"
+          color={colorChips.black.b2b2b}
+          customStyle={{ padding: '32px 0', marginBottom: '24px', flexShrink: 0 }}
+        />
+      )}
+      <Stack sx={contentContainerSx}>
         {isDesktop && (
-          <Typo
-            className="text_SB_24"
-            content="기사님 찾기"
-            color={colorChips.black.b2b2b}
-            customStyle={{ padding: '32px 0', marginBottom: '24px', flexShrink: 0 }}
-          />
-        )}
-        <Stack sx={contentContainerSx}>
-          {isDesktop && (
-            <Stack sx={widgetWrapperSx}>
-              <SearchFilterFeature />
-              {userType === 'customer' && (
-                // 비회원일때는 안보이게
-                <LikeMoverFeature />
-              )}
-            </Stack>
-          )}
-          <Stack sx={listWrapperSx}>
-            <SearchControllerFeature />
-            <MoverListFeature />
+          <Stack sx={widgetWrapperSx}>
+            <SearchFilterFeature />
+            {userType === 'customer' && (
+              // 비회원일때는 안보이게
+              <LikeMoverFeature />
+            )}
           </Stack>
+        )}
+        <Stack sx={listWrapperSx}>
+          <SearchControllerFeature />
+          <MoverListFeature />
         </Stack>
       </Stack>
-    </QueryProvider>
+    </Stack>
   );
 }
 

@@ -16,7 +16,7 @@ export async function getMoverReviewListApi(moverId: string, payload: MoverRevie
   const res = await customAxios.get<MoverReviewListResponse>(`/api/review/${moverId}`, {
     params: payload,
     fetchOptions: {
-      cache: 'force-cache',
+      // cache: 'force-cache',
       next: {
         tags: ['mover-review-list'],
       },

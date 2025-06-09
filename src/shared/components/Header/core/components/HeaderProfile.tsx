@@ -7,7 +7,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/shared/core/Auth/service';
 import useUserStore from '@/shared/store/useUserStore';
-
+import { invalidateQueryKeys } from '@/shared/utils/invalidateQueryKeys';
+import { useQueryClient } from '@tanstack/react-query';
 interface HeaderProfileProps {
   isDesktop: boolean;
   userType: UserType;
@@ -27,6 +28,7 @@ export const HeaderProfile = ({
   openDropdown,
   onToggle,
 }: HeaderProfileProps) => {
+  const queryClient = useQueryClient();
   const { logout: clearUserStore } = useUserStore();
   const router = useRouter();
   const hasProfileImg = profileImgSrc !== null;
@@ -43,6 +45,7 @@ export const HeaderProfile = ({
     if (res.success) {
       router.push('/'); // 로그아웃 후 랜딩페이지로 이동
       clearUserStore(); // 유저스토어 초기화
+      invalidateQueryKeys(queryClient); // 캐시 무효화(기사님 데이터)
     } else {
       alert('다시 시도해주세요.');
     }

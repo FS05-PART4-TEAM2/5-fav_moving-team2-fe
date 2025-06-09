@@ -1,3 +1,5 @@
+'use client';
+
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { useTheme, useMediaQuery, Chip as MuiChip, Stack } from '@mui/material';

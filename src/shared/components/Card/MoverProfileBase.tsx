@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
-import { useMediaQuery } from '@mui/material';
+
 interface MoverProfileBaseProps {
   nickname: string;
   profileImage: string | null;
@@ -31,9 +31,7 @@ export function MoverProfileBase({
   isLiked,
   likeColor = 'black',
 }: MoverProfileBaseProps) {
-  const isDesktop = useMediaQuery('(min-width: 1200px)');
   const hasProfileImage = profileImage !== null;
-  const profileImageSize = isDesktop ? 56 : 46;
   const imgSrc = hasProfileImage ? profileImage : '/assets/images/profile-icon/login-default-36x36.svg';
   const filledHeart =
     likeColor === 'black'
@@ -44,19 +42,24 @@ export function MoverProfileBase({
 
   return (
     <Stack sx={profileBaseSx}>
-      {/* 프로필이미지 */}
-      <Image
-        src={imgSrc}
-        alt="profile image"
-        width={profileImageSize}
-        height={profileImageSize}
-        style={{
-          objectFit: 'cover',
-          borderRadius: '50%',
-          border: hasProfileImage ? `2px solid ${colorChips.primary[400]}` : 'none',
-        }}
-        priority
-      />
+      <Stack sx={profileImageSx}>
+        {/* 프로필이미지 */}
+        <Image
+          src={imgSrc}
+          alt="profile image"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            width: '46px', // 기본 모바일 사이즈
+            height: '46px',
+            objectFit: 'cover',
+            borderRadius: '50%',
+            border: hasProfileImage ? `2px solid ${colorChips.primary[400]}` : 'none',
+          }}
+          priority
+        />
+      </Stack>
 
       <Stack width="100%" direction="column" gap="8px" alignItems="flex-start">
         {/* 닉네임 & 좋아요 */}
@@ -118,6 +121,18 @@ const profileBaseSx = {
   border: `1px solid ${colorChips.line.f2f2f2}`,
   borderRadius: '6px',
   padding: { xs: '16px 10px', md: '16px 18px' },
+};
+
+const profileImageSx = {
+  '& img': {
+    width: '46px',
+    height: '46px',
+    // 데스크탑에서 프로필 이미지 크기 조정
+    '@media (min-width: 1200px)': {
+      width: '56px !important',
+      height: '56px !important',
+    },
+  },
 };
 
 const borderRightSx = {
