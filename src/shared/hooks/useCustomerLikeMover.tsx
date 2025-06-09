@@ -3,20 +3,15 @@ import { postLikeMoverApi, deleteLikeMoverApi } from '../service/customerLikeMov
 import useUserStore from '../store/useUserStore';
 import { useRouter } from 'next/navigation';
 import { PATH } from '../constants';
+import { revalidateLikeData } from '../utils/revalidateTags';
 
 interface UseCustomerLikeMoverProps {
   initialStatus: boolean;
   initialLikeCount: number;
   moverId: string;
-  revalidateFn?: () => Promise<void> | void; // 캐시 무효화 함수
 }
 
-export const useCustomerLikeMover = ({
-  initialStatus,
-  initialLikeCount,
-  moverId,
-  revalidateFn,
-}: UseCustomerLikeMoverProps) => {
+export const useCustomerLikeMover = ({ initialStatus, initialLikeCount, moverId }: UseCustomerLikeMoverProps) => {
   const [isLiked, setIsLiked] = useState(initialStatus);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,13 +58,9 @@ export const useCustomerLikeMover = ({
         await postLikeMoverApi(moverId);
       }
 
-      // 캐시 무효화 (선택적)
-      if (revalidateFn) {
-        await revalidateFn();
-      }
+      // 찜하기 관련 캐시 무효화
+      await revalidateLikeData();
     } catch (error) {
-      console.error('찜하기 처리 중 오류:', error);
-
       // 실패시 이전 상태로 롤백
       setIsLiked(previousStatus);
       setLikeCount(previousCount);

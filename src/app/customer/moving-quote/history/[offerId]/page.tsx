@@ -14,6 +14,7 @@ import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
 import { useOfferDetailData } from './core/hooks/useOfferDetailData';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { useQuoteConfirm } from '../core/hooks/useQuoteConfirm';
+import { useCustomerLikeMover } from '@/shared/hooks/useCustomerLikeMover';
 
 export default function Page() {
   const params = useParams();
@@ -35,10 +36,12 @@ export default function Page() {
 
   if (!data) return null;
 
-  const handleLikeClick = () => {
-    // TODO: 찜하기 api 추가
-    console.log('like');
-  };
+  // 찜하기 훅
+  const { isLiked, likeCount, handleLikeClick } = useCustomerLikeMover({
+    initialStatus: data.offers[0].isLiked || false,
+    initialLikeCount: data.offers[0].likeCount || 0,
+    moverId: data.offers[0].moverId,
+  });
 
   const moverId = data.offers[0].moverId;
   // TODO: 공유URL 수정 - 기사님 상세
@@ -56,8 +59,8 @@ export default function Page() {
     reviewCounts: data.offers[0].reviewCounts,
     career: data.offers[0].career,
     confirmedQuotationCount: data.offers[0].confirmedQuotationCount,
-    likeCount: data.offers[0].likeCount,
-    isLiked: data.offers[0].isLiked,
+    likeCount: likeCount,
+    isLiked: isLiked,
   };
   const quoteData = [
     { label: '견적 요청일', value: formatToYYMMDD(data.requestedAt) },
@@ -66,7 +69,7 @@ export default function Page() {
     { label: '출발지', value: data.startAddress },
     { label: '도착지', value: data.endAddress },
   ];
-  const likeIconSrc = data.offers[0].isLiked
+  const likeIconSrc = isLiked
     ? '/assets/images/like-icon/like-24x24-black.svg'
     : '/assets/images/like-icon/like-24x24-white.svg';
 

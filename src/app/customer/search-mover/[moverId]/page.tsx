@@ -14,9 +14,9 @@ import { DesktopWidgetsFeature } from './features/DesktopWidgets/feature';
 import { postAssignMoverApi } from './core/service/postAssignMoverApi';
 import { PATH } from '@/shared/constants';
 import { CommonModal } from '@/shared/components/Modal/CommonModal';
-import { revalidateMoverDetail } from './core/service/revalidateMoverDetail';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { useCustomerLikeMover } from '@/shared/hooks/useCustomerLikeMover';
+import { revalidateMoverDetail } from '@/shared/utils/revalidateTags';
 
 export default function Page() {
   const router = useRouter();
@@ -41,7 +41,6 @@ export default function Page() {
     initialStatus: moverInfo?.isLiked || false,
     initialLikeCount: moverInfo?.likeCount || 0,
     moverId,
-    revalidateFn: revalidateMoverDetail,
   });
 
   // 초기 로딩시에만 페이지 전체 로딩 표시 (둘 다 로딩 중일 때)
