@@ -7,33 +7,38 @@ export type PresetCardName =
   | 'search' // 기사님 찾기
   | 'pickMover' // 찜한 기사님
   | 'quotation' // 견적 내역
+  | 'moveQuotation' // 견적 내역
   | 'request' // 받은 요청
   | 'confirmRequest' // 확정 견적
   | 'rejectRequest' // 반려 요청
   | 'finishRequest' // 이사완료
   | 'writeReview' // 작성 가능한 리뷰
   | 'finishReview' // 내가 작성한 리뷰
-  | 'review'; // 리뷰 카드
+  | 'review' // 리뷰 카드
+  | 'refuse'; //유저에 의해 거절
 
 export interface UserCardData {
+  id?: string;
   name?: string;
   service?: string[];
   detailDescription?: string;
   likeCount?: number;
   userProfileImage?: string;
+  price?: number;
   review?: {
     content?: string;
     reviewer?: number;
     averageScore?: number;
   };
   career?: number;
+  comment?: string;
   confirmation?: number;
   moveDay?: string;
   startPoint?: string;
   endPoint?: string;
   provideService?: string[];
   region?: string[];
-  QuoteAmount?: number;
+  quoteAmount?: number;
   reviewContent?: string;
   createTime?: string;
 }
@@ -56,86 +61,3 @@ export interface CardPreset {
   Footer?: React.FC<{ type: PresetCardName; data: UserCardData }>;
   buttons?: CardButtonConfig[];
 }
-
-export const CardPresets: Record<PresetCardName, CardPreset> = {
-  profile: {
-    showChips: false,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  waitRequest: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-    buttons: [
-      {
-        buttonType: 'outlined',
-        text: '상세보기',
-        actionKey: 'openDetail',
-      },
-      {
-        buttonType: 'solid',
-        text: '확정하기',
-        actionKey: 'confirmQuote',
-      },
-    ],
-  },
-  search: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  pickMover: {
-    showChips: true,
-    showDescription: false,
-    Content: CommonCardInfo,
-  },
-  quotation: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  request: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  confirmRequest: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  rejectRequest: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  finishRequest: {
-    showChips: true,
-    showDescription: true,
-    Content: CommonCardInfo,
-  },
-  writeReview: {
-    showChips: true,
-    showDescription: false,
-    Content: CommonCardInfo,
-    buttons: [
-      {
-        buttonType: 'solid',
-        text: '리뷰 작성하기',
-        actionKey: 'writeReview',
-        hasIcon: true,
-      },
-    ],
-  },
-  finishReview: {
-    showChips: true,
-    showDescription: false,
-    Content: ReviewSection,
-  },
-  review: {
-    showChips: false,
-    showDescription: false,
-    Content: ReviewSection,
-  },
-};

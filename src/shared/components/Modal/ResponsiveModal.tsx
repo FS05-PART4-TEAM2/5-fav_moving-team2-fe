@@ -5,12 +5,19 @@ import Image from 'next/image';
 
 interface ResponsiveModalProps {
   modalTitle: string;
+  customModalTitle?: React.ReactNode;
   isOpen: boolean;
   handleClickClose: () => void;
   children: React.ReactNode;
 }
 
-export const ResponsiveModal: React.FC<ResponsiveModalProps> = ({ modalTitle, isOpen, handleClickClose, children }) => {
+export const ResponsiveModal: React.FC<ResponsiveModalProps> = ({
+  modalTitle,
+  isOpen,
+  handleClickClose,
+  children,
+  customModalTitle,
+}) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const closeIconSrc = isDesktop ? '/assets/images/x-icon/x-36x36.svg' : '/assets/images/x-icon/x-24x24.svg';
@@ -35,7 +42,11 @@ export const ResponsiveModal: React.FC<ResponsiveModalProps> = ({ modalTitle, is
       <Stack sx={CommonModalSx}>
         <Stack sx={ModalWrapperSx}>
           <Stack sx={ModalHeaderWrapperSx}>
-            <Typo className="header_title" content={modalTitle} color={colorChips.black[400]} />
+            {customModalTitle ? (
+              customModalTitle
+            ) : (
+              <Typo className="header_title" content={modalTitle} color={colorChips.black[400]} />
+            )}
             <Image
               src={closeIconSrc}
               alt="close"

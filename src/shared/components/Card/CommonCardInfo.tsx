@@ -1,6 +1,5 @@
 import { Stack, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
-import { UserData } from './Card';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import { PresetCardName, UserCardData } from './CardPresets';
@@ -16,9 +15,12 @@ import ReviewSection from './ReviewSection';
 interface CommonCardInfoProps {
   type: PresetCardName;
   data: UserCardData;
+  onRequestClick?: (id: string) => void;
+  onRejectClick?: (id: string) => void;
+  isModal?: boolean;
 }
 
-export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
+export default function CommonCardInfo({ type, data, onRequestClick, onRejectClick, isModal }: CommonCardInfoProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
@@ -28,15 +30,31 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
   const isWaitRequest = type === 'waitRequest';
   const isWriteReview = type === 'writeReview';
   const isFinishReview = type === 'finishReview';
+  const isConfirmRequest = type === 'confirmRequest';
   const ExcludeLike = !isProfile && !isWriteReview && !isFinishReview;
+  const isRequestConfirm =
+    type === 'request' ||
+    type === 'confirmRequest' ||
+    type === 'rejectRequest' ||
+    type === 'finishRequest' ||
+    type === 'moveQuotation' ||
+    type === 'refuse';
 
   const formatted = (date: string): string => {
     if (isWriteReview) dayjs(date).format('YYYY.MM.DD');
     return dayjs(date).format('YYYY.MM.DD(dd)');
   };
 
-  if (type === 'request' || type === 'confirmRequest' || type === 'rejectRequest' || type === 'finishRequest') {
-    return <RequestConfirmCardInfo type={type} data={data} />;
+  if (isRequestConfirm) {
+    return (
+      <RequestConfirmCardInfo
+        type={type}
+        data={data}
+        onClickRequest={onRequestClick}
+        onClickReject={onRejectClick}
+        isModal={isModal}
+      />
+    );
   }
 
   if (type === 'review') {
@@ -74,13 +92,18 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                 position: 'relative',
               }}
             >
-              <Image src={UserData.userProfileImage} alt="user profile Image" fill style={{ objectFit: 'cover' }} />
+              <Image
+                src={data.userProfileImage || '/assets/images/profile-icon/login-default-36x36.svg'}
+                alt="user profile Image"
+                fill
+                style={{ objectFit: 'cover' }}
+              />
             </Stack>
           ) : null}
           <Stack direction="column">
             {!isProfile && (
               <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typo className={isMdDown ? 'text_SB_14' : 'text_SB_18'}>{UserData.name} 기사님</Typo>
+                <Typo className={isMdDown ? 'text_SB_14' : 'text_SB_18'}>{data.name} 기사님</Typo>
               </Stack>
             )}
 
@@ -115,7 +138,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                         paddingRight: isMdDown ? '8px' : '16px',
                       }}
                     >
-                      {`(${UserData.review.reviewer})`}
+                      {`(${data.review?.reviewer})`}
                     </Typo>
                   </Stack>
                   <Stack direction="row" gap="6px" sx={{ textWrap: 'nowrap' }}>
@@ -133,7 +156,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                         paddingRight: isMdDown ? '8px' : '16px',
                       }}
                     >
-                      {UserData.career}년
+                      {data.career}년
                     </Typo>
                   </Stack>
                   <Stack direction="row" gap="6px" sx={{ textWrap: 'nowrap' }}>
@@ -141,7 +164,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                       className={isMdDown ? 'text_M_13' : 'text_M_16'}
                       style={{ color: colorChips.black[300], paddingLeft: isMdDown ? '8px' : '16px' }}
                     >
-                      {UserData.confirmation}건
+                      {data.confirmation}건
                     </Typo>
                     <Typo
                       className={isMdDown ? 'text_M_13' : 'text_M_16'}
@@ -198,7 +221,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
                         color: colorChips.black[300],
                       }}
                     >
-                      {data.QuoteAmount}원
+                      {data.quoteAmount}원
                     </Typo>
                   </Stack>
                 </Stack>
@@ -365,7 +388,7 @@ export default function CommonCardInfo({ type, data }: CommonCardInfoProps) {
           </Stack>
         </>
       )}
-      {(isWaitRequest || isQuotation) && (
+      {!isConfirmRequest && (isWaitRequest || isQuotation) && (
         <Stack
           direction="row"
           justifyContent="flex-end"

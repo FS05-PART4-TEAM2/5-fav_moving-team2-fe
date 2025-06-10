@@ -23,6 +23,8 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
   const [showPassword, setShowPassword] = useState(false);
   const { backgroundColor, sx, ...textFieldOverride } = override;
 
+  const isTextarea = name === 'detailDescription' || name === 'quoteInfo' || name === 'reject';
+  const isCommaField = name === 'quoteAmount';
   const preset = fieldPresets[name];
   if (!preset) throw new Error(`정의되지 않은 필드 이름: ${name}`);
 
@@ -39,12 +41,17 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
     };
   }
 
+  const formatComma = (value: string): string => {
+    const raw = value.replace(/,/g, '');
+    if (!raw || isNaN(Number(raw)) || Number(raw) === 0) return ''; // ← 핵심
+    return Number(raw).toLocaleString();
+  };
+
   return (
     <Controller
       name={name}
       control={control}
       rules={resolvedRules}
-      defaultValue={preset.defaultValue as T[typeof name]}
       render={({ field, fieldState }) => (
         <TextField
           {...field}
@@ -55,9 +62,26 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
           autoComplete={preset.autoComplete}
           error={!!fieldState.error}
           helperText={fieldState.error?.message}
-          multiline={name === 'detailDescription'}
-          minRows={name === 'detailDescription' ? 6 : undefined}
-          maxRows={name === 'detailDescription' ? 12 : undefined}
+          multiline={isTextarea}
+          minRows={isTextarea ? 6 : undefined}
+          maxRows={isTextarea ? 12 : undefined}
+          value={
+            isCommaField
+              ? field.value === '0' || field.value === 0 || !field.value
+                ? ''
+                : formatComma(field.value)
+              : field.value ?? ''
+          }
+          onChange={
+            isCommaField
+              ? (e) => {
+                  const raw = e.target.value.replace(/,/g, '');
+                  if (/^\d*$/.test(raw)) {
+                    field.onChange(raw);
+                  }
+                }
+              : field.onChange
+          }
           InputProps={{
             ...override?.InputProps,
             endAdornment: isPasswordField ? (
@@ -79,7 +103,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 fontSize: '16px',
                 lineHeight: '26px',
                 backgroundColor: override.backgroundColor ?? 'white',
-                ...(name === 'detailDescription' && {
+                ...(isTextarea && {
                   height: '160px',
                   alignItems: 'start',
                 }),
@@ -88,35 +112,34 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                   lineHeight: '32px',
                 },
               },
-              '& .MuiInputBase-inputMultiline':
-                name === 'detailDescription'
-                  ? {
-                      overflowY: 'auto',
-                      height: '100% !important',
-                      boxSizing: 'border-box',
-                      fontFamily: 'pretendard',
-                      fontSize: '16px',
-                      lineHeight: '26px',
-                      [theme.breakpoints.up('md')]: {
-                        fontSize: '20px',
-                        lineHeight: '32px',
-                      },
+              '& .MuiInputBase-inputMultiline': isTextarea
+                ? {
+                    overflowY: 'auto',
+                    height: '100% !important',
+                    boxSizing: 'border-box',
+                    fontFamily: 'pretendard',
+                    fontSize: '16px',
+                    lineHeight: '26px',
+                    [theme.breakpoints.up('md')]: {
+                      fontSize: '20px',
+                      lineHeight: '32px',
+                    },
 
-                      '&::-webkit-scrollbar': {
-                        width: '6px',
-                      },
-                      '&::-webkit-scrollbar-track': {
-                        backgroundColor: 'transparent',
-                      },
-                      '&::-webkit-scrollbar-thumb': {
-                        backgroundColor: colorChips.grayScale[300],
-                        borderRadius: '3px',
-                      },
+                    '&::-webkit-scrollbar': {
+                      width: '6px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      backgroundColor: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      backgroundColor: colorChips.grayScale[300],
+                      borderRadius: '3px',
+                    },
 
-                      scrollbarWidth: 'thin',
-                      scrollbarColor: `${colorChips.grayScale[300]}, transparent`,
-                    }
-                  : {},
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: `${colorChips.grayScale[300]}, transparent`,
+                  }
+                : {},
               '& .MuiFormHelperText-root': {
                 textAlign: 'right',
                 marginLeft: 0,

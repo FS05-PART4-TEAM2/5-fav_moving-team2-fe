@@ -1,7 +1,7 @@
 import { colorChips } from '@/shared/styles/colorChips';
 import { TypoClassName } from '@/shared/styles/Typo/Typo';
 
-export type CategoryType = 'region' | 'service' | 'alarm' | 'sort' | 'profile';
+export type CategoryType = 'region' | 'service' | 'alarm' | 'sort' | 'profile' | 'moveSort';
 
 interface DropdownPreset {
   desktop: {
@@ -96,6 +96,24 @@ export const dropdownPresets: Record<string, DropdownPreset> = {
     mobile: {
       width: 91,
       height: 128,
+      padding: '8px 7px',
+      typo: 'text_M_12',
+      borderRadius: '8px',
+    },
+    align: 'left',
+    borderColor: colorChips.line['f2f2f2'],
+  },
+  moveSort: {
+    desktop: {
+      width: 114,
+
+      padding: '8px 10px',
+      typo: 'text_M_14',
+      borderRadius: '8px',
+    },
+    mobile: {
+      width: 91,
+
       padding: '8px 7px',
       typo: 'text_M_12',
       borderRadius: '8px',

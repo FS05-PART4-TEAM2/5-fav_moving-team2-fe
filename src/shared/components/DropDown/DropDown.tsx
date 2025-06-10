@@ -66,6 +66,8 @@ function getDefaultLabel(category: CategoryType): string {
       return '서비스';
     case 'sort':
       return '정렬';
+    case 'moveSort':
+      return '이사 빠른순';
     case 'profile':
     case 'alarm':
       return '';
