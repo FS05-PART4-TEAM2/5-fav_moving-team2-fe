@@ -1,16 +1,17 @@
 import { colorChips } from '@/shared/styles/colorChips';
-import { Typo } from '@/shared/styles/Typo/Typo';
+import { Typo, TypoClassName } from '@/shared/styles/Typo/Typo';
 import { Stack } from '@mui/material';
 import Image from 'next/image';
 
 interface ShareButtonsProps {
   isDesktop: boolean;
   title: string;
+  textStyle?: TypoClassName;
   shareUrl: string;
 }
 
 // TODO: 공유하기 클릭 이벤트핸들러 추가
-export const ShareButtons = ({ title, shareUrl, isDesktop }: ShareButtonsProps) => {
+export const ShareButtons = ({ title, shareUrl, isDesktop, textStyle = 'text_SB_16to20' }: ShareButtonsProps) => {
   const iconSize = isDesktop ? 64 : 40;
   const clipSize = isDesktop ? 36 : 24;
   const shareIcon = '/assets/images/share-link-icon/clip-24x24.svg';
@@ -19,7 +20,7 @@ export const ShareButtons = ({ title, shareUrl, isDesktop }: ShareButtonsProps) 
 
   return (
     <Stack direction="column" width="100%" gap={{ xs: '16px', md: '22px' }}>
-      <Typo className="text_SB_16to20" content={title} color={colorChips.black[400]} />
+      <Typo className={textStyle} content={title} color={colorChips.black[400]} />
       <Stack sx={shareButtonsSx}>
         <Stack sx={{ ...iconBoxSx, border: `1px solid ${colorChips.line.e6e6e6}` }}>
           <Image src={shareIcon} alt="share-button" width={clipSize} height={clipSize} />

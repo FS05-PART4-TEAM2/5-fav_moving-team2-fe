@@ -4,6 +4,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from '@/shared/theme';
 import '../../public/globals.css';
 import { ReactNode } from 'react';
+import { QueryProvider } from '@/shared/context/QueryProvider';
 
 // TODO: 메타데이터 설정
 export const metadata: Metadata = {
@@ -22,10 +23,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="kor">
       <body className={`${pretendard.className}`}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

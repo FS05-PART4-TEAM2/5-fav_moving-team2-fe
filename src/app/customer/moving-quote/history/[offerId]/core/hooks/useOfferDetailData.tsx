@@ -35,7 +35,6 @@ export const useOfferDetailData = (offerId: string) => {
         router.push(PATH.customer.movingQuoteHistory);
       } finally {
         setIsLoading(false);
-        console.log('로딩 완료');
       }
     };
 

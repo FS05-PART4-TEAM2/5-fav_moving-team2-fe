@@ -1,6 +1,25 @@
 export type UserType = 'customer' | 'mover' | 'temp';
 export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
 export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'DELETED';
+export type RegionType =
+  | 'SEOUL'
+  | 'GYEONGGI'
+  | 'INCHEON'
+  | 'GANGWON'
+  | 'CHUNGBUK'
+  | 'CHUNGNAM'
+  | 'SEJONG'
+  | 'DAEJEON'
+  | 'JEONBUK'
+  | 'JEONNAM'
+  | 'GWANGJU'
+  | 'GYEONGBUK'
+  | 'GYEONGNAM'
+  | 'DAEGU'
+  | 'ULSAN'
+  | 'BUSAN'
+  | 'JEJU';
+export type MoverFilterOption = 'MOSTREVIEW' | 'BESTRATING' | 'HIGHESTEXP' | 'MOSTCONFIRM';
 
 export interface GlobalResponse {
   success: boolean;
@@ -197,4 +216,85 @@ export interface ReceivedOffers {
   intro: string;
   career: number;
   confirmedQuotationCount: number;
+}
+
+export interface SearchMoverListPayload {
+  region?: RegionType | null;
+  service?: MovingType | null;
+  orderBy: MoverFilterOption;
+  keyword: string; // 기사 별명
+  idNumCursor?: number | null; // idNum 커서
+  orderCursor?: number | null; // 정렬 커서
+  limit: number; // 조회 개수
+}
+
+export interface SearchMoverListItem {
+  id: string;
+  idNum: number;
+  nickname: string;
+  profileImage: string | null;
+  serviceList: MovingType[] | null;
+  isAssigned: boolean;
+  isLiked: boolean;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  intro: string;
+  career: number;
+  confirmedCounts: number;
+}
+
+// 기사님찾기 리스트 조회
+export interface SearchMoverListResponse {
+  list: SearchMoverListItem[];
+  orderNextCursor: number;
+  idNumNextCursor: number;
+  hasNext: boolean;
+}
+
+// 기사님 상세조회
+export interface SearchMoverDetailResponse extends SearchMoverListItem {
+  detailDescription: string;
+  serviceArea: RegionType[] | null;
+}
+
+export interface MoverReviewListItem {
+  id: string;
+  content: string;
+  rating: number;
+  moverId: string;
+  quotationId: string;
+  customerId: string;
+  customerNick: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface reviewRating {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+}
+
+// 기사 리뷰 리스트 조회
+export interface MoverDetailReviewResponse {
+  list: MoverReviewListItem[];
+  ratingCounts: reviewRating;
+  ratingPercentages: reviewRating;
+  totalRating: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+export interface AssignMoverResponse {
+  id: string;
+  status: QuotationStatus;
+  rejectedReason: string | null; // TODO: 이유 타입 정의
+  moverId: string;
+  customerId: string;
+  quotationId: string;
+  createdAt: string;
+  updatedAt: string;
 }

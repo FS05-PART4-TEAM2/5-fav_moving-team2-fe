@@ -14,6 +14,7 @@ import { ToastPopup } from '@/shared/components/Popup/ToastPopup';
 import { useOfferDetailData } from './core/hooks/useOfferDetailData';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { useQuoteConfirm } from '../core/hooks/useQuoteConfirm';
+import { useCustomerLikeMover } from '@/shared/hooks/useCustomerLikeMover';
 
 export default function Page() {
   const params = useParams();
@@ -28,17 +29,19 @@ export default function Page() {
   if (isLoading) {
     return (
       <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <CircularProgress size={80} />
+        <CircularProgress size={40} />
       </Stack>
     );
   }
 
   if (!data) return null;
 
-  const handleLikeClick = () => {
-    // TODO: 찜하기 api 추가
-    console.log('like');
-  };
+  // 찜하기 훅
+  const { isLiked, likeCount, handleLikeClick } = useCustomerLikeMover({
+    initialStatus: data.offers[0].isLiked || false,
+    initialLikeCount: data.offers[0].likeCount || 0,
+    moverId: data.offers[0].moverId,
+  });
 
   const moverId = data.offers[0].moverId;
   // TODO: 공유URL 수정 - 기사님 상세
@@ -49,7 +52,6 @@ export default function Page() {
   const isAssigned = data.offers[0].isAssigned; // 지정요청
   const moveType =
     data.moveType === 'SMALL_MOVE' ? '소형이사' : data.moveType === 'FAMILY_MOVE' ? '가정이사' : '사무실이사';
-  const chipMoveType = data.moveType === 'SMALL_MOVE' ? 'small' : data.moveType === 'FAMILY_MOVE' ? 'home' : 'office';
   const profileBaseProps = {
     nickname: data.offers[0].moverNickname,
     profileImage: data.offers[0].moverProfileImageUrl,
@@ -57,8 +59,8 @@ export default function Page() {
     reviewCounts: data.offers[0].reviewCounts,
     career: data.offers[0].career,
     confirmedQuotationCount: data.offers[0].confirmedQuotationCount,
-    likeCount: data.offers[0].likeCount,
-    isLiked: data.offers[0].isLiked,
+    likeCount: likeCount,
+    isLiked: isLiked,
   };
   const quoteData = [
     { label: '견적 요청일', value: formatToYYMMDD(data.requestedAt) },
@@ -67,7 +69,7 @@ export default function Page() {
     { label: '출발지', value: data.startAddress },
     { label: '도착지', value: data.endAddress },
   ];
-  const likeIconSrc = data.offers[0].isLiked
+  const likeIconSrc = isLiked
     ? '/assets/images/like-icon/like-24x24-black.svg'
     : '/assets/images/like-icon/like-24x24-white.svg';
 
@@ -79,7 +81,7 @@ export default function Page() {
             <Stack sx={chipWrapperSx}>
               {/* 확정견적인 경우 */}
               {isConfirmed && <Chip type="confirmed" />}
-              <Chip type={chipMoveType} />
+              <Chip type={data.moveType} />
               {/* 지정요청일 경우 */}
               {isAssigned && <Chip type="select" />}
             </Stack>
@@ -141,7 +143,7 @@ const contentContainerSx = {
   gap: { xs: '0px', md: '120px' },
   height: '100%',
   paddingTop: { xs: '16px', sm: '24px' },
-  paddingBottom: '40px',
+  paddingBottom: '110px', // 모바일 플로팅버튼 높이 포함
   paddingX: '24px',
 };
 

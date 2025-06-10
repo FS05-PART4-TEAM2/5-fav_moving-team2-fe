@@ -19,14 +19,6 @@ interface PendingQuoteCardProps {
 export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQuoteCardProps) => {
   const router = useRouter();
   const { handleConfirm } = useQuoteConfirm(receivedOffer.offerId);
-
-  const chipMoveType =
-    customerQuoteData.moveType === 'SMALL_MOVE'
-      ? 'small'
-      : customerQuoteData.moveType === 'FAMILY_MOVE'
-      ? 'home'
-      : 'office';
-
   const handleClickDetail = () => {
     router.push(`/customer/moving-quote/history/${receivedOffer.offerId}`);
   };
@@ -53,7 +45,7 @@ export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQu
       <Stack sx={dataWrapperSx}>
         <Stack sx={chipWrapperSx}>
           <Chip type="wait" />
-          <Chip type={chipMoveType} />
+          <Chip type={customerQuoteData.moveType} />
           {/* 지정요청일 경우 */}
           {receivedOffer.isAssigned && <Chip type="select" />}
         </Stack>

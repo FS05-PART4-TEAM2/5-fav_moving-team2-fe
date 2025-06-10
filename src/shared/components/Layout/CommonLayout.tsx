@@ -36,6 +36,7 @@ const mainContainerSx = {
 };
 
 const contentContainerSx = {
+  flex: 1,
   height: '100%',
   width: '100%',
   maxWidth: '1448px',

@@ -8,6 +8,28 @@ interface TypoStyles {
 // 혹시 빠진게 있다면 여기에 추가하고 Typo.tsx TypoClassName 에도 추가해주세요
 // 만약 반응형으로 폰트 사이즈가 달라진다면 스타일에 미디어쿼리 적용할 수 있어요.
 export const typographyStyles: TypoStyles = {
+  text_B_40to64: {
+    fontFamily: 'pretendard',
+    fontSize: '64px',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    lineHeight: '150%',
+    '@media (max-width: 1200px)': {
+      fontSize: '40px',
+      lineHeight: '150%',
+    },
+  },
+  text_B_24to38: {
+    fontFamily: 'pretendard',
+    fontSize: '38px',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    lineHeight: '150%',
+    '@media (max-width: 1200px)': {
+      fontSize: '24px',
+      lineHeight: '26px',
+    },
+  },
   text_B_20to32: {
     fontFamily: 'pretendard',
     fontSize: '32px',
@@ -28,6 +50,17 @@ export const typographyStyles: TypoStyles = {
     '@media (max-width: 1200px)': {
       fontSize: '18px',
       lineHeight: '26px',
+    },
+  },
+  text_B_14to20: {
+    fontFamily: 'pretendard',
+    fontSize: '20px',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    lineHeight: '32px',
+    '@media (max-width: 1200px)': {
+      fontSize: '14px',
+      lineHeight: '24px',
     },
   },
   text_SB_12to14: {
@@ -61,6 +94,17 @@ export const typographyStyles: TypoStyles = {
     '@media (max-width: 1200px)': {
       fontSize: '14px',
       lineHeight: '24px',
+    },
+  },
+  text_R_16to24: {
+    fontFamily: 'pretendard',
+    fontSize: '24px',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: '32px',
+    '@media (max-width: 1200px)': {
+      fontSize: '16px',
+      lineHeight: '26px',
     },
   },
   text_SB_14to20: {
@@ -118,6 +162,17 @@ export const typographyStyles: TypoStyles = {
       lineHeight: '20px',
     },
   },
+  text_M_12to14: {
+    fontFamily: 'pretendard',
+    fontSize: '14px',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: '24px',
+    '@media (max-width: 1200px)': {
+      fontSize: '12px',
+      lineHeight: '20px',
+    },
+  },
   text_M_13to16: {
     fontFamily: 'pretendard',
     fontSize: '16px',
@@ -146,6 +201,17 @@ export const typographyStyles: TypoStyles = {
     fontStyle: 'normal',
     fontWeight: 500,
     lineHeight: '26px',
+    '@media (max-width: 1200px)': {
+      fontSize: '14px',
+      lineHeight: '24px',
+    },
+  },
+  text_M_14to20: {
+    fontFamily: 'pretendard',
+    fontSize: '20px',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: '32px',
     '@media (max-width: 1200px)': {
       fontSize: '14px',
       lineHeight: '24px',

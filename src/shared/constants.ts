@@ -1,3 +1,5 @@
+import { MovingType, RegionType } from './types/types';
+
 export const PATH = {
   landing: '/',
   customer: {
@@ -45,13 +47,13 @@ export const Region = [
   '제주',
 ];
 
-export const SERVICE_TYPES = [
+export const SERVICE_TYPES: { key: MovingType; label: string }[] = [
   { key: 'SMALL_MOVE', label: '소형이사' },
   { key: 'FAMILY_MOVE', label: '가정이사' },
   { key: 'OFFICE_MOVE', label: '사무실이사' },
-] as const;
+];
 
-export const REGIONS = [
+export const REGIONS: { key: RegionType; label: string }[] = [
   { key: 'SEOUL', label: '서울' },
   { key: 'GYEONGGI', label: '경기' },
   { key: 'INCHEON', label: '인천' },
@@ -69,4 +71,11 @@ export const REGIONS = [
   { key: 'ULSAN', label: '울산' },
   { key: 'BUSAN', label: '부산' },
   { key: 'JEJU', label: '제주' },
-] as const;
+];
+
+export const ServiceFilter: { key: MovingType | 'ALL'; label: string }[] = [
+  { key: 'ALL', label: '전체' },
+  ...SERVICE_TYPES,
+];
+
+export const RegionFilter: { key: RegionType | 'ALL'; label: string }[] = [{ key: 'ALL', label: '전체' }, ...REGIONS];
