@@ -1,13 +1,13 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
-import { CustomerFinishedReviewListResponse } from '@/shared/types/types';
+import { CustomerFinishedReviewListResponseData } from '@/shared/types/types';
 import { mockFinishedListResponse } from '../../core/constants';
 import { FinishedReviewList } from './core/components/FinishedReviewList';
 
 export const FinishedReviewFeature = () => {
   // TODO: api 연결
   const isLoading = false;
-  const data: CustomerFinishedReviewListResponse = mockFinishedListResponse;
+  const data: CustomerFinishedReviewListResponseData = mockFinishedListResponse;
 
   const finishedReviewList = data.list;
   const hasReview = finishedReviewList.length > 0;

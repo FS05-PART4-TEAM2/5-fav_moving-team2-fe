@@ -1,7 +1,7 @@
-import { CustomerWriteReviewListResponse, CustomerFinishedReviewListResponse } from '@/shared/types/types';
+import { CustomerWriteReviewListResponseData, CustomerFinishedReviewListResponseData } from '@/shared/types/types';
 
 // 작성가능한 리뷰 목록
-export const mockWriteListResponse: CustomerWriteReviewListResponse = {
+export const mockWriteListResponse: CustomerWriteReviewListResponseData = {
   list: [
     {
       content: '',
@@ -290,7 +290,7 @@ export const mockWriteListResponse: CustomerWriteReviewListResponse = {
 };
 
 // 작성한 리뷰 목록
-export const mockFinishedListResponse: CustomerFinishedReviewListResponse = {
+export const mockFinishedListResponse: CustomerFinishedReviewListResponseData = {
   list: [
     {
       content: '정말 친절하시고 물건도 하나도 안 깨뜨리고 옮겨주셨어요! 시간 약속도 잘 지키시고 매우 만족합니다.',

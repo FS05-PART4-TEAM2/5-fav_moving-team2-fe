@@ -3,6 +3,8 @@ import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { Stack } from '@mui/material';
 import { CustomerWriteReviewItem } from '@/shared/types/types';
 import { colorChips } from '@/shared/styles/colorChips';
+import { useState } from 'react';
+import { WriteReviewModal } from './WriteReviewModal';
 
 // TODO: 작성가능한 리뷰 api 완성되면 수정
 interface WriteReviewListProps {
@@ -16,18 +18,24 @@ interface WriteReviewCardProps {
 export const WriteReviewList = ({ data }: WriteReviewListProps) => {
   return (
     <Stack sx={cardWrapperSx}>
-      {data.map((item, idx) => (
-        <WriteReviewCard key={idx} data={item} />
+      {data.map((item) => (
+        <WriteReviewCard key={item.offerId} data={item} />
       ))}
     </Stack>
   );
 };
 
 const WriteReviewCard = ({ data }: WriteReviewCardProps) => {
-  // TODO: 작성가능한 리뷰 api 완성되면 수정
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleClickWriteReview = () => {
-    console.log('리뷰 작성하기');
+    setIsModalOpen(true);
   };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const baseProps = {
     nickname: data.moverName,
     profileImage: data.moverProfileImage,
@@ -38,10 +46,13 @@ const WriteReviewCard = ({ data }: WriteReviewCardProps) => {
   };
 
   return (
-    <Stack sx={reviewCarsSx}>
-      <ReviewCardBase {...baseProps} />
-      <SolidButton text="리뷰 작성하기" onClick={handleClickWriteReview} />
-    </Stack>
+    <>
+      <Stack sx={reviewCarsSx}>
+        <ReviewCardBase {...baseProps} />
+        <SolidButton text="리뷰 작성하기" onClick={handleClickWriteReview} />
+      </Stack>
+      {isModalOpen && <WriteReviewModal offerData={data} isOpen={isModalOpen} onClose={handleCloseModal} />}
+    </>
   );
 };
 

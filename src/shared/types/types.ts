@@ -305,7 +305,7 @@ export interface WriteReviewPayload {
 }
 
 // 이사 리뷰 작성 응답
-export interface WriteReviewResponse {
+export interface WriteReviewResponseData {
   id: string;
   content: string;
   rating: number;
@@ -335,7 +335,7 @@ export interface CustomerWriteReviewItem {
 }
 
 // 일반유저 작성가능한 리뷰 목록 조회
-export interface CustomerWriteReviewListResponse {
+export interface CustomerWriteReviewListResponseData {
   list: CustomerWriteReviewItem[];
   totalPages: number;
   currentPage: number;
@@ -358,7 +358,7 @@ export interface CustomerFinishedReviewItem {
 }
 
 // 일반유저 작성한 리뷰 목록 조회
-export interface CustomerFinishedReviewListResponse {
+export interface CustomerFinishedReviewListResponseData {
   list: CustomerFinishedReviewItem[];
   totalPages: number;
   currentPage: number;
