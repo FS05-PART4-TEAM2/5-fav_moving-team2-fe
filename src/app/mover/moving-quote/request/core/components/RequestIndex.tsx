@@ -96,7 +96,6 @@ export default function RequestIndex() {
     sorted: sortedValue,
   };
 
-  console.log('보내는 파라미터 값', queryParams);
   const {
     data: quotationsResponse,
     isFetchingNextPage,
