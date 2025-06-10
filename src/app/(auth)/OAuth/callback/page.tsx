@@ -40,7 +40,8 @@ export default function OAuthCallbackPage() {
           localStorage.setItem('refreshToken', refreshToken);
         }
 
-        const user = await OAuthProfile(type);
+        const res = await OAuthProfile(type);
+        const user = res.data;
 
         if (type === 'customer') {
           setUserInfo('customer', {

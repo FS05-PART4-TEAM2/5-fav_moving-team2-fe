@@ -9,15 +9,10 @@ import { SolidButton } from '../Button/SolidButton';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/shared/constants';
 import { OutlinedButton } from '../Button/OutlinedButton';
-
 import Image from 'next/image';
 
 interface CardHeaderProps {
   type: PresetCardName;
-  services: string[];
-  moveDay?: string;
-  name?: string;
-  detailDescription?: string;
   data: UserCardData;
   isModal?: boolean;
 }
@@ -30,15 +25,7 @@ const labelToCategoryKey: Record<string, CategoryKey> = {
   '견적 대기': 'wait',
 };
 
-export default function CardHeader({
-  type,
-  services,
-  moveDay,
-  detailDescription,
-  name,
-  data,
-  isModal,
-}: CardHeaderProps) {
+export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isLarge = useMediaQuery(theme.breakpoints.up('md'));
   const router = useRouter();
@@ -64,13 +51,19 @@ export default function CardHeader({
     type !== 'review' &&
     type !== 'finishReview';
 
+  const services: string[] = Array.isArray(data.service) ? data.service : [];
+  const name: string = data.name || data.name || '';
+  const detailDescription: string = data.detailDescription || '';
+  const moveDay: string | undefined = data.moveDay;
+
   return (
     <Stack
       direction="column"
       justifyContent="space-between"
+      width="100%"
       sx={{ gap: { sm: '14px', md: '16px' }, ...(isModal ? { mt: { sm: '26px', md: '40px' } } : {}) }}
     >
-      <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' } }}>
+      <Stack direction="row" flexWrap="wrap" width="100%" sx={{ gap: { xs: '8px', md: '12px' } }}>
         {(services.length > 0 || detailDescription) && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
@@ -82,7 +75,13 @@ export default function CardHeader({
             {extraInfo && <Typo className={extraInfoText} color="text.secondary" content={extraInfo} />}
           </Stack>
         ) : (
-          <Stack direction="row" sx={{ gap: { xs: '8px', md: '12px' } }}>
+          <Stack
+            direction="row"
+            width="100%"
+            justifyContent={isLarge ? 'space-between' : ''}
+            alignItems="center"
+            sx={{ gap: { xs: '8px', md: '12px' } }}
+          >
             {type === 'profile' && !isLarge && (
               <Stack
                 sx={{
@@ -100,7 +99,12 @@ export default function CardHeader({
                   position: 'relative',
                 }}
               >
-                <Image src={data.userProfileImage ?? ''} alt="user profile Image" fill style={{ objectFit: 'cover' }} />
+                <Image
+                  src={data.userProfileImage || '/assets/images/profile-icon/login-default-36x36.svg'}
+                  alt="user profile Image"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
               </Stack>
             )}
 
@@ -118,14 +122,14 @@ export default function CardHeader({
                   text="기본 정보 수정"
                   buttonType="done"
                   width="fit-content"
-                  onClick={() => router.push(`${PATH.mover.profile}`)}
+                  onClick={() => router.push(`${PATH.mover.editInfo}`)}
                   hasIcon={true}
                   style={{ textWrap: 'nowrap' }}
                 />
                 <SolidButton
                   text="내 프로필 수정"
                   width="fit-content"
-                  onClick={() => router.push(`${PATH.mover.profile}`)}
+                  onClick={() => router.push(`${PATH.mover.editProfile}`)}
                   hasIcon={true}
                   style={{ textWrap: 'nowrap' }}
                 />

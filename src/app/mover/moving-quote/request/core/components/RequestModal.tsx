@@ -10,6 +10,7 @@ import Card from '@/shared/components/Card/Card';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { useMediaQuery } from '@mui/system';
 import theme from '@/shared/theme';
+import { rejectQuotationAPI, sendQuotationAPI } from '../api/requestApi';
 
 type Mode = 'request' | 'reject';
 
@@ -22,7 +23,6 @@ interface RequestModalProps {
 interface RequestFormData {
   quoteAmount?: string;
   comment?: string;
-  rejectReason?: string;
 }
 
 export default function RequestModal({ mode, requestCardData, onClose }: RequestModalProps) {
@@ -40,12 +40,27 @@ export default function RequestModal({ mode, requestCardData, onClose }: Request
 
   const onSubmit = async (data: RequestFormData) => {
     try {
-      // TODO API 연결작업
-      const payload = { requestId: requestCardData.id, ...data };
+      const quotationId = requestCardData.id;
+      if (!quotationId) throw new Error('quotationId가 없습니다.');
+
       if (mode === 'request') {
-        console.log('견적 보내기', payload);
+        const customerId = requestCardData.customerId;
+        if (!customerId) throw new Error('customerId가 없습니다.');
+
+        const payload = {
+          price: Number(data.quoteAmount),
+          comment: data.comment ?? '',
+          isAssignQuo: true,
+          customerId: requestCardData.customerId as string,
+          quotationId: requestCardData.id as string,
+        };
+        await sendQuotationAPI(payload);
       } else {
-        console.log('반려하기', payload);
+        const payload = {
+          quotationId: requestCardData.id as string,
+          comment: data.comment ?? '',
+        };
+        await rejectQuotationAPI(payload);
       }
       onClose();
     } catch (err) {
@@ -88,7 +103,7 @@ export default function RequestModal({ mode, requestCardData, onClose }: Request
                 content="코멘트를 입력해 주세요"
               />
               <InputField
-                name="quoteInfo"
+                name="comment"
                 override={{
                   backgroundColor: colorChips.background['f7f7f7'],
                 }}
@@ -111,7 +126,7 @@ export default function RequestModal({ mode, requestCardData, onClose }: Request
             content="반려 사유를 입력해 주세요"
           />
           <InputField
-            name="reject"
+            name="comment"
             override={{
               backgroundColor: colorChips.background['f7f7f7'],
             }}

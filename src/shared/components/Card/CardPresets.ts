@@ -25,6 +25,7 @@ export interface UserCardData {
   likeCount?: number;
   userProfileImage?: string;
   price?: number;
+  customerId?: string;
   review?: {
     content?: string;
     reviewer?: number;

@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import Card from '@/shared/components/Card/Card';
-import { mockData } from '../mockData';
 import RequestModal from './RequestModal';
 import { useMediaQuery } from '@mui/system';
 import theme from '@/shared/theme';
@@ -17,6 +16,11 @@ import FilterModal from './FilterModal';
 import FilterButton from './FilterButton';
 import { SERVICE_TYPES } from '@/shared/constants';
 import { TabBar } from '@/shared/components/Tab/TabBar';
+import { useMoverQuotations } from '../hook/requestHooks';
+import useUserStore from '@/shared/store/useUserStore';
+import Image from 'next/image';
+import RequestCardSkeleton from './RequestCardSkeleton';
+import { UserCardData } from '@/shared/components/Card/CardPresets';
 
 export default function RequestIndex() {
   const [modalType, setModalType] = useState<'request' | 'reject' | 'filter' | null>(null);
@@ -31,11 +35,11 @@ export default function RequestIndex() {
     '서비스 가능 지역': false,
     '지정 견적 요청': false,
   });
+  const moverData = useUserStore((state) => state.moverData);
 
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
 
-  const userData = mockData;
-
+  // TODO count개수 내려오는 값으로 수정
   const CheckboxMoveType = [
     { label: '소형이사', count: 10, checked: selected['소형이사'] },
     { label: '가정이사', count: 2, checked: selected['가정이사'] },
@@ -71,21 +75,55 @@ export default function RequestIndex() {
     setModalType(null);
     setSelectedId(null);
   };
-  //TODO 리엑트 쿼리 연결 및 키 맵핑
-  {
-    /*const selectedMoveType = SERVICE_TYPES.filter(({ label }) => selected[label]).map(({ key }) => key);
 
-  const selectedFilters = ['서비스 가능 지역', '지정 견적 요청'].filter((label) => selected[label]);
+  const selectedMoveType = SERVICE_TYPES.filter(({ label }) => selected[label]).map(({ key }) => key);
+  const selectedRegion =
+    selected['서비스 가능 지역'] && moverData?.serviceArea?.length ? moverData.serviceArea : undefined;
+  const SORT_MAP = {
+    '이사 빠른순': 'MOVE_DATE_ASC',
+    '요청일 빠른순': 'REQUEST_DATE_ASC',
+  } as const;
 
-  const parsedQuery = {
-    keyword: searchKeyword,
-    moveTypes: selectedMoveType,
-    filters: selectedFilters,
-    sort: selectedSort,
+  type SortLabel = keyof typeof SORT_MAP;
+  type SortValue = (typeof SORT_MAP)[SortLabel];
+
+  const sortedValue: SortValue | undefined = SORT_MAP[selectedSort as SortLabel];
+  const queryParams = {
+    type: selectedMoveType.length ? selectedMoveType : undefined,
+    region: selectedRegion,
+    isAssigned: selected['지정 견적 요청'] ? true : false,
+    username: searchKeyword || undefined,
+    sorted: sortedValue,
   };
 
-  console.log('🧩 파싱된 쿼리 객체:', parsedQuery); */
-  }
+  console.log('보내는 파라미터 값', queryParams);
+  const {
+    data: quotationsResponse,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isPending,
+  } = useMoverQuotations(queryParams);
+  const quotations = quotationsResponse?.pages.flatMap((page) => page.data) ?? [];
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!bottomRef.current || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    observer.observe(bottomRef.current);
+
+    return () => observer.disconnect();
+  }, [bottomRef.current, hasNextPage, fetchNextPage]);
 
   return (
     <>
@@ -115,9 +153,16 @@ export default function RequestIndex() {
             </Stack>
           )}
 
-          <Stack spacing={3} width="100%">
+          <Stack width="100%">
             <SearchBar onSearch={(text) => setSearchKeyword(text)} />
-            <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
+            <Stack
+              direction="row"
+              mt={isMd ? '4px' : '24px'}
+              py={isMd ? '5px' : '7px'}
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              {/* TODO 총 개수 내려오는 값으로 수정*/}
               <Typo
                 className={isMd ? 'text_M_13' : 'text_M_16'}
                 style={{ color: colorChips.black[400] }}
@@ -132,15 +177,48 @@ export default function RequestIndex() {
                 )}
               </Stack>
             </Stack>
-            {userData.map((card) => (
-              <Card
-                key={card.id}
-                type="request"
-                data={card}
-                onRequestClick={(id) => handleOpenModal('request', id)}
-                onRejectClick={(id) => handleOpenModal('reject', id)}
-              />
-            ))}
+            <Stack gap={isMd ? '32px' : '48px'}>
+              {isPending ? (
+                <>
+                  {[...Array(2)].map((_, i) => (
+                    <RequestCardSkeleton key={i} />
+                  ))}
+                </>
+              ) : quotations.length === 0 ? (
+                <Stack
+                  py={isMd ? '80px' : '120px'}
+                  gap={isMd ? '24px' : '32px'}
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Image
+                    src="/assets/images/empty-images/review-blue-02.svg"
+                    alt="request Icon"
+                    width={isMd ? 110 : 184}
+                    height={isMd ? 82 : 136}
+                  />
+                  <Typo
+                    className="text_R_14to20"
+                    style={{ color: colorChips.grayScale[400] }}
+                    content="아직 받은 요청이 없어요!"
+                  />
+                </Stack>
+              ) : (
+                <>
+                  {quotations.map((card: UserCardData) => (
+                    <Card
+                      key={card.id}
+                      type="request"
+                      data={card}
+                      onRequestClick={(id) => handleOpenModal('request', id)}
+                      onRejectClick={(id) => handleOpenModal('reject', id)}
+                    />
+                  ))}
+                  <div ref={bottomRef} />
+                  {isFetchingNextPage && <RequestCardSkeleton />}
+                </>
+              )}
+            </Stack>
           </Stack>
         </Stack>
 
@@ -150,7 +228,7 @@ export default function RequestIndex() {
             <RequestModal
               mode="request"
               onClose={handleCloseModal}
-              requestCardData={userData.find((card) => card.id === selectedId)!}
+              requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
         )}
@@ -161,7 +239,7 @@ export default function RequestIndex() {
             <RequestModal
               mode="reject"
               onClose={handleCloseModal}
-              requestCardData={userData.find((card) => card.id === selectedId)!}
+              requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
         )}
