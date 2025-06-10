@@ -298,3 +298,69 @@ export interface AssignMoverResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface WriteReviewPayload {
+  content: string;
+  rating: number;
+}
+
+// 이사 리뷰 작성 응답
+export interface WriteReviewResponse {
+  id: string;
+  content: string;
+  rating: number;
+  moverId: string;
+  quotationId: string;
+  customerId: string;
+  customerNick: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 일반유저 작성가능한 리뷰 목록 아이템
+// TODO: 명세 업데이트되면 수정하기
+export interface CustomerWriteReviewItem {
+  content: string;
+  rating: number;
+  reviewDate: string | null;
+  moverName: string;
+  moverProfileImage: string;
+  moveDate: string;
+  startAddress: string;
+  endAddress: string;
+  moveType: MovingType;
+  price: string;
+  isAssignedMover: boolean;
+  offerId: string;
+}
+
+// 일반유저 작성가능한 리뷰 목록 조회
+export interface CustomerWriteReviewListResponse {
+  list: CustomerWriteReviewItem[];
+  totalPages: number;
+  currentPage: number;
+  totalCount: number;
+}
+
+// 일반유저 작성한 리뷰 목록 아이템
+export interface CustomerFinishedReviewItem {
+  content: string;
+  rating: number;
+  reviewDate: string;
+  moverName: string;
+  moverProfileImage: string;
+  moveDate: string;
+  startAddress: string;
+  endAddress: string;
+  moveType: MovingType;
+  price: string;
+  isAssignedMover: boolean;
+}
+
+// 일반유저 작성한 리뷰 목록 조회
+export interface CustomerFinishedReviewListResponse {
+  list: CustomerFinishedReviewItem[];
+  totalPages: number;
+  currentPage: number;
+  totalCount: number;
+}
