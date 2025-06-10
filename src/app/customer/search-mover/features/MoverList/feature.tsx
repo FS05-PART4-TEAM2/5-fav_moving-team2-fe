@@ -2,6 +2,9 @@ import { Stack, CircularProgress, Box } from '@mui/material';
 import { useEffect, useRef, useCallback } from 'react';
 import { useMoverList } from '../../core/hooks/useMoverListQuery';
 import { MoverCard } from './core/components/MoverCard';
+import { colorChips } from '@/shared/styles/colorChips';
+import { Typo } from '@/shared/styles/Typo/Typo';
+import Image from 'next/image';
 
 export const MoverListFeature = () => {
   const { movers, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useMoverList();
@@ -42,7 +45,20 @@ export const MoverListFeature = () => {
   }
 
   if (movers.length === 0) {
-    return null;
+    return (
+      <Stack
+        flex={1}
+        height="100%"
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        gap="20px"
+        paddingBottom="40px"
+      >
+        <Image src="/assets/images/empty-images/profile-01.svg" alt="no results" width={120} height={120} />
+        <Typo content="검색 결과가 없습니다." className="text_R_14to20" color={colorChips.grayScale[300]} />
+      </Stack>
+    );
   }
 
   return (

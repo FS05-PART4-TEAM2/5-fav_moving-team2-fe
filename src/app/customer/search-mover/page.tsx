@@ -45,6 +45,7 @@ export default function Page() {
 }
 
 const pageContainerSx = {
+  flex: 1,
   width: '100%',
   height: '100%',
   flexDirection: 'column',
@@ -61,7 +62,9 @@ const contentContainerSx = {
 };
 
 const listWrapperSx = {
+  flex: 1,
   width: '100%',
+  height: '100%',
   maxWidth: { xs: '100%', md: '955px' },
   flexDirection: 'column',
   gap: '24px',

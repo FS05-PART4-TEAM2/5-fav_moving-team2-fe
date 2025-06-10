@@ -17,6 +17,8 @@ import { login, signup } from '@/shared/core/Auth/service';
 import { LoginPayload, SignupPayload } from '@/shared/types/types';
 import { invalidateQueryKeys } from '@/shared/utils/invalidateQueryKeys';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSearchMoverStore } from '@/app/customer/search-mover/core/hooks/useSearchMoverStore';
+
 interface AuthFormProps {
   mode: 'login' | 'signup';
   userType: 'customer' | 'mover';
@@ -34,6 +36,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
   } = methods;
   const router = useRouter();
   const { setUserInfo, setCustomerData, setMoverData } = useUserStore();
+  const { reset: resetSearchMoverStore } = useSearchMoverStore();
 
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const isLogin = mode === 'login';
@@ -90,6 +93,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           });
 
           invalidateQueryKeys(queryClient);
+          resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
           if (process.env.NODE_ENV === 'development') {
@@ -131,6 +135,9 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             career: mover.career,
             detailDescription: mover.detailDescription,
           });
+
+          invalidateQueryKeys(queryClient);
+          resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
           if (process.env.NODE_ENV === 'development') {
