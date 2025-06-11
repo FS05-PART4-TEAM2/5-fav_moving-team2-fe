@@ -15,7 +15,7 @@ export const useFinishedReviewList = () => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md')); // 743px 이하
   const { userType, userInfo } = useUserStore();
 
-  if (userType === 'customer') {
+  if (userType !== 'customer') {
     return { data: null, isLoading: false, handleChangePage: () => {} };
   }
 

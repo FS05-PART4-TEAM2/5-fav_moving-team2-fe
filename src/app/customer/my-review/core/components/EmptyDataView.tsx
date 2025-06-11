@@ -41,7 +41,7 @@ export const EmptyDataView = ({ type }: EmptyDataViewProps) => {
       {type === 'finished' && (
         <SolidButton
           text={'리뷰 작성하러 가기'}
-          width={isDesktop ? '180px' : '150px'}
+          width={'180px'}
           onClick={() => {
             router.push(redirectUrl);
           }}

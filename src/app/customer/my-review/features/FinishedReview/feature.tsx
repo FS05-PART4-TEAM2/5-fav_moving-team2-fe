@@ -10,7 +10,7 @@ export const FinishedReviewFeature = () => {
   if (isLoading || !data) {
     return (
       <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress size={80} />
+        <CircularProgress size={40} />
       </Stack>
     );
   }
