@@ -68,7 +68,6 @@ export const MoverListFeature = () => {
       ))}
 
       {/* 무한스크롤 트리거 */}
-      {/* TODO: 트리거 높이 괜찮은지 테스트 필요(기사 데이터 좀 쌓이면) */}
       <Box ref={observerRef} sx={{ height: '100px' }} />
 
       {/* 로딩 인디케이터 */}

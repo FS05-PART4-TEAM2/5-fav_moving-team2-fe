@@ -252,6 +252,31 @@ export interface SearchMoverListResponse {
   hasNext: boolean;
 }
 
+// 찜한 기사님 리스트 조회
+export interface LikeMoverListItem {
+  id: string;
+  idNum: number;
+  nickName: string | null;
+  profileImage: string | null;
+  serviceList: MovingType[] | null;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  intro: string | null;
+  career: number;
+  confirmedCounts: number;
+  createdAt: string;
+  isLiked: boolean;
+  isAssigned: boolean;
+}
+
+export interface LikeMoverListResponseData {
+  list: LikeMoverListItem[];
+  total: number;
+  page: number;
+  limit: number;
+  hasNextPage: boolean;
+}
 // 기사님 상세조회
 export interface SearchMoverDetailResponse extends SearchMoverListItem {
   detailDescription: string;

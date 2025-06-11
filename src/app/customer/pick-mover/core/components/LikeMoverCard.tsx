@@ -1,24 +1,24 @@
-import { SearchMoverListItem } from '@/shared/types/types';
+import { LikeMoverListItem } from '@/shared/types/types';
 import { useRouter } from 'next/navigation';
 import { Stack } from '@mui/material';
 import { colorChips } from '@/shared/styles/colorChips';
-import { Typo } from '@/shared/styles/Typo/Typo';
 import { MoverProfileBase } from '@/shared/components/Card/MoverProfileBase';
 import Chip from '@/shared/components/Chip/Chip';
 
-export const MoverCard = ({ data }: { data: SearchMoverListItem }) => {
+export const LikeMoverCard = ({ data }: { data: LikeMoverListItem }) => {
   const router = useRouter();
   // 서비스 여러개인 경우 1개만 보여줌
   const moveType = data.serviceList?.[0] ?? 'SMALL_MOVE';
   const profileBaseProps = {
-    nickname: data.nickname,
-    profileImage: data.profileImage,
+    nickname: data.nickName ?? '',
+    profileImage: data.profileImage ?? '',
     totalRating: data.totalRating,
     reviewCounts: data.reviewCounts,
     career: data.career,
     confirmedQuotationCount: data.confirmedCounts,
     likeCount: data.likeCount,
     isLiked: data.isLiked,
+    likeColor: 'pink' as const,
   };
 
   const handleClickDetail = () => {
@@ -29,10 +29,7 @@ export const MoverCard = ({ data }: { data: SearchMoverListItem }) => {
     <Stack sx={profileBoxSx} onClick={handleClickDetail}>
       <Stack sx={chipWrapperSx}>
         <Chip type={moveType} />
-        {/* 지정요청일 경우 */}
-        {data.isAssigned && <Chip type="select" />}
       </Stack>
-      <Typo content={data.intro} className="text_SB_14to24" color={colorChips.black[300]} />
       <MoverProfileBase {...profileBaseProps} />
     </Stack>
   );
