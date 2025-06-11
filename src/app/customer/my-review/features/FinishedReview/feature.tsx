@@ -1,18 +1,13 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
-import { CustomerFinishedReviewListResponseData } from '@/shared/types/types';
-import { mockFinishedListResponse } from '../../core/constants';
 import { FinishedReviewList } from './core/components/FinishedReviewList';
+import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
+import { useFinishedReviewList } from './core/hooks/useFinishedReviewList';
 
 export const FinishedReviewFeature = () => {
-  // TODO: api 연결
-  const isLoading = false;
-  const data: CustomerFinishedReviewListResponseData = mockFinishedListResponse;
+  const { data, isLoading, handleChangePage } = useFinishedReviewList();
 
-  const finishedReviewList = data.list;
-  const hasReview = finishedReviewList.length > 0;
-
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <CircularProgress size={80} />
@@ -20,13 +15,20 @@ export const FinishedReviewFeature = () => {
     );
   }
 
+  const finishedReviewList = data.list;
+  const hasReview = finishedReviewList.length > 0;
+
   return (
     <Stack sx={contentContainerSx}>
       {hasReview ? (
         // 작성한 리뷰 데이터 있는 경우
-        <FinishedReviewList data={finishedReviewList} />
+        <Stack direction="column" width="100%" gap={{ xs: '8px', md: '24px' }}>
+          <FinishedReviewList data={finishedReviewList} />
+          <Stack width="100%" alignItems="center" justifyContent="center">
+            <CommonPagination page={data?.currentPage} totalCount={data?.totalPages} handleChange={handleChangePage} />
+          </Stack>
+        </Stack>
       ) : (
-        // TODO: 페이지네이션
         // 데이터 없는 경우
         <EmptyDataView type="finished" />
       )}

@@ -1,18 +1,13 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { EmptyDataView } from '../../core/components/EmptyDataView';
 import { WriteReviewList } from './core/components/WriteReviewList';
-import { CustomerWriteReviewListResponseData } from '@/shared/types/types';
-import { mockWriteListResponse } from '../../core/constants';
+import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
+import { useWriteReviewList } from './core/hooks/useWriteReviewList';
 
 export const WriteReviewFeature = () => {
-  // TODO: api 연결
-  const isLoading = false;
-  const data: CustomerWriteReviewListResponseData = mockWriteListResponse;
+  const { data, isLoading, handleChangePage } = useWriteReviewList();
 
-  const writeReviewList = data.list;
-  const hasReview = writeReviewList.length > 0;
-
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <CircularProgress size={80} />
@@ -20,13 +15,20 @@ export const WriteReviewFeature = () => {
     );
   }
 
+  const writeReviewList = data?.list;
+  const hasReview = writeReviewList?.length > 0;
+
   return (
     <Stack sx={contentContainerSx}>
       {hasReview ? (
         // 작성 가능한 리뷰 데이터 있는 경우
-        <WriteReviewList data={writeReviewList} />
+        <Stack direction="column" width="100%" gap={{ xs: '8px', md: '24px' }}>
+          <WriteReviewList data={writeReviewList} />
+          <Stack width="100%" alignItems="center" justifyContent="center">
+            <CommonPagination page={data?.currentPage} totalCount={data?.totalPages} handleChange={handleChangePage} />
+          </Stack>
+        </Stack>
       ) : (
-        // TODO: 페이지네이션
         // 데이터 없는 경우
         <EmptyDataView type="write" />
       )}

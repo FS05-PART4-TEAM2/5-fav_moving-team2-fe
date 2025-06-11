@@ -318,7 +318,6 @@ export interface WriteReviewResponseData {
 }
 
 // 일반유저 작성가능한 리뷰 목록 아이템
-// TODO: 명세 업데이트되면 수정하기
 export interface CustomerWriteReviewItem {
   content: string;
   rating: number;
