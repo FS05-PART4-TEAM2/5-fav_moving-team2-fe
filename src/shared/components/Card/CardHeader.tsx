@@ -23,6 +23,7 @@ const labelToCategoryKey: Record<string, CategoryKey> = {
   사무실이사: 'OFFICE_MOVE',
   '지정 견적 요청': 'select',
   '견적 대기': 'wait',
+  '확정 견적': 'confirmed',
 };
 
 export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
@@ -54,7 +55,6 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
   const services: string[] = Array.isArray(data.service) ? data.service : [];
   const name: string = data.name || data.name || '';
   const detailDescription: string = data.detailDescription || '';
-  const moveDay: string | undefined = data.moveDay;
 
   return (
     <Stack
@@ -67,10 +67,13 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
         {(services.length > 0 || detailDescription) && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
+              {data.status === 'PENDING' && <Chip type="wait" />}
+              {data.status === 'CONFIRMED' && <Chip type="confirmed" />}
               {services.map((label, idx) => {
                 const category = labelToCategoryKey[label];
                 return category ? <Chip key={idx} type={category} /> : null;
               })}
+              {data.isAssigned && <Chip type="select" />}
             </Stack>
             {extraInfo && <Typo className={extraInfoText} color="text.secondary" content={extraInfo} />}
           </Stack>
