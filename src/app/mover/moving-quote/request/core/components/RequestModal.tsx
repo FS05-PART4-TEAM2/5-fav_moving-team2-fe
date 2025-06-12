@@ -18,6 +18,7 @@ interface RequestModalProps {
   mode: Mode;
   requestCardData: UserCardData;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 interface RequestFormData {
@@ -25,7 +26,7 @@ interface RequestFormData {
   comment?: string;
 }
 
-export default function RequestModal({ mode, requestCardData, onClose }: RequestModalProps) {
+export default function RequestModal({ mode, requestCardData, onClose, onSuccess }: RequestModalProps) {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
 
   const methods = useForm<RequestFormData>({
@@ -62,9 +63,11 @@ export default function RequestModal({ mode, requestCardData, onClose }: Request
         };
         await rejectQuotationAPI(payload);
       }
+      onSuccess?.();
       onClose();
     } catch (err) {
       console.error(err);
+      alert(mode === 'request' ? '견적 전송에 실패했습니다.' : '반려 요청에 실패했습니다.');
     }
   };
 

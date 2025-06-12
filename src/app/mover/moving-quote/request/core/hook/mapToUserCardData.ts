@@ -38,6 +38,7 @@ export function cutAddress(fullAddress: string): string {
 export function mapToUserCardData(apiData: QuotationAPIData): UserCardData {
   return {
     id: apiData.id,
+    customerId: apiData.customer.id,
     name: apiData.customer.username,
     moveDay: apiData.moveDate,
     startPoint: cutAddress(apiData.startAddress),

@@ -105,6 +105,7 @@ export default function RequestIndex() {
     fetchNextPage,
     hasNextPage,
     isPending,
+    refetch,
   } = useMoverQuotations(queryParams);
   const rawQuotations =
     (quotationsResponse as unknown as InfiniteData<InfiniteQuotationPage, CursorInfo>)?.pages.flatMap(
@@ -112,8 +113,6 @@ export default function RequestIndex() {
     ) ?? [];
 
   const quotations: UserCardData[] = rawQuotations.map(mapToUserCardData);
-
-  console.log('quotations', quotations);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -237,6 +236,10 @@ export default function RequestIndex() {
             <RequestModal
               mode="request"
               onClose={handleCloseModal}
+              onSuccess={() => {
+                refetch();
+                handleCloseModal();
+              }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
@@ -248,6 +251,10 @@ export default function RequestIndex() {
             <RequestModal
               mode="reject"
               onClose={handleCloseModal}
+              onSuccess={() => {
+                refetch();
+                handleCloseModal();
+              }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
