@@ -47,11 +47,6 @@ export default function CommonCardInfo({
     type === 'moveQuotation' ||
     type === 'refuse';
 
-  const formatted = (date: string): string => {
-    if (isWriteReview) dayjs(date).format('YYYY.MM.DD');
-    return dayjs(date).format('YYYY.MM.DD(dd)');
-  };
-
   if (isRequestConfirm) {
     return (
       <RequestConfirmCardInfo
