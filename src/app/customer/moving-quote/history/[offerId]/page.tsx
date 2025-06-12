@@ -25,6 +25,12 @@ export default function Page() {
 
   const { data, isLoading } = useOfferDetailData(offerId);
   const { handleConfirm } = useQuoteConfirm(offerId);
+  // 찜하기 훅
+  const { isLiked, likeCount, handleLikeClick } = useCustomerLikeMover({
+    initialStatus: data?.offers[0].isLiked || false,
+    initialLikeCount: data?.offers[0].likeCount || 0,
+    moverId: data?.offers[0].moverId || '',
+  });
 
   // 로딩 중일 때
   if (isLoading) {
@@ -36,13 +42,6 @@ export default function Page() {
   }
 
   if (!data) return null;
-
-  // 찜하기 훅
-  const { isLiked, likeCount, handleLikeClick } = useCustomerLikeMover({
-    initialStatus: data.offers[0].isLiked || false,
-    initialLikeCount: data.offers[0].likeCount || 0,
-    moverId: data.offers[0].moverId,
-  });
 
   const moverId = data.offers[0].moverId;
   const shareUrl = PATH.customer.searchMoverDetail(moverId);

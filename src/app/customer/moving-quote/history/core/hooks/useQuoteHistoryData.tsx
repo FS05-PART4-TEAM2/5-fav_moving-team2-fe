@@ -44,7 +44,7 @@ export const useQuoteHistoryData = () => {
       if (response.success) {
         setDataCache((prev) => ({ ...prev, pendingQuotes: response.data }));
       }
-    } catch (err) {
+    } catch {
       alert('다시 시도해주세요.');
     } finally {
       setLoadingStates((prev) => ({ ...prev, pendingQuotes: false }));
@@ -70,7 +70,7 @@ export const useQuoteHistoryData = () => {
       if (response.success) {
         setDataCache((prev) => ({ ...prev, receivedQuotes: response.data }));
       }
-    } catch (err) {
+    } catch {
       alert('다시 시도해주세요.');
     } finally {
       setLoadingStates((prev) => ({ ...prev, receivedQuotes: false }));
@@ -86,8 +86,8 @@ export const useQuoteHistoryData = () => {
       if (response.success) {
         setDataCache((prev) => ({ ...prev, pendingQuotes: response.data }));
       }
-    } catch (err) {
-      console.error('대기중 견적 새로고침 실패:', err);
+    } catch {
+      console.error('대기중 견적 새로고침 실패:');
     } finally {
       setLoadingStates((prev) => ({ ...prev, pendingQuotes: false }));
     }
@@ -101,8 +101,8 @@ export const useQuoteHistoryData = () => {
       if (response.success) {
         setDataCache((prev) => ({ ...prev, receivedQuotes: response.data }));
       }
-    } catch (err) {
-      console.error('받았던 견적 새로고침 실패:', err);
+    } catch {
+      console.error('받았던 견적 새로고침 실패:');
     } finally {
       setLoadingStates((prev) => ({ ...prev, receivedQuotes: false }));
     }

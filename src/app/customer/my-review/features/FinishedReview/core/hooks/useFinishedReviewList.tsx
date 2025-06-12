@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getFinishedReviewListApi } from '../service/getFinishedReviewListApi';
 import useUserStore from '@/shared/store/useUserStore';
 import { CustomerFinishedReviewListResponseData } from '@/shared/types/types';
@@ -15,41 +15,43 @@ export const useFinishedReviewList = () => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md')); // 743px 이하
   const { userType, userInfo } = useUserStore();
 
-  if (userType !== 'customer') {
-    return { data: null, isLoading: false, handleChangePage: () => {} };
-  }
-
   const customerId = userInfo?.id ?? '';
 
   // 화면 크기에 따른 동적 limit 설정
-  const getLimit = () => {
+  const getLimit = useCallback(() => {
     if (isDesktop) return 6;
     if (isTablet) return 4;
     return 6; // 기본값
-  };
+  }, [isDesktop, isTablet]);
 
-  const fetchData = async (currentPage: number = page) => {
-    setIsLoading(true);
+  const fetchData = useCallback(
+    async (currentPage: number = page) => {
+      setIsLoading(true);
 
-    try {
-      const limit = getLimit();
-      const response = await withMinLoadingTime(getFinishedReviewListApi(customerId, { page: currentPage, limit }));
+      try {
+        const limit = getLimit();
+        const response = await withMinLoadingTime(getFinishedReviewListApi(customerId, { page: currentPage, limit }));
 
-      if (response.success) {
-        setData(response.data);
+        if (response.success) {
+          setData(response.data);
+        }
+      } catch {
+        alert('다시 시도해주세요.');
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      alert('다시 시도해주세요.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [page, getLimit, customerId],
+  );
 
   // 페이지 변경 핸들러
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    fetchData(value);
-  };
+  const handleChangePage = useCallback(
+    (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+      fetchData(value);
+    },
+    [fetchData],
+  );
 
   useEffect(() => {
     if (hasLoaded) {
@@ -66,7 +68,12 @@ export const useFinishedReviewList = () => {
       setPage(1); // 페이지를 1로 리셋
       fetchData(1);
     }
-  }, [isDesktop, isTablet]);
+  }, [isDesktop, isTablet, hasLoaded, fetchData]);
+
+  // userType이 customer가 아닌 경우 early return
+  if (userType !== 'customer') {
+    return { data: null, isLoading: false, handleChangePage: () => {} };
+  }
 
   return { data, isLoading, handleChangePage };
 };

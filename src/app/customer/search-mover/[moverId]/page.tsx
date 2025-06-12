@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         images: moverInfo.profileImage ? [moverInfo.profileImage] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       title: '무빙 : 기사님 정보',
       description: '기사님 상세 정보를 확인해보세요.',
@@ -69,7 +69,7 @@ export default async function Page({ params }: PageProps) {
         </Stack>
       </>
     );
-  } catch (error) {
+  } catch {
     notFound();
   }
 }

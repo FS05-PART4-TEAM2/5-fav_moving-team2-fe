@@ -68,7 +68,7 @@ export const ClientInteractions = ({ moverId, shareUrl, shareLinkTitle }: Client
         // 캐시 무효화 후 데이터 다시 가져오기
         await refetch();
       }
-    } catch (error) {
+    } catch {
       alert('다시 시도해 주세요.');
     }
   };

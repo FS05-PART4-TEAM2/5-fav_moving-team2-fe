@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
-import { CustomerRequestPayload } from '@/shared/types/types';
+import { CustomerRequestPayload, MovingType } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { useState, useEffect } from 'react';
 import { EditButton } from '../../core/components/EditButton';
@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 interface RequestDateFeatureProps {
   moveDate: string;
-  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: string | MovingType | null) => void;
 }
 
 export const RequestDateFeature = ({ moveDate, updateParams }: RequestDateFeatureProps) => {

@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import TextFieldChat from '@/shared/components/TextFieldChat/TextFieldChat';
-import { CustomerRequestPayload } from '@/shared/types/types';
+import { CustomerRequestPayload, MovingType } from '@/shared/types/types';
 import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { EditButton } from '../../core/components/EditButton';
@@ -11,7 +11,7 @@ import { SelectAddressModal } from './core/components/SelectAddressModal';
 interface RequestAreaFeatureProps {
   startAddress: string;
   endAddress: string;
-  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: string | MovingType | null) => void;
   handleSubmit: () => void;
 }
 

@@ -31,7 +31,7 @@ export const useWriteReviewList = () => {
       if (response.success) {
         setData(response.data);
       }
-    } catch (err) {
+    } catch {
       alert('다시 시도해주세요.');
     } finally {
       setIsLoading(false);
