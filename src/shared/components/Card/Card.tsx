@@ -8,23 +8,29 @@ import theme from '@/shared/theme';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/shared/constants';
 import { colorChips } from '@/shared/styles/colorChips';
+import { SolidButton } from '../Button/SolidButton';
 
 interface CardProps {
   type: PresetCardName;
   data: UserCardData;
   height?: string;
+  bgColor?: boolean;
   isModal?: boolean;
   onRequestClick?: (id: string) => void;
   onRejectClick?: (id: string) => void;
 }
 
-export default function Card({ type, data, isModal, height, onRequestClick, onRejectClick }: CardProps) {
+export default function Card({ type, data, isModal, height, bgColor, onRequestClick, onRejectClick }: CardProps) {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery('(max-width:375px)');
   const router = useRouter();
+
+  const isProfile = type === 'profile';
+  const isReview = type === 'review';
   const isFinish = type === 'rejectRequest' || type === 'finishRequest' || type === 'refuse';
 
   return (
-    <Box position="relative">
+    <Box position="relative" width="100%">
       {isFinish && (
         <Box
           sx={{
@@ -65,20 +71,13 @@ export default function Card({ type, data, isModal, height, onRequestClick, onRe
         width="100%"
         height={height}
         gap="16px"
-        bgcolor="white"
+        bgcolor={bgColor ? colorChips.background.fafafa : 'white'}
         p={isModal ? ' ' : isMd ? '20px' : '30px 20px'}
-        border={isModal ? ' ' : `1px solid ${colorChips.line['f2f2f2']}`}
+        border={isModal || isReview ? ' ' : `0.5px solid ${colorChips.line['f2f2f2']}`}
         borderRadius={isMd ? '16px' : '24px'}
       >
         <Stack>
-          <CardHeader
-            type={type}
-            services={data.service ?? []}
-            detailDescription={data.detailDescription}
-            name="김코드"
-            data={data}
-            isModal={isModal}
-          />
+          <CardHeader type={type} data={data} isModal={isModal} />
         </Stack>
 
         <Stack>
@@ -86,11 +85,29 @@ export default function Card({ type, data, isModal, height, onRequestClick, onRe
             type={type}
             data={data}
             isModal={isModal}
+            bgColor={bgColor}
             onRequestClick={onRequestClick}
             onRejectClick={onRejectClick}
           />
         </Stack>
       </Stack>
+      {isProfile && isMd && (
+        <Stack direction={isMobile ? 'column' : 'row'} width="100%" gap="8px" pt="10px">
+          <SolidButton
+            text="내 프로필 수정"
+            onClick={() => router.push(`${PATH.mover.editProfile}`)}
+            hasIcon={true}
+            style={{ textWrap: 'nowrap' }}
+          />
+          <OutlinedButton
+            text="기본 정보 수정"
+            buttonType="done"
+            onClick={() => router.push(`${PATH.mover.editInfo}`)}
+            hasIcon={true}
+            style={{ textWrap: 'nowrap' }}
+          />
+        </Stack>
+      )}
     </Box>
   );
 }
