@@ -298,3 +298,27 @@ export interface AssignMoverResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+// mover 받은 요청 조회
+export interface GetMoverQuotationsParams {
+  type?: string[];
+  region?: string[];
+  isAssigned?: boolean;
+  username?: string;
+  sorted?: 'MOVE_DATE_ASC' | 'REQUEST_DATE_ASC';
+}
+
+// mover 견적 보내기
+export interface SendQuotationPayload {
+  price: number;
+  comment: string;
+  isAssignQuo: boolean;
+  customerId: string;
+  quotationId: string;
+}
+
+// mover 반려
+export interface RejectQuotationPayload {
+  quotationId: string;
+  comment: string;
+}

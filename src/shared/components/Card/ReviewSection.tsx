@@ -4,6 +4,7 @@ import { UserCardData } from './CardPresets';
 import theme from '@/shared/theme';
 import { colorChips } from '@/shared/styles/colorChips';
 import Image from 'next/image';
+import dayjs from 'dayjs';
 
 interface ReviewSectionProps {
   data: UserCardData;
@@ -11,6 +12,9 @@ interface ReviewSectionProps {
 
 export default function ReviewSection({ data }: ReviewSectionProps) {
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const formattedDate = (date: string) => {
+    return dayjs(date).format('YYYY-MM-DD');
+  };
 
   return (
     <Stack direction="column">
@@ -34,7 +38,7 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
             paddingLeft: isMdDown ? '12px' : '14px',
           }}
         >
-          {data.createTime}{' '}
+          {formattedDate(data.createTime ?? '')}
         </Typo>
       </Stack>
 
@@ -50,20 +54,21 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
         }}
       >
         <Image
-          src="/assets/images/start-icon/star-yellow-24x24.svg"
+          src="/assets/images/star-icon/star-yellow-24x24.svg"
           alt="like icon"
           fill
           style={{ objectFit: 'contain' }}
         />
       </Stack>
 
-      <Divider />
       <Typo
         className={isMdDown ? 'text_R_14' : 'text_R_18'}
         style={{ color: colorChips.black['b2b2b'], paddingTop: isMdDown ? '8px' : '12px' }}
       >
         {data.review?.content || '작성된 리뷰가 없습니다.'}
       </Typo>
+
+      <Divider sx={{ borderColor: colorChips.line['f2f2f2'], mt: '32px' }} />
     </Stack>
   );
 }

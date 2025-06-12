@@ -5,6 +5,7 @@ export const mockData: UserCardData[] = [
     id: '1',
     name: '김인서',
     userProfileImage: '/assets/images/sample/user1.jpg',
+    customerId: '1',
     moveDay: '2025-07-31',
     startPoint: '서울시 강남구',
     endPoint: '경기도 성남시',
