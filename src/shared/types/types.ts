@@ -28,6 +28,13 @@ export interface GlobalResponse {
   errorCode: string;
 }
 
+export interface GlobalResponseWithGeneric<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  errorCode: string;
+}
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -412,3 +419,37 @@ export interface CustomerFinishedReviewListResponseData {
   currentPage: number;
   totalCount: number;
 }
+
+// 손님 프로필 조회 API response
+export interface GetCustomerProfileData {
+  id: string;
+  username: string;
+  email: string;
+  isProfile: boolean;
+  phoneNumber: string;
+  profileImage: string | null;
+  wantService: string[];
+  livingPlace: string[];
+  hasQuotation: boolean;
+}
+
+// 기사 프로필 조회 API response
+export interface GetMoverProfileData {
+  id: string;
+  username: string;
+  nickname: string;
+  email: string;
+  isProfile: boolean;
+  phoneNumber: string;
+  profileImage: string | null;
+  intro: string;
+  detailDescription: string;
+  career: string;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  serviceList: string[];
+  serviceArea: string[];
+}
+
+export type UserProfileData = GetCustomerProfileData | GetMoverProfileData;

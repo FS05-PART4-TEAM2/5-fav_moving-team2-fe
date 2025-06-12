@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import useUserStore from '@/shared/store/useUserStore';
 import { PATH } from '@/shared/constants';
 import { OAuthProfile } from '@/shared/core/Auth/service';
+import { GetCustomerProfileData, GetMoverProfileData } from '@/shared/types/types';
 
 const blink = keyframes`
   0%   { opacity: 0; }
@@ -41,9 +42,9 @@ export default function OAuthCallbackPage() {
         }
 
         const res = await OAuthProfile(type);
-        const user = res.data;
 
         if (type === 'customer') {
+          const user = res.data as GetCustomerProfileData;
           setUserInfo('customer', {
             id: user.id,
             username: user.username,
@@ -69,6 +70,7 @@ export default function OAuthCallbackPage() {
         }
 
         if (type === 'mover') {
+          const user = res.data as GetMoverProfileData;
           setUserInfo('mover', {
             id: user.id,
             username: user.username,
