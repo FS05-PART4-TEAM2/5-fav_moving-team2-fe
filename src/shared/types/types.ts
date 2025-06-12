@@ -326,11 +326,45 @@ export interface AssignMoverResponse {
 
 // mover 받은 요청 조회
 export interface GetMoverQuotationsParams {
-  type?: string[];
+  type?: ('SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE')[];
   region?: string[];
   isAssigned?: boolean;
   username?: string;
   sorted?: 'MOVE_DATE_ASC' | 'REQUEST_DATE_ASC';
+}
+
+export interface QuotationItem {
+  id: string;
+  moveType: MovingType;
+  isAssigned: boolean;
+  customer: {
+    id: string;
+    username: string;
+  };
+  startAddress: string;
+  endAddress: string;
+  status: QuotationStatus;
+  moveDate: string;
+}
+
+export interface CursorInfo {
+  cursorId: string;
+  cursorDate: string;
+}
+
+export interface InfiniteQuotationPage {
+  data: QuotationItem[];
+  nextCursor: CursorInfo | null;
+}
+
+export interface GetMoverQuotationsResponse {
+  data: {
+    data: QuotationItem[];
+    nextCursor: CursorInfo | null;
+  };
+  success: boolean;
+  message: string;
+  errorCode?: string;
 }
 
 // mover 견적 보내기

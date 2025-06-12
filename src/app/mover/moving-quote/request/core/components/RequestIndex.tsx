@@ -21,6 +21,9 @@ import useUserStore from '@/shared/store/useUserStore';
 import Image from 'next/image';
 import RequestCardSkeleton from './RequestCardSkeleton';
 import { UserCardData } from '@/shared/components/Card/CardPresets';
+import { InfiniteData } from '@tanstack/react-query';
+import { CursorInfo, InfiniteQuotationPage } from '@/shared/types/types';
+import { mapToUserCardData } from '../hook/mapToUserCardData';
 
 export default function RequestIndex() {
   const [modalType, setModalType] = useState<'request' | 'reject' | 'filter' | null>(null);
@@ -102,8 +105,14 @@ export default function RequestIndex() {
     fetchNextPage,
     hasNextPage,
     isPending,
+    refetch,
   } = useMoverQuotations(queryParams);
-  const quotations = quotationsResponse?.pages.flatMap((page) => page.data) ?? [];
+  const rawQuotations =
+    (quotationsResponse as unknown as InfiniteData<InfiniteQuotationPage, CursorInfo>)?.pages.flatMap(
+      (page) => page.data,
+    ) ?? [];
+
+  const quotations: UserCardData[] = rawQuotations.map(mapToUserCardData);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -227,6 +236,10 @@ export default function RequestIndex() {
             <RequestModal
               mode="request"
               onClose={handleCloseModal}
+              onSuccess={() => {
+                refetch();
+                handleCloseModal();
+              }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
@@ -238,6 +251,10 @@ export default function RequestIndex() {
             <RequestModal
               mode="reject"
               onClose={handleCloseModal}
+              onSuccess={() => {
+                refetch();
+                handleCloseModal();
+              }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
