@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getMoverQuotations } from '../api/requestApi';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getMoverQuotations, getMoverQuotationStats } from '../api/requestApi';
 import { CursorInfo, GetMoverQuotationsParams, InfiniteQuotationPage } from '@/shared/types/types';
 
 export const useMoverQuotations = (params: GetMoverQuotationsParams) =>
@@ -17,3 +17,11 @@ export const useMoverQuotations = (params: GetMoverQuotationsParams) =>
     staleTime: 1000 * 60 * 3,
     refetchOnWindowFocus: false,
   });
+
+export function useMoverQuotationStats(params: Omit<GetMoverQuotationsParams, 'cursorId' | 'cursorDate' | 'take'>) {
+  return useQuery({
+    queryKey: ['moverQuotationStats', params],
+    queryFn: () => getMoverQuotationStats(params),
+    staleTime: 1000 * 60 * 5,
+  });
+}
