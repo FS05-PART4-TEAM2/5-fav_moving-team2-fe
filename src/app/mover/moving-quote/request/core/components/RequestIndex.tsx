@@ -16,11 +16,14 @@ import FilterModal from './FilterModal';
 import FilterButton from './FilterButton';
 import { SERVICE_TYPES } from '@/shared/constants';
 import { TabBar } from '@/shared/components/Tab/TabBar';
-import { useMoverQuotations } from '../hook/requestHooks';
+import { useMoverQuotations, useMoverQuotationStats } from '../hook/requestHooks';
 import useUserStore from '@/shared/store/useUserStore';
 import Image from 'next/image';
 import RequestCardSkeleton from './RequestCardSkeleton';
 import { UserCardData } from '@/shared/components/Card/CardPresets';
+import { InfiniteData } from '@tanstack/react-query';
+import { CursorInfo, InfiniteQuotationPage } from '@/shared/types/types';
+import { mapToUserCardData } from '../hook/mapToUserCardData';
 
 export default function RequestIndex() {
   const [modalType, setModalType] = useState<'request' | 'reject' | 'filter' | null>(null);
@@ -39,16 +42,44 @@ export default function RequestIndex() {
 
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
 
-  // TODO count개수 내려오는 값으로 수정
+  const selectedMoveType = SERVICE_TYPES.filter(({ label }) => selected[label]).map(({ key }) => key);
+  const selectedRegion =
+    selected['서비스 가능 지역'] && moverData?.serviceArea?.length ? moverData.serviceArea : undefined;
+  const SORT_MAP = {
+    '이사 빠른순': 'MOVE_DATE_ASC',
+    '요청일 빠른순': 'REQUEST_DATE_ASC',
+  } as const;
+
+  type SortLabel = keyof typeof SORT_MAP;
+  type SortValue = (typeof SORT_MAP)[SortLabel];
+
+  const sortedValue: SortValue | undefined = SORT_MAP[selectedSort as SortLabel];
+  const queryParams = {
+    type: selectedMoveType.length ? selectedMoveType : undefined,
+    region: selectedRegion,
+    isAssigned: selected['지정 견적 요청'] ? true : false,
+    username: searchKeyword || undefined,
+    sorted: sortedValue,
+  };
+
+  // count
+  const { data: statsData } = useMoverQuotationStats(queryParams);
+
   const CheckboxMoveType = [
-    { label: '소형이사', count: 10, checked: selected['소형이사'] },
-    { label: '가정이사', count: 2, checked: selected['가정이사'] },
-    { label: '사무실이사', count: 8, checked: selected['사무실이사'] },
+    { label: '소형이사', count: statsData?.moveTypeStats?.SMALL_MOVE ?? 0, checked: selected['소형이사'] },
+    { label: '가정이사', count: statsData?.moveTypeStats?.FAMILY_MOVE ?? 0, checked: selected['가정이사'] },
+    { label: '사무실이사', count: statsData?.moveTypeStats?.OFFICE_MOVE ?? 0, checked: selected['사무실이사'] },
   ];
 
   const CheckboxFilterType = [
-    { label: '서비스 가능 지역', count: 10, checked: selected['서비스 가능 지역'] },
-    { label: '지정 견적 요청', count: 2, checked: selected['지정 견적 요청'] },
+    {
+      label: '서비스 가능 지역',
+      count:
+        (statsData?.startRegionStats?.[selectedRegion?.[0] ?? ''] ?? 0) +
+        (statsData?.endRegionStats?.[selectedRegion?.[0] ?? ''] ?? 0),
+      checked: selected['서비스 가능 지역'],
+    },
+    { label: '지정 견적 요청', count: statsData?.assignedQuotationCount ?? 0, checked: selected['지정 견적 요청'] },
   ];
   const isAnySelected = [...CheckboxMoveType, ...CheckboxFilterType].some((item) => item.checked);
   const handleFilterChange = (label: string, checked: boolean) => {
@@ -76,34 +107,21 @@ export default function RequestIndex() {
     setSelectedId(null);
   };
 
-  const selectedMoveType = SERVICE_TYPES.filter(({ label }) => selected[label]).map(({ key }) => key);
-  const selectedRegion =
-    selected['서비스 가능 지역'] && moverData?.serviceArea?.length ? moverData.serviceArea : undefined;
-  const SORT_MAP = {
-    '이사 빠른순': 'MOVE_DATE_ASC',
-    '요청일 빠른순': 'REQUEST_DATE_ASC',
-  } as const;
-
-  type SortLabel = keyof typeof SORT_MAP;
-  type SortValue = (typeof SORT_MAP)[SortLabel];
-
-  const sortedValue: SortValue | undefined = SORT_MAP[selectedSort as SortLabel];
-  const queryParams = {
-    type: selectedMoveType.length ? selectedMoveType : undefined,
-    region: selectedRegion,
-    isAssigned: selected['지정 견적 요청'] ? true : false,
-    username: searchKeyword || undefined,
-    sorted: sortedValue,
-  };
-
+  // 데이터
   const {
     data: quotationsResponse,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
     isPending,
+    refetch,
   } = useMoverQuotations(queryParams);
-  const quotations = quotationsResponse?.pages.flatMap((page) => page.data) ?? [];
+  const rawQuotations =
+    (quotationsResponse as unknown as InfiniteData<InfiniteQuotationPage, CursorInfo>)?.pages.flatMap(
+      (page) => page.data,
+    ) ?? [];
+
+  const quotations: UserCardData[] = rawQuotations.map(mapToUserCardData);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -161,11 +179,10 @@ export default function RequestIndex() {
               justifyContent="space-between"
               alignItems="center"
             >
-              {/* TODO 총 개수 내려오는 값으로 수정*/}
               <Typo
                 className={isMd ? 'text_M_13' : 'text_M_16'}
                 style={{ color: colorChips.black[400] }}
-                content="전체 10건"
+                content={`전체 ${statsData?.totalQuotationCount ?? 0}건`}
               />
               <Stack direction="row" spacing={1}>
                 <DropDown category="moveSort" selected={selectedSort} onChange={setSelectedSort} />
@@ -227,6 +244,10 @@ export default function RequestIndex() {
             <RequestModal
               mode="request"
               onClose={handleCloseModal}
+              onSuccess={() => {
+                refetch();
+                handleCloseModal();
+              }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>
@@ -238,6 +259,10 @@ export default function RequestIndex() {
             <RequestModal
               mode="reject"
               onClose={handleCloseModal}
+              onSuccess={() => {
+                refetch();
+                handleCloseModal();
+              }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
             />
           </ResponsiveModal>

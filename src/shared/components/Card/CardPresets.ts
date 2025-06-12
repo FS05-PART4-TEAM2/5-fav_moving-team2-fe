@@ -1,5 +1,4 @@
-import CommonCardInfo from './CommonCardInfo';
-import ReviewSection from './ReviewSection';
+import { QuotationStatus } from '@/shared/types/types';
 
 export type PresetCardName =
   | 'profile'
@@ -42,6 +41,7 @@ export interface UserCardData {
   quoteAmount?: number;
   reviewContent?: string;
   createTime?: string;
+  status?: QuotationStatus;
 }
 
 export type CardButtonType = 'solid' | 'outlined';
