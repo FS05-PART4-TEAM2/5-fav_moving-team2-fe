@@ -9,7 +9,7 @@ export const useLikeMoverList = (limit: number = 6) => {
   const queryClient = useQueryClient();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isFetching } = useInfiniteQuery({
-    queryKey: moverKeys.likeList(),
+    queryKey: moverKeys.likeList(limit),
     queryFn: async ({ pageParam = 1 }: { pageParam: number }) => {
       const startTime = Date.now();
 
@@ -45,9 +45,9 @@ export const useLikeMoverList = (limit: number = 6) => {
 
   // 찜한 기사님 목록을 무효화하고 새로고침하는 함수
   const invalidateLikeMoverList = useCallback(() => {
-    const currentQueryKey = moverKeys.likeList();
+    const currentQueryKey = moverKeys.likeList(limit);
     queryClient.invalidateQueries({ queryKey: currentQueryKey });
-  }, [queryClient]);
+  }, [queryClient, limit]);
 
   return {
     likeMovers,

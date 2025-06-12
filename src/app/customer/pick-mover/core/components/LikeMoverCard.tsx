@@ -40,10 +40,11 @@ const profileBoxSx = {
   width: '100%',
   height: '100%',
   gap: { xs: '14px', md: '16px' },
+  backgroundColor: colorChips.grayScale[50],
   border: `0.5px solid ${colorChips.line.f2f2f2}`,
   borderRadius: '16px',
   padding: { xs: '16px 14px', md: '20px 24px' },
-  boxShadow: '0px 0px 2px 0px rgba(0, 0, 0, 0.03)',
+  boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.06)',
   cursor: 'pointer',
 };
 

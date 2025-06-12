@@ -26,5 +26,3 @@ export const LikeMoverFeature = () => {
     </Stack>
   );
 };
-
-// TODO: 리뷰, 찜한기사목록 api 배포되면 다시 테스트해보기 - 목데이터 추가 요청
