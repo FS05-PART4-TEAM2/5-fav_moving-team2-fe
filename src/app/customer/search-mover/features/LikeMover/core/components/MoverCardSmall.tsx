@@ -14,7 +14,7 @@ export const MoverCardSmall = ({ data }: { data: SearchMoverListItem }) => {
   const imgSrc = data.profileImage ?? '/assets/images/profile-icon/login-default-36x36.svg';
   const filledHeart = '/assets/images/like-icon/like-24x24-black.svg';
   const likeIconSrc = data.isLiked ? filledHeart : '/assets/images/like-icon/like-24x24-white.svg';
-  const formattedTotalRating = data.totalRating.toFixed(1) ?? '0.0';
+  const formattedTotalRating = data.totalRating?.toFixed(1) ?? '0.0';
 
   // TODO :디테일 페이지 이동 확인
   const handleClickDetail = () => {

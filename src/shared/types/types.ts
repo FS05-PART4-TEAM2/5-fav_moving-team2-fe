@@ -252,6 +252,31 @@ export interface SearchMoverListResponse {
   hasNext: boolean;
 }
 
+// 찜한 기사님 리스트 조회
+export interface LikeMoverListItem {
+  id: string;
+  idNum: number;
+  nickName: string | null;
+  profileImage: string | null;
+  serviceList: MovingType[] | null;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  intro: string | null;
+  career: number;
+  confirmedCounts: number;
+  createdAt: string;
+  isLiked: boolean;
+  isAssigned: boolean;
+}
+
+export interface LikeMoverListResponseData {
+  list: LikeMoverListItem[];
+  total: number;
+  page: number;
+  limit: number;
+  hasNextPage: boolean;
+}
 // 기사님 상세조회
 export interface SearchMoverDetailResponse extends SearchMoverListItem {
   detailDescription: string;
@@ -321,4 +346,69 @@ export interface SendQuotationPayload {
 export interface RejectQuotationPayload {
   quotationId: string;
   comment: string;
+}
+
+export interface WriteReviewPayload {
+  content: string;
+  rating: number;
+}
+
+// 이사 리뷰 작성 응답
+export interface WriteReviewResponseData {
+  id: string;
+  content: string;
+  rating: number;
+  moverId: string;
+  quotationId: string;
+  customerId: string;
+  customerNick: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 일반유저 작성가능한 리뷰 목록 아이템
+export interface CustomerWriteReviewItem {
+  content: string;
+  rating: number;
+  reviewDate: string | null;
+  moverName: string;
+  moverProfileImage: string;
+  moveDate: string;
+  startAddress: string;
+  endAddress: string;
+  moveType: MovingType;
+  price: string;
+  isAssignedMover: boolean;
+  offerId: string;
+}
+
+// 일반유저 작성가능한 리뷰 목록 조회
+export interface CustomerWriteReviewListResponseData {
+  list: CustomerWriteReviewItem[];
+  totalPages: number;
+  currentPage: number;
+  totalCount: number;
+}
+
+// 일반유저 작성한 리뷰 목록 아이템
+export interface CustomerFinishedReviewItem {
+  content: string;
+  rating: number;
+  reviewDate: string;
+  moverName: string;
+  moverProfileImage: string;
+  moveDate: string;
+  startAddress: string;
+  endAddress: string;
+  moveType: MovingType;
+  price: string;
+  isAssignedMover: boolean;
+}
+
+// 일반유저 작성한 리뷰 목록 조회
+export interface CustomerFinishedReviewListResponseData {
+  list: CustomerFinishedReviewItem[];
+  totalPages: number;
+  currentPage: number;
+  totalCount: number;
 }

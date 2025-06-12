@@ -12,6 +12,8 @@ export const PATH = {
     myPage: '/customer/my-page', // 프로필수정
     pickMover: '/customer/pick-mover', // 찜한 기사님
     myReview: '/customer/my-review', // 이사 리뷰
+    writeReview: '/customer/my-review?tab=write', // 이사 리뷰 작성탭
+    finishedReview: '/customer/my-review?tab=finished', // 이사 리뷰 완료탭
   },
   mover: {
     login: '/mover/login',
