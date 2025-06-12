@@ -67,8 +67,9 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
         {(services.length > 0 || detailDescription) && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
-              {data.status === 'PENDING' && <Chip type="wait" />}
-              {data.status === 'CONFIRMED' && <Chip type="confirmed" />}
+              {data.status?.toUpperCase() === 'PENDING' && <Chip type="wait" />}
+              {data.status?.toUpperCase() === 'CONFIRMED' && <Chip type="confirmed" />}
+
               {services.map((label, idx) => {
                 const category = labelToCategoryKey[label];
                 return category ? <Chip key={idx} type={category} /> : null;

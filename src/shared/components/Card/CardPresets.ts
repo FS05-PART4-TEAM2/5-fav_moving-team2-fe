@@ -1,3 +1,4 @@
+import { QuotationStatus } from '@/shared/types/types';
 import CommonCardInfo from './CommonCardInfo';
 import ReviewSection from './ReviewSection';
 
@@ -42,6 +43,8 @@ export interface UserCardData {
   quoteAmount?: number;
   reviewContent?: string;
   createTime?: string;
+  status?: QuotationStatus;
+  isAssigned?: boolean;
 }
 
 export type CardButtonType = 'solid' | 'outlined';
