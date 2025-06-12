@@ -13,7 +13,6 @@ import { CommonModal } from '@/shared/components/Modal/CommonModal';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { colorChips } from '@/shared/styles/colorChips';
-import { revalidateMoverDetail } from '@/shared/utils/revalidateTags';
 import { useMoverDetailData } from '../core/hooks/useMoverDetailData';
 
 interface ClientInteractionsProps {

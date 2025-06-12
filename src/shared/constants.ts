@@ -9,6 +9,7 @@ export const PATH = {
     movingQuoteRequest: '/customer/moving-quote/request', // 견적 요청
     movingQuoteHistory: '/customer/moving-quote/history', // 내 견적 관리
     searchMover: '/customer/search-mover', // 기사님 찾기
+    searchMoverDetail: (moverId: string) => `/customer/search-mover/${moverId}`, // 기사님 상세 페이지
     myPage: '/customer/my-page', // 프로필수정
     pickMover: '/customer/pick-mover', // 찜한 기사님
     myReview: '/customer/my-review', // 이사 리뷰

@@ -4,6 +4,7 @@ import { getMoverDetailApi } from './core/service/getMoverDetailApi';
 import { MoverInfoFeature } from './features/MoverInfo/feature';
 import { ClientInteractions } from './components/ClientInteractions';
 import { notFound } from 'next/navigation';
+import { PATH } from '@/shared/constants';
 
 interface PageProps {
   params: Promise<{
@@ -11,7 +12,6 @@ interface PageProps {
   }>;
 }
 
-// 동적 메타태그 생성 TODO: 여기 요구사항에 맞게 수정
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   try {
     const { moverId } = await params;
@@ -28,10 +28,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     return {
       title: `무빙 : ${moverInfo.nickname} 기사님`,
-      description: `${moverInfo.intro} | 경력 ${moverInfo.career}년 | 평점 ${moverInfo.totalRating.toFixed(1)}`,
+      description: `${moverInfo.intro} | 경력 ${moverInfo.career}년 | 평점 ${moverInfo.totalRating.toFixed(
+        1,
+      )} | 좋아요 ${moverInfo.likeCount}개`,
       openGraph: {
-        title: `${moverInfo.nickname} 기사님`,
-        description: moverInfo.intro,
+        title: `무빙 : ${moverInfo.nickname} 기사님`,
+        description: `이사를 준비하시나요? ${moverInfo.nickname} 기사님을 추천합니다. 무빙에서 확인해 보세요!`,
         images: moverInfo.profileImage ? [moverInfo.profileImage] : [],
       },
     };
@@ -54,23 +56,14 @@ export default async function Page({ params }: PageProps) {
       notFound();
     }
 
-    const moverInfo = moverResponse.data;
-
-    // TODO: 공유URL 수정 - 현재페이지
-    const shareUrl = `/customer/search-mover/${moverId}`;
+    const shareUrl = PATH.customer.searchMoverDetail(moverId);
     const shareLinkTitle = '나만 알기엔 아쉬운 기사님인가요?';
-
-    const moverInfoProps = {
-      data: moverInfo,
-      shareUrl: shareUrl,
-      shareLinkTitle: shareLinkTitle,
-      moverId: moverId, // 리뷰 데이터 대신 moverId 전달
-    };
+    const moverInfo = moverResponse.data;
 
     return (
       <>
         <Stack sx={contentContainerSx}>
-          <MoverInfoFeature {...moverInfoProps} />
+          <MoverInfoFeature data={moverInfo} shareUrl={shareUrl} shareLinkTitle={shareLinkTitle} />
           {/* 클라이언트 인터랙션 컴포넌트 */}
           <ClientInteractions moverId={moverId} shareUrl={shareUrl} shareLinkTitle={shareLinkTitle} />
         </Stack>

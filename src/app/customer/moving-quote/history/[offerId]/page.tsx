@@ -15,6 +15,7 @@ import { useOfferDetailData } from './core/hooks/useOfferDetailData';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { useQuoteConfirm } from '../core/hooks/useQuoteConfirm';
 import { useCustomerLikeMover } from '@/shared/hooks/useCustomerLikeMover';
+import { PATH } from '@/shared/constants';
 
 export default function Page() {
   const params = useParams();
@@ -44,8 +45,7 @@ export default function Page() {
   });
 
   const moverId = data.offers[0].moverId;
-  // TODO: 공유URL 수정 - 기사님 상세
-  const shareUrl = `/customer/search-mover/${moverId}`;
+  const shareUrl = PATH.customer.searchMoverDetail(moverId);
   const toastMsg = '확정하지 않은 견적이에요!';
   const isPending = !data.offers[0].isCompleted; // isCompleted가 false인 경우 : 대기중인 견적
   const isConfirmed = data.offers[0].isConfirmedMover; // 확정견적
