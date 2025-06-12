@@ -1,5 +1,5 @@
 import customAxios from '@/lib/customAxios';
-import { GlobalResponse, GlobalResponseWithGeneric, LoginPayload, SignupPayload, UserProfileData } from '@/shared/types/types';
+import { GlobalResponse, GlobalResponseWithGeneric, LoginPayload, SignupPayload, UserLoginData, UserProfileData } from '@/shared/types/types';
 import { AxiosResponse } from 'axios';
 
 export async function OAuthLogin(provider: 'google' | 'kakao' | 'naver', userType: 'customer' | 'mover') {
@@ -12,8 +12,8 @@ export async function OAuthProfile(type: 'customer' | 'mover'): Promise<GlobalRe
   return res.data;
 }
 
-export async function login(userType: 'customer' | 'mover', payload: LoginPayload) {
-  const res = await customAxios.post(`/api/auth/${userType}/login`, payload);
+export async function login(userType: 'customer' | 'mover', payload: LoginPayload): Promise<GlobalResponseWithGeneric<UserLoginData>> {
+  const res = await customAxios.post<GlobalResponseWithGeneric<UserLoginData>>(`/api/auth/${userType}/login`, payload);
   return res.data;
 }
 

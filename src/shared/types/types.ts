@@ -453,3 +453,45 @@ export interface GetMoverProfileData {
 }
 
 export type UserProfileData = GetCustomerProfileData | GetMoverProfileData;
+
+export type UserLoginData = MoverLoginData | CustomerLoginData;
+
+export interface MoverLoginData {
+  accessToken: string;
+  refreshToken: string;
+  mover: {
+    id: string;
+    username: string;
+    nickname: string;
+    email: string;
+    phoneNumber: string;
+    isProfile: boolean;
+    profileImage: string | null;
+    serviceArea: string[];
+    serviceList: string[];
+    intro: string;
+    career: number;
+    detailDescription: string;
+    likeCount: number;
+    totalRating: number;
+    reviewCounts: number;
+    createdAt: string;
+  }
+}
+
+export interface CustomerLoginData {
+  accessToken: string;
+  refreshToken: string;
+  customer: {
+    id: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    isProfile: boolean;
+    profileImage: string | null;
+    wantService: string[];
+    livingPlace: string[];
+    createdAt: string;
+    hasQuotation: string;
+  }
+}
