@@ -38,7 +38,7 @@ export function MoverProfileBase({
       ? '/assets/images/like-icon/like-24x24-black.svg'
       : '/assets/images/like-icon/like-24x24-pink.svg';
   const likeIconSrc = isLiked ? filledHeart : '/assets/images/like-icon/like-24x24-white.svg';
-  const formattedTotalRating = totalRating.toFixed(1) ?? '0.0';
+  const formattedTotalRating = totalRating?.toFixed(1) ?? '0.0';
 
   return (
     <Stack sx={profileBaseSx}>

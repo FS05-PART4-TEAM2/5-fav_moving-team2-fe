@@ -19,7 +19,7 @@ export const PendingQuoteFeature = ({ data, isLoading }: PendingQuoteFeatureProp
   if (isLoading) {
     return (
       <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress size={80} />
+        <CircularProgress size={40} />
       </Stack>
     );
   }

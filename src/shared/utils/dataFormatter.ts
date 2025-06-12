@@ -5,6 +5,10 @@ export const formatToFullDateWithTime = (date: string): string => {
   return dayjs(date).locale('ko').format('YYYY.MM.DD(dd) A hh:mm');
 };
 
+export const formatToFullDate = (date: string): string => {
+  return dayjs(date).locale('ko').format('YYYY.MM.DD');
+};
+
 export const formatToFullDateWithDay = (date: string): string => {
   return dayjs(date).locale('ko').format('YYYY.MM.DD(dd)');
 };

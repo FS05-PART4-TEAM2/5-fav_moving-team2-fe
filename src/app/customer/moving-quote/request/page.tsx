@@ -74,8 +74,8 @@ export default function Page() {
           </Stack>
         ) : (
           // 헤더 높이 계산하는 동안 로딩인디케이터
-          <Stack sx={{height: '100vh', justifyContent: 'center', alignItems: 'center'}}>
-          <CircularProgress size={60}/>
+          <Stack sx={{ height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
+            <CircularProgress size={40} />
           </Stack>
         )}
       </Stack>
