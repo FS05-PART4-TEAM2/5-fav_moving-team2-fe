@@ -1,5 +1,11 @@
 import customAxios from '@/lib/customAxios';
-import { SearchMoverListPayload, SearchMoverListResponse } from '@/shared/types/types';
+import {
+  MoverFilterOption,
+  MovingType,
+  RegionType,
+  SearchMoverListPayload,
+  SearchMoverListResponse,
+} from '@/shared/types/types';
 
 interface MoverListResponse {
   success: boolean;
@@ -9,7 +15,7 @@ interface MoverListResponse {
 
 export async function getMoverListApi(params: SearchMoverListPayload) {
   // null 값인 파라미터를 제외하고 API 파라미터 구성
-  const apiParams: Record<string, any> = {};
+  const apiParams: Record<string, string | number | RegionType | MovingType | MoverFilterOption | null> = {};
 
   // region이 null이 아닌 경우에만 포함
   if (params.region !== null && params.region !== undefined) {

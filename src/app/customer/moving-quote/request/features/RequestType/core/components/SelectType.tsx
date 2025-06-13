@@ -9,7 +9,7 @@ import { useRequestStepStore } from '../../../../core/hooks/useRequestStepStore'
 
 interface SelectTypeProps {
   moveType: MovingType | null;
-  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: string | MovingType | null) => void;
   setIsEditing: (isEditing: boolean) => void;
 }
 

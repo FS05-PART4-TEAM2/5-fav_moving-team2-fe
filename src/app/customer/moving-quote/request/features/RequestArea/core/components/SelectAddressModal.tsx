@@ -38,9 +38,9 @@ export const SelectAddressModal = ({ optionType, isOpen, onChange, onClose }: Se
 
   const handleSearch = async (text: string) => {
     try {
-    const data = await searchAddressOpenApi(text);
-    setSearchResult(data.results.juso);
-    } catch (error) {
+      const data = await searchAddressOpenApi(text);
+      setSearchResult(data.results.juso);
+    } catch {
       // console.error('주소 검색 중 오류:', error);
       setSearchResult([]);
     }

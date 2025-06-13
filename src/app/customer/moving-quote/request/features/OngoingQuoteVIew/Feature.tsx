@@ -1,4 +1,4 @@
-import { Stack, Box, useTheme, useMediaQuery } from '@mui/material';
+import { Stack, useTheme, useMediaQuery } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import { SolidButton } from '@/shared/components/Button/SolidButton';

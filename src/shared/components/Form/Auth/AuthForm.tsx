@@ -14,7 +14,7 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 import AuthFormOAuth from './AuthFormOAuth';
 import { login, signup } from '@/shared/core/Auth/service';
-import { LoginPayload, SignupPayload } from '@/shared/types/types';
+import { CustomerLoginData, LoginPayload, MoverLoginData, SignupPayload } from '@/shared/types/types';
 import { invalidateQueryKeys } from '@/shared/utils/invalidateQueryKeys';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchMoverStore } from '@/app/customer/search-mover/core/hooks/useSearchMoverStore';
@@ -71,7 +71,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         const res = await login(userType, loginData);
 
         if (userType === 'customer') {
-          const customer = res?.data?.customer;
+          const customer = (res?.data as CustomerLoginData).customer;
 
           if (!customer) {
             throw new Error('로그인 응답에 customer 정보가 없습니다.');
@@ -112,7 +112,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           }
         }
         if (userType === 'mover') {
-          const mover = res?.data?.mover;
+          const mover = (res?.data as MoverLoginData).mover;
 
           if (!mover) {
             throw new Error('로그인 응답에 mover 정보가 없습니다.');
@@ -132,7 +132,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             serviceArea: mover.serviceArea,
             serviceList: mover.serviceList,
             intro: mover.intro,
-            career: mover.career,
+            career: String(mover.career),
             detailDescription: mover.detailDescription,
           });
 

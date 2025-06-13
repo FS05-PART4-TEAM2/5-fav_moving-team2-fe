@@ -9,7 +9,7 @@ import { useRequestStepStore } from '../../core/hooks/useRequestStepStore';
 
 interface RequestTypeFeatureProps {
   moveType: MovingType | null;
-  updateParams: (key: keyof CustomerRequestPayload, value: any) => void;
+  updateParams: (key: keyof CustomerRequestPayload, value: string | MovingType | null) => void;
 }
 
 export const RequestTypeFeature = ({ moveType, updateParams }: RequestTypeFeatureProps) => {
