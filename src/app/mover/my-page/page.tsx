@@ -4,31 +4,32 @@ import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import theme from '@/shared/theme';
 import { Divider, Stack, useMediaQuery } from '@mui/material';
-import { mockQuotation } from '../moving-quote/history/core/mock';
+
 import Card from '@/shared/components/Card/Card';
 import ReviewSummary from './_core/components/ReviewSummary';
 import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
 import { useEffect, useState } from 'react';
+import useUserStore from '@/shared/store/useUserStore';
+import { mapMoverProfileToCardData, mapReviewToCardData, useReviewList } from './_core/hook/myPageHooks';
+import Image from 'next/image';
 
 export default function Page() {
-  const [page, setPage] = useState(1);
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const itemsPerPage = isDesktop ? 5 : isTablet ? 4 : 3;
+  const [page, setPage] = useState(1);
 
-  const totalReviews = mockQuotation.length;
-  const startIdx = (page - 1) * itemsPerPage;
-  const pagedReviews = mockQuotation.slice(startIdx, startIdx + itemsPerPage);
-  const totalPages = Math.ceil(totalReviews / itemsPerPage);
+  const { moverData, userInfo } = useUserStore();
 
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [itemsPerPage, totalPages]);
+  const userId = userInfo?.id ?? '';
+  const { data } = useReviewList(userId, page);
 
-  //TODO  ReviewSummary :총 리뷰 별점 토탈,1~5 점수 각각 토탈 count 넘겨주기
-  //      리뷰 리스트 : 데이터 받아와서 맵핑
+  if (!userInfo || !moverData) return null;
+
+  const reviews = data?.list ?? [];
+  const totalPages = data?.totalPages ?? 1;
+
+  const userCardData = mapMoverProfileToCardData(moverData, userInfo);
+
   return (
     <Stack height="100%">
       <Stack py={isDesktop ? '32px' : '15px'}>
@@ -36,20 +37,52 @@ export default function Page() {
       </Stack>
 
       <Stack pt="24px" gap={isDesktop ? '40px' : '24px'}>
-        <Card type="profile" data={mockQuotation[0].data} bgColor />
+        <Card type="profile" data={userCardData} bgColor />
 
         <Divider sx={{ borderColor: colorChips.line['f2f2f2'] }} />
         <Stack>
-          <Typo className="text_B_16to24" style={{ color: colorChips.black.b2b2b }} content="리뷰 (178)" />
-          <ReviewSummary />
+          <Typo
+            className="text_B_16to24"
+            style={{ color: colorChips.black.b2b2b }}
+            content={`리뷰 (${reviews.length})`}
+          />
+          <ReviewSummary
+            totalRating={data?.totalRating ?? 0}
+            ratingCounts={data?.ratingCounts ?? { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }}
+          />
         </Stack>
 
         <Stack>
-          {pagedReviews.map((review, idx) => (
-            <Card key={idx} type="review" data={review.data} />
-          ))}
+          {reviews.length === 0 ? (
+            <Stack
+              py={isDesktop ? '180px' : '80px'}
+              gap={isDesktop ? '32px' : '24px'}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Image
+                src="/assets/images/empty-images/review-blue-02.svg"
+                alt="request Icon"
+                width={isDesktop ? 110 : 184}
+                height={isDesktop ? 82 : 136}
+              />
+              <Typo
+                className="text_R_14to20"
+                style={{ color: colorChips.grayScale[400] }}
+                content="아직 작성된 리뷰가 없어요!"
+              />
+            </Stack>
+          ) : (
+            reviews.map((review) => <Card key={review.id} type="review" data={mapReviewToCardData(review)} />)
+          )}
           <Stack alignItems="center">
-            <CommonPagination page={page} totalCount={totalPages} handleChange={(event, value) => setPage(value)} />
+            <CommonPagination
+              page={page}
+              totalCount={totalPages}
+              handleChange={(e, value) => {
+                if (value <= totalPages) setPage(value);
+              }}
+            />
           </Stack>
         </Stack>
       </Stack>

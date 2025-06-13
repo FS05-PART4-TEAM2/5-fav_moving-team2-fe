@@ -7,19 +7,21 @@ import { colorChips } from '@/shared/styles/colorChips';
 import ProgressBar from '@/shared/components/ProgressBar/ProgressBar';
 import Image from 'next/image';
 
-const scores = [
-  { score: 5, count: 170 },
-  { score: 4, count: 8 },
-  { score: 3, count: 0 },
-  { score: 2, count: 0 },
-  { score: 1, count: 0 },
-];
+interface ReviewSummaryProps {
+  ratingCounts: Record<1 | 2 | 3 | 4 | 5, number>;
+  totalRating: number;
+}
 
-export default function ReviewSummary() {
-  const total = scores.reduce((acc, cur) => acc + cur.count, 0);
-
+export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSummaryProps) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  const scores = [5, 4, 3, 2, 1].map((score) => ({
+    score,
+    count: ratingCounts[score as 1 | 2 | 3 | 4 | 5] ?? 0,
+  }));
+
+  const total = scores.reduce((acc, cur) => acc + cur.count, 0);
 
   return (
     <Stack
@@ -35,7 +37,7 @@ export default function ReviewSummary() {
       {/* 왼쪽 별점 평균 */}
       <Stack direction="column" alignItems="center">
         <Stack direction="row" gap="8px" alignItems="center">
-          <Typo className="text_B_40to64" style={{ color: colorChips.black[300] }} content="5.0" />
+          <Typo className="text_B_40to64" style={{ color: colorChips.black[300] }} content={totalRating.toFixed(1)} />
           <Typo className="text_B_24to38" content="/ 5" style={{ color: colorChips.grayScale[100] }} />
         </Stack>
         <Stack direction="row" spacing="2px" mt="4px">
