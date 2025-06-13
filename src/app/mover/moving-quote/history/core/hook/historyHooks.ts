@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchRejectedQuotations, fetchSentQuotations } from '../Api/historyApi';
-import { UserCardData } from '@/shared/components/Card/CardPresets';
+import { PresetCardName, UserCardData } from '@/shared/components/Card/CardPresets';
 import {
   cutAddress,
   isValidStatus,
@@ -8,7 +8,7 @@ import {
   QuotationAPIData,
 } from '../../../request/core/hook/mapToUserCardData';
 
-interface SentQuotationAPIData extends QuotationAPIData {
+export interface SentQuotationAPIData extends QuotationAPIData {
   isConfirmedToMe: boolean;
   customerNick: string;
   isAssignQuo: boolean;
@@ -22,8 +22,6 @@ interface RejectedQuotationAPIData {
   endAddress: string;
   moveDate: string;
 }
-
-type CardPresetType = 'moveQuotation' | 'finishRequest' | 'refuse';
 
 export function useInfiniteRejectedQuotations() {
   return useInfiniteQuery({
@@ -51,7 +49,7 @@ export function useInfiniteSentQuotations() {
 }
 
 export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
-  type: CardPresetType;
+  type: PresetCardName;
   data: UserCardData;
 } {
   const cardData: UserCardData = {
@@ -65,7 +63,7 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
     status: isValidStatus(apiData.status) ? apiData.status : undefined,
   };
 
-  let cardType: CardPresetType;
+  let cardType: PresetCardName;
   if (apiData.status === 'COMPLETED') {
     cardType = apiData.isConfirmedToMe ? 'finishRequest' : 'refuse';
   } else {

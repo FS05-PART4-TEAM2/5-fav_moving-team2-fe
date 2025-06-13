@@ -1,6 +1,4 @@
 import { QuotationStatus } from '@/shared/types/types';
-import CommonCardInfo from './CommonCardInfo';
-import ReviewSection from './ReviewSection';
 
 export type PresetCardName =
   | 'profile'
@@ -36,6 +34,7 @@ export interface UserCardData {
   comment?: string;
   confirmation?: number;
   moveDay?: string;
+  startQuoDate?: string;
   startPoint?: string;
   endPoint?: string;
   provideService?: string[];

@@ -16,6 +16,7 @@ export default function QuoteOffer() {
 
   const list = data?.pages.flatMap((page) => page.list) ?? [];
   const cards = list.map(mapSentQuotationToCardData);
+
   const isJustifyContent = isPending || isFetchingNextPage || list.length === 0;
 
   useEffect(() => {

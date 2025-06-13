@@ -12,6 +12,7 @@ export interface QuotationAPIData {
   moveDate: string;
   moveType: 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
   startAddress: string;
+  price?: string;
   status: string;
 }
 
@@ -47,6 +48,7 @@ export function mapToUserCardData(apiData: QuotationAPIData): UserCardData {
     startPoint: cutAddress(apiData.startAddress),
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
+    isAssigned: apiData.isAssigned,
     status: isValidStatus(apiData.status) ? apiData.status : undefined,
   };
 }
