@@ -28,6 +28,13 @@ export interface GlobalResponse {
   errorCode: string;
 }
 
+export interface GlobalResponseWithGeneric<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  errorCode: string;
+}
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -454,4 +461,121 @@ export interface CustomerFinishedReviewListResponseData {
   totalPages: number;
   currentPage: number;
   totalCount: number;
+}
+
+// 손님 프로필 조회 API response
+export interface GetCustomerProfileData {
+  id: string;
+  username: string;
+  email: string;
+  isProfile: boolean;
+  phoneNumber: string;
+  profileImage: string | null;
+  wantService: string[] | null;
+  livingPlace: string[] | null;
+  hasQuotation: boolean;
+}
+
+// 기사 프로필 조회 API response
+export interface GetMoverProfileData {
+  id: string;
+  username: string;
+  nickname: string | null;
+  email: string;
+  isProfile: boolean;
+  phoneNumber: string;
+  profileImage: string | null;
+  intro: string | null;
+  detailDescription: string | null;
+  career: string | null;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  serviceList: string[] | null;
+  serviceArea: string[] | null;
+}
+
+export type UserProfileData = GetCustomerProfileData | GetMoverProfileData;
+
+export type UserLoginData = MoverLoginData | CustomerLoginData;
+
+export interface MoverLoginData {
+  accessToken: string;
+  refreshToken: string;
+  mover: {
+    id: string;
+    username: string;
+    nickname: string | null;
+    email: string;
+    phoneNumber: string;
+    isProfile: boolean;
+    profileImage: string | null;
+    serviceArea: string[] | null;
+    serviceList: string[] | null;
+    intro: string | null;
+    career: number | null;
+    detailDescription: string | null;
+    likeCount: number;
+    totalRating: number;
+    reviewCounts: number;
+    createdAt: string;
+  };
+}
+
+export interface CustomerLoginData {
+  accessToken: string;
+  refreshToken: string;
+  customer: {
+    id: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    isProfile: boolean;
+    profileImage: string | null;
+    wantService: string[] | null;
+    livingPlace: string[] | null;
+    createdAt: string;
+    hasQuotation: boolean;
+  };
+}
+
+export type UserSignupData = CustomerSignupData | MoverSignupData;
+
+export interface CustomerSignupData {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  authType: null | string;
+  provider: string | null;
+  isProfile: boolean;
+  profileImage: string | null;
+  wantService: string[] | null;
+  livingPlace: string[] | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MoverSignupData {
+  id: string;
+  idNum: number;
+  username: string;
+  nickname: string | null;
+  isProfile: boolean;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  provider: string | null;
+  profileImage: string | null;
+  serviceArea: string[] | null;
+  serviceList: string[] | null;
+  intro: string | null;
+  career: number | null;
+  detailDescription: string | null;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  confirmedCounts: number;
+  createdAt: string;
 }
