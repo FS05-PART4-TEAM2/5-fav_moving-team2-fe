@@ -17,7 +17,7 @@ export interface UserInfo {
 // 일반유저 로그인 response로 여기 업데이트해놓기 -> 프로필 수정 시 사용
 export interface CustomerData {
   wantService: string[] | null;
-  livingPlace: string | null;
+  livingPlace: string[] | null;
   hasQuotation: boolean;
 }
 
