@@ -9,7 +9,6 @@ import { NavMenuDrawer } from './core/components/NavMenuDrawer';
 import Image from 'next/image';
 import { HeaderAlarm } from './core/components/HeaderAlarm';
 import { HeaderProfile } from './core/components/HeaderProfile';
-import { PATH } from '@/shared/constants';
 import { useRouter } from 'next/navigation';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import useUserStore from '@/shared/store/useUserStore';

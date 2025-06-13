@@ -6,7 +6,7 @@ interface RequestStepStore {
   decreaseStep: () => void;
 }
 
-export const useRequestStepStore = create<RequestStepStore>()((set, get) => ({
+export const useRequestStepStore = create<RequestStepStore>()((set) => ({
   requestStep: 1,
   increaseStep: () =>
     set((state) => ({

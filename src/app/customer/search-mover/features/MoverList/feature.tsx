@@ -1,5 +1,5 @@
-import { Stack, CircularProgress, Box } from '@mui/material';
-import { useEffect, useRef, useCallback } from 'react';
+import { Stack, CircularProgress } from '@mui/material';
+import { useEffect } from 'react';
 import { useMoverList } from '../../core/hooks/useMoverListQuery';
 import { MoverCard } from './core/components/MoverCard';
 import { colorChips } from '@/shared/styles/colorChips';

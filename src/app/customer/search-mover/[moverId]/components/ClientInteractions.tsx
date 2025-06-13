@@ -13,7 +13,6 @@ import { CommonModal } from '@/shared/components/Modal/CommonModal';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { colorChips } from '@/shared/styles/colorChips';
-import { revalidateMoverDetail } from '@/shared/utils/revalidateTags';
 import { useMoverDetailData } from '../core/hooks/useMoverDetailData';
 
 interface ClientInteractionsProps {
@@ -69,7 +68,7 @@ export const ClientInteractions = ({ moverId, shareUrl, shareLinkTitle }: Client
         // 캐시 무효화 후 데이터 다시 가져오기
         await refetch();
       }
-    } catch (error) {
+    } catch {
       alert('다시 시도해 주세요.');
     }
   };

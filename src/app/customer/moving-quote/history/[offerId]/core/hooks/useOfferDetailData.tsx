@@ -30,7 +30,7 @@ export const useOfferDetailData = (offerId: string) => {
           alert('견적 상세 조회에 실패했습니다. 다시 시도해주세요.');
           router.push(PATH.customer.movingQuoteHistory);
         }
-      } catch (err) {
+      } catch {
         alert('견적 상세 조회에 실패했습니다. 다시 시도해주세요.');
         router.push(PATH.customer.movingQuoteHistory);
       } finally {

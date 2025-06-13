@@ -39,7 +39,7 @@ export const useMoverReviewList = (moverId: string) => {
       } else {
         router.back();
       }
-    } catch (err) {
+    } catch {
       router.back();
     } finally {
       setIsLoading(false);

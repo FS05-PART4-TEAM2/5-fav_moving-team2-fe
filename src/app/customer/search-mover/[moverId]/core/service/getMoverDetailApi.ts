@@ -27,7 +27,7 @@ export async function getMoverDetailApi(moverId: string) {
     const data: MoverDetailResponse = await res.json();
 
     return data;
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: '기사님 정보를 불러오는데 실패했습니다.',

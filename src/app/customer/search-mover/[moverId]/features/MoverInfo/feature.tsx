@@ -11,12 +11,12 @@ interface MoverInfoProps {
   data: SearchMoverDetailResponse;
   shareUrl: string;
   shareLinkTitle: string;
-  moverId: string;
 }
 
-export const MoverInfoFeature = ({ data, shareUrl, shareLinkTitle, moverId }: MoverInfoProps) => {
+export const MoverInfoFeature = ({ data, shareUrl, shareLinkTitle }: MoverInfoProps) => {
   const hasReview = data.reviewCounts > 0;
   const reviewSectionTitle = `리뷰 (${data.reviewCounts})`;
+  const moverId = data.id;
 
   // key 값을 한글 label로 변환하는 함수들
   const getServiceLabel = (serviceKey: string) => {
