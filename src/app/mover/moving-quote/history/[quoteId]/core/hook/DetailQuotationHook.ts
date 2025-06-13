@@ -16,7 +16,7 @@ export function mapQuotationDetailDisplay(data: SentQuotationAPIData): Quotation
     customerName: `${data.customerNick} 고객님`,
     moveTypeLabel: moveTypeToLabel(data.moveType),
     moveDay: dayjs(data.moveDate).format('YYYY.MM.DD'),
-    moveDayWithWeek: dayjs(data.moveDate).format('YYYY.MM.DD(ddd)'),
+    moveDayWithWeek: dayjs(data.moveDate).format('YYYY.MM.DD(ddd) A h:mm'),
     startAddress: data.startAddress,
     endAddress: data.endAddress,
     price: data.price ? `${data.price.toLocaleString()}원` : undefined,

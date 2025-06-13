@@ -106,11 +106,7 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
               </Stack>
 
               <Stack>
-                <Typo
-                  className="text_R_14to18"
-                  style={{ color: colorChips.black[400] }}
-                  content={rawData.startQuoDate}
-                />
+                <Typo className="text_R_14to18" style={{ color: colorChips.black[400] }} content={detail.moveDay} />
                 <Typo
                   className="text_R_14to18"
                   style={{ color: colorChips.black[400] }}
