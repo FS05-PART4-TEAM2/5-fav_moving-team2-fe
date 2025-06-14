@@ -30,6 +30,7 @@ export interface MoverData {
   intro: string | null;
   career: string | null;
   detailDescription: string | null;
+  likeCount: number | null;
 }
 
 interface UserStore {
