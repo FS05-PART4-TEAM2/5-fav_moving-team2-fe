@@ -23,6 +23,8 @@ export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSumma
 
   const total = scores.reduce((acc, cur) => acc + cur.count, 0);
 
+  const mockTotalRating = 2.5;
+
   return (
     <Stack
       direction={isDesktop ? 'row' : isMobile ? 'column' : 'row'}
@@ -41,15 +43,57 @@ export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSumma
           <Typo className="text_B_24to38" content="/ 5" style={{ color: colorChips.grayScale[100] }} />
         </Stack>
         <Stack direction="row" spacing="2px" mt="4px">
-          {Array.from({ length: 5 }).map((_, idx) => (
+          {/* 꽉 찬 별 */}
+          {Array.from({ length: Math.floor(mockTotalRating) }).map((_, idx) => (
             <Image
-              key={idx}
+              key={`full-${idx}`}
               src="/assets/images/star-icon/star-yellow-24x24.svg"
-              alt="star icon"
+              alt="full star"
               width={isDesktop ? 48 : 24}
               height={isDesktop ? 48 : 24}
             />
           ))}
+
+          {/* 반 별 (0.5 이상이면) */}
+          {mockTotalRating % 1 >= 0.5 && (
+            <Box
+              key="half"
+              sx={{
+                position: 'relative',
+                width: isDesktop ? 48 : 24,
+                height: isDesktop ? 48 : 24,
+              }}
+            >
+              {/* 노란 별 - 절반만 보이게 */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '50%',
+                  height: '100%',
+                  overflow: 'hidden',
+                  zIndex: 2,
+                }}
+              >
+                <Image
+                  src="/assets/images/star-icon/star-yellow-24x24.svg"
+                  alt="half star"
+                  width={isDesktop ? 48 : 24}
+                  height={isDesktop ? 48 : 24}
+                />
+              </Box>
+
+              {/* 빈 별 - 뒤에 깔림 */}
+              <Image
+                src="/assets/images/star-icon/star-gray-24x24.svg"
+                alt="empty star"
+                width={isDesktop ? 48 : 24}
+                height={isDesktop ? 48 : 24}
+                style={{ position: 'absolute', top: 0, left: 0 }}
+              />
+            </Box>
+          )}
         </Stack>
       </Stack>
 
