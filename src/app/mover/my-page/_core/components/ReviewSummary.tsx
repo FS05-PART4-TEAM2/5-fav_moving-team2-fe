@@ -23,7 +23,9 @@ export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSumma
 
   const total = scores.reduce((acc, cur) => acc + cur.count, 0);
 
-  const mockTotalRating = 2.5;
+  const fullStars = Math.floor(totalRating);
+  const hasHalfStar = totalRating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   return (
     <Stack
@@ -44,7 +46,7 @@ export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSumma
         </Stack>
         <Stack direction="row" spacing="2px" mt="4px">
           {/* 꽉 찬 별 */}
-          {Array.from({ length: Math.floor(mockTotalRating) }).map((_, idx) => (
+          {Array.from({ length: Math.floor(fullStars) }).map((_, idx) => (
             <Image
               key={`full-${idx}`}
               src="/assets/images/star-icon/star-yellow-24x24.svg"
@@ -55,7 +57,7 @@ export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSumma
           ))}
 
           {/* 반 별 (0.5 이상이면) */}
-          {mockTotalRating % 1 >= 0.5 && (
+          {hasHalfStar && (
             <Box
               key="half"
               sx={{
@@ -94,6 +96,16 @@ export default function ReviewSummary({ ratingCounts, totalRating }: ReviewSumma
               />
             </Box>
           )}
+
+          {Array.from({ length: emptyStars }).map((_, idx) => (
+            <Image
+              key={`empty-${idx}`}
+              src="/assets/images/star-icon/star-gray-24x24.svg"
+              alt="empty star"
+              width={isDesktop ? 48 : 24}
+              height={isDesktop ? 48 : 24}
+            />
+          ))}
         </Stack>
       </Stack>
 
