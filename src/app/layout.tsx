@@ -5,6 +5,7 @@ import theme from '@/shared/theme';
 import '../../public/globals.css';
 import { ReactNode } from 'react';
 import { QueryProvider } from '@/shared/context/QueryProvider';
+import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
 
 // TODO: 메타데이터 설정
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="kor">
       <body className={`${pretendard.className}`}>
+        <KakaoScriptLoader />
         <QueryProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />

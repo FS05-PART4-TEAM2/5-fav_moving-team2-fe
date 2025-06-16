@@ -34,7 +34,13 @@ export const MoverInfoFeature = ({ data, shareUrl, shareLinkTitle }: MoverInfoPr
 
       {/* 데스크탑이 아닐 때만 공유버튼 표시 - CSS로 반응형 처리 */}
       <Stack sx={mobileShareButtonSx}>
-        <ShareButtons title={shareLinkTitle} shareUrl={shareUrl} isDesktop={false} textStyle="text_SB_14to20" />
+        <ShareButtons
+          title={shareLinkTitle}
+          shareCategory="url"
+          shareUrl={shareUrl}
+          isDesktop={false}
+          textStyle="text_SB_14to20"
+        />
         <Stack sx={dividerSx} />
       </Stack>
 

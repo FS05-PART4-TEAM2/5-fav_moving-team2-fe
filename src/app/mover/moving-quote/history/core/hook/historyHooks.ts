@@ -21,6 +21,7 @@ interface RejectedQuotationAPIData {
   startAddress: string;
   endAddress: string;
   moveDate: string;
+  price: number;
 }
 
 export function useInfiniteRejectedQuotations() {
@@ -61,10 +62,11 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
     status: isValidStatus(apiData.status) ? apiData.status : undefined,
+    price: apiData.price ? Number(apiData.price) : undefined,
   };
 
   let cardType: PresetCardName;
-  if (apiData.status === 'COMPLETED') {
+  if (apiData.status === 'CONFIRMED') {
     cardType = apiData.isConfirmedToMe ? 'finishRequest' : 'refuse';
   } else {
     cardType = 'moveQuotation';
@@ -82,5 +84,6 @@ export function mapRejectedQuotationToCardData(apiData: RejectedQuotationAPIData
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
     isAssigned: false,
+    price: apiData.price ? Number(apiData.price) : undefined,
   };
 }

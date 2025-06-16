@@ -54,13 +54,16 @@ export default function RequestIndex() {
   type SortValue = (typeof SORT_MAP)[SortLabel];
 
   const sortedValue: SortValue | undefined = SORT_MAP[selectedSort as SortLabel];
+
   const queryParams = {
-    type: selectedMoveType.length ? selectedMoveType : undefined,
+    type: selectedMoveType.length > 0 ? selectedMoveType : undefined,
     region: selectedRegion,
-    isAssigned: selected['지정 견적 요청'] ? true : false,
     username: searchKeyword || undefined,
     sorted: sortedValue,
+    ...(selected['지정 견적 요청'] ? { isAssigned: true } : {}),
   };
+
+  console.log('queryParams', queryParams);
 
   // count
   const { data: statsData } = useMoverQuotationStats(queryParams);

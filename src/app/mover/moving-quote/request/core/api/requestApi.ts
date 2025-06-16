@@ -48,6 +48,7 @@ export async function getMoverQuotationStats(
 
   const url = `/api/quotation/mover/count?${queryParams.toString()}`;
   const res = await customAxios.get<{ data: MoverQuotationStats }>(url);
+
   return res.data.data;
 }
 

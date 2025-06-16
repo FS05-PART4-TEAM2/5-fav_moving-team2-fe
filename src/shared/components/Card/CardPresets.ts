@@ -44,6 +44,7 @@ export interface UserCardData {
   createTime?: string;
   status?: QuotationStatus;
   isAssigned?: boolean;
+  isAssignQuo?: boolean;
 }
 
 export type CardButtonType = 'solid' | 'outlined';

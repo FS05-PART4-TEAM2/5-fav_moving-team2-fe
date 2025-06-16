@@ -5,6 +5,7 @@ import { MoverInfoFeature } from './features/MoverInfo/feature';
 import { ClientInteractions } from './components/ClientInteractions';
 import { notFound } from 'next/navigation';
 import { PATH } from '@/shared/constants';
+import { headers } from 'next/headers';
 
 interface PageProps {
   params: Promise<{
@@ -47,6 +48,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function Page({ params }: PageProps) {
   const { moverId } = await params;
+  const header = await headers();
+  const host = header.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
 
   try {
     // 서버에서 기사님 정보만 페치
@@ -56,7 +60,7 @@ export default async function Page({ params }: PageProps) {
       notFound();
     }
 
-    const shareUrl = PATH.customer.searchMoverDetail(moverId);
+    const shareUrl = `${protocol}://${host}${PATH.customer.searchMoverDetail(moverId)}`;
     const shareLinkTitle = '나만 알기엔 아쉬운 기사님인가요?';
     const moverInfo = moverResponse.data;
 

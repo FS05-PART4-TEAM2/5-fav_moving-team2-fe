@@ -1,3 +1,34 @@
+// 카카오 공유
+declare global {
+  interface Window {
+    Kakao: {
+      init: (key: string) => void;
+      isInitialized: () => boolean;
+      cleanup: () => void;
+      Share: {
+        sendDefault: (
+          param:
+            | {
+                objectType: 'feed';
+                content: {
+                  title: string;
+                  description: string;
+                  imageUrl: string;
+                  link: { mobileWebUrl: string; webUrl: string };
+                };
+              }
+            | {
+                objectType: 'text';
+                text: string;
+                link: { mobileWebUrl: string; webUrl: string };
+              },
+        ) => void;
+        sendCustom: (param: { templateId: number; templateArgs?: Record<string, string> }) => void;
+        cleanup: () => void;
+      };
+    };
+  }
+}
 export type UserType = 'customer' | 'mover' | 'temp';
 export type MovingType = 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
 export type QuotationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'DELETED';
@@ -578,7 +609,8 @@ export interface MoverSignupData {
   reviewCounts: number;
   confirmedCounts: number;
   createdAt: string;
-}\
+}
+
 // 손님 프로필 변경 리스폰스 타입
 export interface UpdateCustomerProfileResponse {
   id: string;
@@ -609,4 +641,3 @@ export interface UpdateMoverProfileResponse {
   serviceList: string[];
   serviceArea: string[];
 }
-

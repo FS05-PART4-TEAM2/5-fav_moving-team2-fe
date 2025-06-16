@@ -44,7 +44,7 @@ export default function Page() {
   if (!data) return null;
 
   const moverId = data.offers[0].moverId;
-  const shareUrl = PATH.customer.searchMoverDetail(moverId);
+  const shareUrl = `${window.location.origin}${PATH.customer.searchMoverDetail(moverId)}`;
   const toastMsg = '확정하지 않은 견적이에요!';
   const isPending = !data.offers[0].isCompleted; // isCompleted가 false인 경우 : 대기중인 견적
   const isConfirmed = data.offers[0].isConfirmedMover; // 확정견적
@@ -102,7 +102,7 @@ export default function Page() {
           {!isDesktop && (
             <>
               {/* 데스크탑 아닐때는 공유버튼 여기 */}
-              <ShareButtons title="기사님 공유하기" shareUrl={shareUrl} isDesktop={isDesktop} />
+              <ShareButtons title="기사님 공유하기" shareCategory="url" shareUrl={shareUrl} isDesktop={isDesktop} />
               <Stack sx={dividerSx} />
             </>
           )}
@@ -120,7 +120,7 @@ export default function Page() {
         {isDesktop && (
           <Stack flexShrink={0} width="330px" direction="column" gap="80px">
             {isPending && <SolidButton text={'견적 확정하기'} onClick={handleConfirm} />}
-            <ShareButtons title="견적서 공유하기" shareUrl={shareUrl} isDesktop={isDesktop} />
+            <ShareButtons title="견적서 공유하기" shareCategory="url" shareUrl={shareUrl} isDesktop={isDesktop} />
           </Stack>
         )}
       </Stack>

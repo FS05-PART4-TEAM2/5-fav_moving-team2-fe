@@ -98,7 +98,7 @@ export default function WaitRequestCardInfo({ data }: WaitRequestCardInfoProps) 
           견적 금액
         </Typo>
         <Typo className={isMdDown ? 'text_B_18' : 'text_B_24'} style={{ color: colorChips.black[400] }}>
-          180,000원
+          {data.price?.toLocaleString()}원
         </Typo>
       </Stack>
     </>
