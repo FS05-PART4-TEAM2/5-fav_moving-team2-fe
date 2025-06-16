@@ -35,6 +35,25 @@ export interface GlobalResponseWithGeneric<T> {
   errorCode: string;
 }
 
+export interface NotificationItem {
+  id: string;
+  type: string;
+  segments: {
+    text: string;
+    isHighlight: boolean;
+  }[];
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface NotificationResponseData { 
+  data: NotificationItem[];
+  nextCursor: {
+    cursorId: string;
+    cursorDate: string;
+  };
+}
+
 export interface LoginPayload {
   email: string;
   password: string;
