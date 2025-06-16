@@ -9,7 +9,8 @@ interface PageParam {
 }
 
 export function useNotificationsQuery() {
-  const { isAuthenticated } = useUserStore();
+  const { isAuthenticated, userType } = useUserStore();
+  const enabled = isAuthenticated && userType !== 'temp';
 
   return useInfiniteQuery({
     queryKey: notificationKeys.list(),
@@ -26,6 +27,6 @@ export function useNotificationsQuery() {
       };
     },
     initialPageParam: { cursorId: null, cursorDate: null } as PageParam,
-    enabled: isAuthenticated,
+    enabled,
   });
 }
