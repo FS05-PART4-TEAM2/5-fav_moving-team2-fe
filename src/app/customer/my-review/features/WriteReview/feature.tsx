@@ -22,7 +22,7 @@ export const WriteReviewFeature = () => {
     <Stack sx={contentContainerSx}>
       {hasReview ? (
         // 작성 가능한 리뷰 데이터 있는 경우
-        <Stack direction="column" width="100%" gap={{ xs: '8px', md: '24px' }}>
+        <Stack flex={1} direction="column" width="100%" justifyContent="space-between" gap={{ xs: '8px', md: '24px' }}>
           <WriteReviewList data={writeReviewList} />
           <Stack width="100%" alignItems="center" justifyContent="center">
             <CommonPagination page={data?.currentPage} totalCount={data?.totalPages} handleChange={handleChangePage} />

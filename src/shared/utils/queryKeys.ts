@@ -6,3 +6,8 @@ export const moverKeys = {
   detail: (moverId: string) => [...moverKeys.all, 'detail', moverId],
   likeList: (limit?: number) => [...moverKeys.all, 'likeList', { limit }],
 };
+
+export const notificationKeys = {
+  all: ['notification'],
+  list: () => [...notificationKeys.all, 'list'],
+};

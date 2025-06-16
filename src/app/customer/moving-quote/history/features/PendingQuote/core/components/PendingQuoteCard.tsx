@@ -54,7 +54,7 @@ export const PendingQuoteCard = ({ customerQuoteData, receivedOffer }: PendingQu
       </Stack>
       <Stack sx={priceWrapperSx}>
         <Typo content="견적 금액" className="text_M_14to18" color={colorChips.black[400]} />
-        <Typo content={formattedPrice(receivedOffer.price)} className="text_B_18to24" color={colorChips.black[400]} />
+        <Typo content={formattedPrice(Number(receivedOffer.price))} className="text_B_18to24" color={colorChips.black[400]} />
       </Stack>
       <Stack sx={buttonWrapperSx}>
         <SolidButton text="견적 확정하기" onClick={handleConfirm} buttonSize="xs" borderRadius="8px" />

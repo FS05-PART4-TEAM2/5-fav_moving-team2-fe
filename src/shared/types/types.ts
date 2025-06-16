@@ -35,6 +35,25 @@ export interface GlobalResponseWithGeneric<T> {
   errorCode: string;
 }
 
+export interface NotificationItem {
+  id: string;
+  type: string;
+  segments: {
+    text: string;
+    isHighlight: boolean;
+  }[];
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface NotificationResponseData { 
+  data: NotificationItem[];
+  nextCursor: {
+    cursorId: string;
+    cursorDate: string;
+  };
+}
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -578,7 +597,7 @@ export interface MoverSignupData {
   reviewCounts: number;
   confirmedCounts: number;
   createdAt: string;
-}\
+}
 // 손님 프로필 변경 리스폰스 타입
 export interface UpdateCustomerProfileResponse {
   id: string;
