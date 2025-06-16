@@ -13,8 +13,6 @@ interface ReceivedQuoteFeatureProps {
 export const ReceivedQuoteFeature = ({ data, isLoading }: ReceivedQuoteFeatureProps) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const hasReceivedQuotes = data && data.length > 0;
-  console.log('받았던견적: ', data);
-  console.log('hasReceivedQuotes: ', hasReceivedQuotes);
 
   if (isLoading) {
     return (
