@@ -579,3 +579,34 @@ export interface MoverSignupData {
   confirmedCounts: number;
   createdAt: string;
 }
+
+// 손님 프로필 변경 리스폰스 타입
+export interface UpdateCustomerProfileResponse {
+  id: string;
+  username: string;
+  email: string;
+  isProfile: boolean;
+  phoneNumber: string;
+  profileImage: string | null;
+  wantService: string[] | null;
+  livingPlace: string[] | null;
+}
+
+// 기사 프로필 변경 리스폰스 타입
+export interface UpdateMoverProfileResponse {
+  id: string;
+  username: string;
+  nickname: string | null;
+  email: string;
+  isProfile: boolean;
+  phoneNumber: string;
+  profileImage: string | null;
+  intro: string | null;
+  detailDescription: string | null;
+  career: string | null;
+  likeCount: number;
+  totalRating: number;
+  reviewCounts: number;
+  serviceList: string[];
+  serviceArea: string[];
+}
