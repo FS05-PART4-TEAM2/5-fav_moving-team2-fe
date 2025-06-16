@@ -48,10 +48,83 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
         )}
 
         <Stack direction="column">
+          <Stack direction="row">
+            <Stack direction="row" gap="4px">
+              <Stack
+                position="relative"
+                sx={{
+                  width: {
+                    xs: '20px',
+                    md: '24px',
+                  },
+                  height: {
+                    xs: '20px',
+                    md: '24px',
+                  },
+                }}
+              >
+                <Image
+                  src="/assets/images/star-icon/star-yellow-24x24.svg"
+                  alt="like icon"
+                  fill
+                  style={{ objectFit: 'contain' }}
+                />
+              </Stack>
+              <Typo className={isMdDown ? 'text_M_13' : 'text_M_16'} style={{ color: colorChips.black[300] }}>
+                {data.review?.averageScore?.toFixed(1) ?? '0.0'}
+              </Typo>
+              <Typo
+                className={isMdDown ? 'text_M_13' : 'text_M_16'}
+                style={{
+                  color: colorChips.grayScale[300],
+                  borderRight: `1px solid ${colorChips.line['e6e6e6']}`,
+                  paddingRight: isMdDown ? '8px' : '16px',
+                }}
+              >
+                ({data.review?.reviewer ?? 0})
+              </Typo>
+            </Stack>
+
+            <Stack direction="row" gap="6px" sx={{ whiteSpace: 'nowrap' }}>
+              <Typo
+                className={isMdDown ? 'text_M_13' : 'text_M_16'}
+                style={{ color: colorChips.grayScale[300], paddingLeft: isMdDown ? '8px' : '16px' }}
+              >
+                경력
+              </Typo>
+              <Typo
+                className={isMdDown ? 'text_M_13' : 'text_M_16'}
+                style={{
+                  color: colorChips.black[300],
+                  borderRight: `1px solid ${colorChips.line['e6e6e6']}`,
+                  paddingRight: isMdDown ? '8px' : '16px',
+                }}
+              >
+                {data.career ?? 0}년
+              </Typo>
+            </Stack>
+
+            <Stack direction="row" gap="6px" sx={{ whiteSpace: 'nowrap' }}>
+              <Typo
+                className={isMdDown ? 'text_M_13' : 'text_M_16'}
+                style={{ color: colorChips.black[300], paddingLeft: isMdDown ? '8px' : '16px' }}
+              >
+                {data.confirmation ?? 0}건
+              </Typo>
+              <Typo
+                className={isMdDown ? 'text_M_13' : 'text_M_16'}
+                style={{
+                  color: colorChips.grayScale[300],
+                }}
+              >
+                확정
+              </Typo>
+            </Stack>
+          </Stack>
           <Stack
             direction={isMobile ? 'column' : 'row'}
             gap="20px"
-            sx={{ textWrap: 'nowrap', pt: isMdDown ? '14px' : '24px' }}
+            sx={{ textWrap: 'nowrap', pt: isMdDown ? '14px' : '16px' }}
           >
             <Stack
               direction="row"
@@ -79,7 +152,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
                   color: colorChips.black[300],
                 }}
               >
-                {data.service}
+                {(data.service ?? []).join(', ')}
               </Typo>
             </Stack>
             <Stack direction="row" gap="6px" alignItems="center">
@@ -95,16 +168,11 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
                 지역
               </Typo>
               <Typo className="text_M_14" style={{ color: colorChips.black[300] }}>
-                {data.region}
+                {(data.region ?? []).join(', ')}
               </Typo>
             </Stack>
           </Stack>
         </Stack>
-      </Stack>
-
-      <Stack direction="row">
-        <Image src="/assets/images/like-icon/like-24x24-black.svg" alt="like icon" width={24} height={24} />
-        <Typo className={isMdDown ? 'text_M_13' : 'text_M_18'}>{data.likeCount}</Typo>
       </Stack>
     </Stack>
   );

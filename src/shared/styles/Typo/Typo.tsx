@@ -7,6 +7,7 @@ export type TypoClassName =
   | 'text_B_24to38'
   | 'text_B_20to32'
   | 'text_B_18to24'
+  | 'text_B_16to24'
   | 'text_B_14to20'
   | 'text_SB_12to14'
   | 'text_R_14to16'

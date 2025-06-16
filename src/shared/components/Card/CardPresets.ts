@@ -34,6 +34,7 @@ export interface UserCardData {
   comment?: string;
   confirmation?: number;
   moveDay?: string;
+  startQuoDate?: string;
   startPoint?: string;
   endPoint?: string;
   provideService?: string[];
@@ -42,6 +43,7 @@ export interface UserCardData {
   reviewContent?: string;
   createTime?: string;
   status?: QuotationStatus;
+  isAssigned?: boolean;
 }
 
 export type CardButtonType = 'solid' | 'outlined';
