@@ -44,7 +44,7 @@ export default function OAuthCallbackPage() {
         const res = await OAuthProfile(type);
 
         if (type === 'customer') {
-          const user = res.data as GetCustomerProfileData
+          const user = res.data as GetCustomerProfileData;
           setUserInfo('customer', {
             id: user.id,
             username: user.username,
@@ -87,6 +87,7 @@ export default function OAuthCallbackPage() {
             intro: user.intro,
             career: user.career,
             detailDescription: user.detailDescription,
+            likeCount: user.likeCount,
           });
 
           if (!user.isProfile) {

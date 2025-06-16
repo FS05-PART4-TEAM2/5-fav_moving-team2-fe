@@ -1,7 +1,7 @@
 import { UserCardData } from '@/shared/components/Card/CardPresets';
 import { QuotationStatus } from '@/shared/types/types';
 
-interface QuotationAPIData {
+export interface QuotationAPIData {
   customer: {
     id: string;
     username: string;
@@ -12,15 +12,19 @@ interface QuotationAPIData {
   moveDate: string;
   moveType: 'SMALL_MOVE' | 'FAMILY_MOVE' | 'OFFICE_MOVE';
   startAddress: string;
+  price?: string;
   status: string;
 }
 
-function isValidStatus(status: string): status is QuotationStatus {
-  return ['PENDING', 'ACCEPTED', 'REFUSED', 'COMPLETED'].includes(status);
+// Status
+export function isValidStatus(status: string): status is QuotationStatus {
+  const normalized = status.toUpperCase();
+  return ['PENDING', 'CONFIRMED', 'REFUSED', 'COMPLETED'].includes(normalized as QuotationStatus);
 }
 
+// 주소 시 구까지
 export function cutAddress(fullAddress: string): string {
-  const parts = fullAddress.trim().split(' '); // 띄어쓰기 기준으로 자름
+  const parts = fullAddress.trim().split(' ');
   if (parts.length < 2) return fullAddress;
 
   const [first, second] = parts;
@@ -44,11 +48,12 @@ export function mapToUserCardData(apiData: QuotationAPIData): UserCardData {
     startPoint: cutAddress(apiData.startAddress),
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
+    isAssigned: apiData.isAssigned,
     status: isValidStatus(apiData.status) ? apiData.status : undefined,
   };
 }
 
-function moveTypeToLabel(type: QuotationAPIData['moveType']): string {
+export function moveTypeToLabel(type: QuotationAPIData['moveType']): string {
   switch (type) {
     case 'SMALL_MOVE':
       return '소형이사';

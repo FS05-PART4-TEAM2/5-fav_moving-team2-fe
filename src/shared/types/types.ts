@@ -578,8 +578,7 @@ export interface MoverSignupData {
   reviewCounts: number;
   confirmedCounts: number;
   createdAt: string;
-}
-
+}\
 // 손님 프로필 변경 리스폰스 타입
 export interface UpdateCustomerProfileResponse {
   id: string;
@@ -610,3 +609,4 @@ export interface UpdateMoverProfileResponse {
   serviceList: string[];
   serviceArea: string[];
 }
+
