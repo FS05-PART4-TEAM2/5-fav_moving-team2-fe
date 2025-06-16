@@ -63,8 +63,6 @@ export default function RequestIndex() {
     ...(selected['지정 견적 요청'] ? { isAssigned: true } : {}),
   };
 
-  console.log('queryParams', queryParams);
-
   // count
   const { data: statsData } = useMoverQuotationStats(queryParams);
 

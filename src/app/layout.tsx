@@ -11,6 +11,22 @@ import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
 export const metadata: Metadata = {
   title: 'Moving',
   description: 'Moving',
+  metadataBase: new URL('http://localhost:3000'), // 나중에 실제 도메인으로 변경
+  openGraph: {
+    title: 'Moving 서비스 ',
+    description: '믿을 수 있는 이사, Moving에서 간편하게 공유해 보세요.',
+    url: '/',
+    siteName: 'Moving',
+    type: 'website',
+    images: [
+      {
+        url: 'opengraph-image.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'ko_KR',
+  },
 };
 
 const pretendard = localFont({

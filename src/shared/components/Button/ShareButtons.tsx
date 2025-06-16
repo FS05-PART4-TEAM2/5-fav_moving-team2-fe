@@ -139,13 +139,33 @@ export const ShareButtons = ({
 
     // 3. Facebook
     if (type === 'facebook') {
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-      const fullUrl =
-        shareCategory === 'content' || shareCategory === 'all'
-          ? `${fbUrl}&quote=${encodeURIComponent(content)}`
-          : fbUrl;
+      // 둘 다 없으면 예외 처리
+      if (!shareUrl && !shareData) {
+        alert('공유할 정보가 없습니다.');
+        return;
+      }
 
-      window.open(fullUrl, '_blank', 'width=600,height=400');
+      // 1. URL만 있는 경우
+      if (hasUrl && !hasData) {
+        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        window.open(fbUrl, '_blank', 'width=600,height=400');
+        return;
+      }
+
+      // 2. content만 있는 경우 → Facebook이 지원하지 않음 → 클립보드 대체
+      if (!hasUrl && hasData) {
+        // URL 없고 content만 있을 경우
+        navigator.clipboard.writeText(content);
+        alert('내용이 복사되었습니다! \n 공유할 내용을 facebook에 올려주세요!.');
+        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        window.open(fbUrl, '_blank', 'width=600,height=400');
+        return;
+      }
+
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(
+        content,
+      )}`;
+      window.open(fbUrl, '_blank', 'width=600,height=400');
     }
   };
 
