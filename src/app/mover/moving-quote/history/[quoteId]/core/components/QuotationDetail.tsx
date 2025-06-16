@@ -141,7 +141,7 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
 
       {isDesktop && (
         <Stack>
-          <ShareButtons title="견적서 공유" shareCategory="url" shareUrl={shareUrl} isDesktop />
+          <ShareButtons title="견적서 공유" shareCategory="content" shareData={shareData} isDesktop={false} />
         </Stack>
       )}
     </Stack>
