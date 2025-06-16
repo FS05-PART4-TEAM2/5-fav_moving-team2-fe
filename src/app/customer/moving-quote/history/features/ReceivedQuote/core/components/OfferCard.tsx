@@ -43,7 +43,7 @@ export const OfferCard = ({ data, moveType }: OfferListProps) => {
       <MoverProfileBase {...profileBaseProps} />
       <Stack sx={priceWrapperSx}>
         <Typo content="견적 금액" className="text_M_14to18" color={colorChips.black[400]} />
-        <Typo content={formattedPrice(data.price)} className="text_B_18to24" color={colorChips.black[400]} />
+        <Typo content={formattedPrice(Number(data.price))} className="text_B_18to24" color={colorChips.black[400]} />
       </Stack>
     </Stack>
   );

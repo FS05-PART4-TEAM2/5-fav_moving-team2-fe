@@ -92,7 +92,7 @@ export default function Page() {
           <Stack sx={priceWrapperSx}>
             <Typo content="견적가" className="text_SB_16to24" color={colorChips.black[400]} />
             <Typo
-              content={formattedPrice(data.offers[0].price)}
+              content={formattedPrice(Number(data.offers[0].price))}
               className="text_B_20to32"
               color={colorChips.black[400]}
             />

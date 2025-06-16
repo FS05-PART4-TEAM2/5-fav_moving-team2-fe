@@ -1,19 +1,12 @@
+import { useNotificationSocket } from '@/shared/hooks/useNotificationSocket';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { Collapse, Stack } from '@mui/material';
+import { NotificationItem } from '@/shared/types/types';
+import { Collapse, Stack, CircularProgress } from '@mui/material';
 import Image from 'next/image';
-
-const mockList = [
-  { content: '1 김코드 기사님의 소형이사 견적이 도착했어요', createdAt: '2시간 전' },
-  { content: '2 김코드 기사님의 견적이 확정되었어요', createdAt: '3시간 전' },
-  { content: '3 내일은 경기(일산) → 서울(영등포) 이사 예정일이에요.', createdAt: '5시간 전' },
-  { content: '4 김코드 기사님의 소형이사 견적이 도착했어요', createdAt: '2시간 전' },
-  { content: '5 김코드 기사님의 견적이 확정되었어요', createdAt: '3시간 전' },
-  { content: '6 내일은 경기(일산) → 서울(영등포) 이사 예정일이에요.', createdAt: '5시간 전' },
-  { content: '7 김코드 기사님의 소형이사 견적이 도착했어요', createdAt: '2시간 전' },
-  { content: '8 김코드 기사님의 견적이 확정되었어요', createdAt: '3시간 전' },
-  { content: '9 내일은 경기(일산) → 서울(영등포) 이사 예정일이에요.', createdAt: '5시간 전' },
-];
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useNotificationsQuery } from '@/shared/hooks/useNotificationsQuery';
 
 interface HeaderAlarmProps {
   isDesktop: boolean;
@@ -23,7 +16,38 @@ interface HeaderAlarmProps {
 }
 
 export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggle }: HeaderAlarmProps) => {
-  //TODO: 알림 api 연결
+  const accessToken = localStorage.getItem('accessToken');
+  const [realTimeNotifications, setRealTimeNotifications] = useState<NotificationItem[]>([]);
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: '0px 0px',
+  });
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useNotificationsQuery();
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
+
+  // 소켓 수신
+  if (accessToken) {
+    useNotificationSocket(accessToken, (newNoti) => {
+      setRealTimeNotifications((prev) => [newNoti, ...prev]);
+    });
+  }
+
+  const allNotifications = [
+    ...realTimeNotifications,
+    ...(data?.pages?.flatMap((page) => page.data.data) || []),
+  ];
 
   return (
     <Stack position="relative">
@@ -74,15 +98,33 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
             },
           }}
         >
-          {mockList.map((item, idx) => (
-            <AlarmCard
-              key={idx}
-              isDesktop={isDesktop}
-              content={item.content}
-              createdAt={item.createdAt}
-              isLast={idx === mockList.length - 1}
-            />
-          ))}
+          {isLoading ? (
+            <Stack alignItems="center" padding="16px">
+              <CircularProgress size={24} />
+            </Stack>
+          ) : allNotifications.length === 0 ? (
+            <Stack flex={1} alignItems="center" justifyContent="center" padding="16px">
+              <Typo className="text_M_14" content="알림이 없습니다." color={colorChips.grayScale[500]} />
+            </Stack>
+          ) : (
+            <>
+              {allNotifications.map((item, idx) => (
+                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined}>
+                  <AlarmCard
+                    isDesktop={isDesktop}
+                    content={item.segments}
+                    createdAt={item.createdAt}
+                    isLast={idx === allNotifications.length - 1}
+                  />
+                </div>
+              ))}
+              {isFetchingNextPage && (
+                <Stack alignItems="center" padding="16px">
+                  <CircularProgress size={24} />
+                </Stack>
+              )}
+            </>
+          )}
         </Stack>
       </Collapse>
     </Stack>
@@ -91,7 +133,10 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
 
 interface AlarmCardProps {
   isDesktop: boolean;
-  content: string;
+  content: {
+    text: string;
+    isHighlight: boolean;
+  }[];
   createdAt: string;
   isLast: boolean;
 }
@@ -108,7 +153,11 @@ const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) =>
         borderBottom: isLast ? 'none' : `1px solid ${colorChips.line.e6e6e6}`,
       }}
     >
-      <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={content} color={colorChips.black[400]} />
+      <Stack direction="row" alignItems="center">
+        {content.map((item, idx) => (
+          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} />
+        ))}
+      </Stack>
       <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={createdAt} color={colorChips.grayScale[500]} />
     </Stack>
   );
