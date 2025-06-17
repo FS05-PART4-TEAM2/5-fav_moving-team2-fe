@@ -11,6 +11,7 @@ import { getDetailQuotationDetailApi } from '../api/DetailQuotationApi';
 import { mapSentQuotationToCardData } from '../../../core/hook/historyHooks';
 import { useRouter } from 'next/navigation';
 import { mapQuotationDetailDisplay } from '../hook/DetailQuotationHook';
+import { PATH } from '@/shared/constants';
 
 interface QuotationDetailProps {
   quoteId: string;
@@ -60,8 +61,17 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
       </Stack>
     );
 
-  const shareUrl = `/mover/moving-quote/history/${quoteId}`;
+  //토의 후 Url까지 넘길려면 추가
+  const shareUrl = `${window.location.origin}${PATH.mover.movingQuoteHistory}/${quoteId}`;
+
   const detail = mapQuotationDetailDisplay(rawData);
+  const shareData = {
+    moveDay: detail.moveDay,
+    moveDayWithWeek: detail.moveDayWithWeek,
+    moveTypeLabel: detail.moveTypeLabel,
+    startAddress: detail.startAddress,
+    endAddress: detail.endAddress,
+  };
 
   return (
     <Stack width="100%" direction="row" height="100%" paddingX="24px" paddingTop="30px" gap="117px">
@@ -71,7 +81,7 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
         {!isDesktop && (
           <>
             <Stack>
-              <ShareButtons title="견적서 공유" shareUrl={shareUrl} isDesktop={false} />
+              <ShareButtons title="견적서 공유" shareCategory="content" shareData={shareData} isDesktop={false} />
             </Stack>
             <Divider sx={{ borderColor: colorChips.line['f2f2f2'] }} />
           </>
@@ -120,9 +130,9 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
                 <Typo
                   className="text_R_14to18"
                   style={{ color: colorChips.black[400] }}
-                  content={rawData.startAddress}
+                  content={detail.startAddress}
                 />
-                <Typo className="text_R_14to18" style={{ color: colorChips.black[400] }} content={rawData.endAddress} />
+                <Typo className="text_R_14to18" style={{ color: colorChips.black[400] }} content={detail.endAddress} />
               </Stack>
             </Stack>
           </Stack>
@@ -131,7 +141,7 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
 
       {isDesktop && (
         <Stack>
-          <ShareButtons title="견적서 공유" shareUrl={shareUrl} isDesktop />
+          <ShareButtons title="견적서 공유" shareCategory="content" shareData={shareData} isDesktop={false} />
         </Stack>
       )}
     </Stack>

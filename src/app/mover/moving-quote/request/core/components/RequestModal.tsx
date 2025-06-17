@@ -51,9 +51,10 @@ export default function RequestModal({ mode, requestCardData, onClose, onSuccess
         const payload = {
           price: Number(data.quoteAmount),
           comment: data.comment ?? '',
-          isAssignQuo: true,
+
           customerId: requestCardData.customerId as string,
           quotationId: requestCardData.id as string,
+          isAssignQuo: !!requestCardData.isAssignQuo,
         };
         await sendQuotationAPI(payload);
       } else {

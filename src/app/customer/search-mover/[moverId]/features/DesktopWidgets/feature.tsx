@@ -45,7 +45,13 @@ export const DesktopWidgetsFeature = ({
         </Stack>
         <SolidButton text={'지정 견적 요청하기'} onClick={handleAssignRequest} disabled={isAssigned} />
       </Stack>
-      <ShareButtons title={shareLinkTitle} shareUrl={shareUrl} isDesktop={true} textStyle="text_SB_14to20" />
+      <ShareButtons
+        title={shareLinkTitle}
+        shareCategory="url"
+        shareUrl={shareUrl}
+        isDesktop={true}
+        textStyle="text_SB_14to20"
+      />
     </Stack>
   );
 };

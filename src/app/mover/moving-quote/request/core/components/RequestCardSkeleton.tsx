@@ -1,10 +1,10 @@
 'use client';
 
-import { Skeleton, Stack } from '@mui/material';
+import { Skeleton, Stack, useMediaQuery } from '@mui/material';
 import theme from '@/shared/theme';
 
 export default function RequestCardSkeleton() {
-  const isMd = typeof window !== 'undefined' && window.innerWidth < theme.breakpoints.values.md;
+  const isMd = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
   return (
     <Stack
