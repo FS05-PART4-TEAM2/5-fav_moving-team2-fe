@@ -154,9 +154,9 @@ const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) =>
         borderBottom: isLast ? 'none' : `1px solid ${colorChips.line.e6e6e6}`,
       }}
     >
-      <Stack direction="row" alignItems="center" gap="2px">
+      <Stack direction="row" alignItems="center" gap="4px" flexWrap="wrap">
         {content.map((item, idx) => (
-          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} />
+          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} customStyle={{ wordBreak: 'keep-all' }} />
         ))}
       </Stack>
       <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={formatNotiTime(createdAt)} color={colorChips.grayScale[500]} />
@@ -175,5 +175,5 @@ const CollapseSx = {
   bgcolor: colorChips.grayScale[50],
   border: `1px solid ${colorChips.line.e6e6e6}`,
   boxShadow: '0px 4px 16px 0px rgba(0, 0, 0, 0.08)',
-  padding: { xs: '10px 6px 6px', md: '16px 4px 6px' },
+  padding: '10px 16px',
 };
