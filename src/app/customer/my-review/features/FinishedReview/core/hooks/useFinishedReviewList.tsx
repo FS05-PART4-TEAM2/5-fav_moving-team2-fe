@@ -60,6 +60,7 @@ export const useFinishedReviewList = () => {
 
     setHasLoaded(true);
     fetchData(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 화면 크기가 변경되면 데이터를 다시 가져옴

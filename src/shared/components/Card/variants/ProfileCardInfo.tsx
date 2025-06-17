@@ -121,11 +121,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
               </Typo>
             </Stack>
           </Stack>
-          <Stack
-            direction={isMobile ? 'column' : 'row'}
-            gap="20px"
-            sx={{ textWrap: 'nowrap', pt: isMdDown ? '14px' : '16px' }}
-          >
+          <Stack direction={isMobile ? 'column' : 'row'} gap="20px" sx={{ pt: isMdDown ? '14px' : '16px' }}>
             <Stack
               direction="row"
               gap="6px"
@@ -141,6 +137,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
                   backgroundColor: colorChips.background['f4f7fb'],
                   padding: '2px 6px',
                   borderRadius: '4px',
+                  textWrap: 'nowrap',
                   color: colorChips.grayScale[500],
                 }}
               >
@@ -162,6 +159,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
                   backgroundColor: colorChips.background['f4f7fb'],
                   padding: '2px 6px',
                   borderRadius: '4px',
+                  textWrap: 'nowrap',
                   color: colorChips.grayScale[500],
                 }}
               >

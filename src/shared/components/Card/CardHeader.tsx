@@ -101,6 +101,7 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
                   overflow: 'hidden',
                   border: `2px solid black`,
                   position: 'relative',
+                  flexShrink: 0,
                 }}
               >
                 <Image
@@ -113,15 +114,18 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
             )}
 
             {type !== 'review' && (
-              <Stack direction="column" flexWrap="nowrap" sx={{ gap: { xs: '2px', md: '12px' } }}>
+              <Stack direction="column" flexWrap="nowrap" sx={{ flex: 1, minWidth: 0, gap: { xs: '2px', md: '12px' } }}>
                 <Typo className={profileNameText}>{name}</Typo>
-                <Typo className={profileDescriptionText} sx={{ color: colorChips.grayScale[400], textWrap: 'nowrap' }}>
+                <Typo
+                  className={profileDescriptionText}
+                  sx={{ color: colorChips.grayScale[400], whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+                >
                   {detailDescription}
                 </Typo>
               </Stack>
             )}
             {type === 'profile' && isLarge ? (
-              <Stack direction="row" gap="8px">
+              <Stack direction="row" gap="8px" sx={{ flexShrink: 0 }}>
                 <OutlinedButton
                   text="기본 정보 수정"
                   buttonType="done"

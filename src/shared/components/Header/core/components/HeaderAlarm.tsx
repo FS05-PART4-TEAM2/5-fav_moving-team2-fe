@@ -23,13 +23,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     rootMargin: '0px 0px',
   });
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useNotificationsQuery();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useNotificationsQuery();
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -38,16 +32,12 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   // 소켓 수신
-  if (accessToken) {
-    useNotificationSocket(accessToken, (newNoti) => {
-      setRealTimeNotifications((prev) => [newNoti, ...prev]);
-    });
-  }
+  useNotificationSocket(accessToken ?? null, (newNoti) => {
+    if (!accessToken) return;
+    setRealTimeNotifications((prev) => [newNoti, ...prev]);
+  });
 
-  const allNotifications = [
-    ...realTimeNotifications,
-    ...(data?.pages?.flatMap((page) => page.data.data) || []),
-  ];
+  const allNotifications = [...realTimeNotifications, ...(data?.pages?.flatMap((page) => page.data.data) || [])];
 
   return (
     <Stack position="relative">
@@ -155,7 +145,12 @@ const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) =>
     >
       <Stack direction="row" alignItems="center">
         {content.map((item, idx) => (
-          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} />
+          <Typo
+            className={isDesktop ? 'text_M_16' : 'text_M_14'}
+            content={item.text}
+            color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]}
+            key={idx}
+          />
         ))}
       </Stack>
       <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={createdAt} color={colorChips.grayScale[500]} />

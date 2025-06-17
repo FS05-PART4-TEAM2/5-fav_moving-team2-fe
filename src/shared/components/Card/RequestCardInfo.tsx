@@ -23,6 +23,7 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const showButtons = type === 'request';
   const isConfirmRequest = type === 'confirmRequest';
+  const isAssigned = !!data.isAssigned;
   const formatted = (date: string): string => {
     return dayjs(date).format('YYYY.MM.DD(dd)');
   };
@@ -338,9 +339,12 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
               onClickRequest?.(data.id);
             }}
           />
+
           <OutlinedButton
             text="반려"
             width="100%"
+            buttonType={isAssigned ? 'default' : 'done'}
+            disabled={isAssigned ? false : true}
             onClick={() => {
               if (!data.id) {
                 console.warn('id를 알 수 없습니다.');

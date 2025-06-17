@@ -72,6 +72,7 @@ export const useMoverList = () => {
   // 필터 관련 params가 변경될 때만 무효화 (커서 변경은 제외)
   useEffect(() => {
     invalidateMoverList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [region, service, orderBy, keyword]);
 
   return {

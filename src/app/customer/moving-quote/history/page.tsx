@@ -24,12 +24,14 @@ export default function CustomerMovingQuoteHistoryPage() {
   }, [searchParams, setTabBarType]);
 
   // 탭 변경 시 해당 데이터가 없으면 로드
+
   useEffect(() => {
     if (tabBarType === 'pendingQuote') {
       loadPendingQuotes();
     } else if (tabBarType === 'receivedQuote') {
       loadReceivedQuotes();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabBarType]);
 
   return (

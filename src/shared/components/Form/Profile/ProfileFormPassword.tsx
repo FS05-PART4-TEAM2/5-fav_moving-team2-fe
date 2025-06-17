@@ -5,13 +5,8 @@ import { colorChips } from '@/shared/styles/colorChips';
 import { useMediaQuery } from '@mui/system';
 import theme from '@/shared/theme';
 
-interface ProfileFormPasswordProps {
-  mode?: 'create' | 'modify' | 'baseInfo';
-}
-
-export default function ProfileFormPassword({ mode }: ProfileFormPasswordProps) {
+export default function ProfileFormPassword() {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
-  const isBaseInfo = mode === 'baseInfo';
 
   return (
     <>

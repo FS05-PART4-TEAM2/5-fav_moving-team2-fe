@@ -177,10 +177,22 @@ export const ShareButtons = ({
           <Image src={shareIcon} alt="share-button" width={clipSize} height={clipSize} />
         </Stack>
         <Stack sx={iconBoxSx} onClick={() => handleClick('kakao')}>
-          <Image src={kakaoIcon} alt="share-button" width={iconSize} height={iconSize} />
+          <Image
+            src={kakaoIcon}
+            alt="share-button"
+            width={iconSize}
+            height={iconSize}
+            style={{ objectFit: 'contain' }}
+          />
         </Stack>
         <Stack sx={iconBoxSx} onClick={() => handleClick('facebook')}>
-          <Image src={facebookIcon} alt="share-button" width={iconSize} height={iconSize} />
+          <Image
+            src={facebookIcon}
+            alt="share-button"
+            width={iconSize}
+            height={iconSize}
+            style={{ objectFit: 'contain' }}
+          />
         </Stack>
       </Stack>
     </Stack>

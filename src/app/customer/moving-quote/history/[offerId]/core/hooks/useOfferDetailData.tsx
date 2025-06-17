@@ -39,6 +39,7 @@ export const useOfferDetailData = (offerId: string) => {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offerId]); // offerId만 의존성으로 설정
 
   return { data, isLoading };

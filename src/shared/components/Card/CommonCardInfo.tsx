@@ -1,14 +1,5 @@
-import { Stack, useMediaQuery } from '@mui/material';
-import Image from 'next/image';
-import { Typo } from '@/shared/styles/Typo/Typo';
-import { colorChips } from '@/shared/styles/colorChips';
 import { PresetCardName, UserCardData } from './CardPresets';
-import theme from '@/shared/theme';
 import RequestConfirmCardInfo from './RequestCardInfo';
-import { SolidButton } from '../Button/SolidButton';
-import { useRouter } from 'next/navigation';
-import { PATH } from '@/shared/constants';
-import dayjs from 'dayjs';
 import ReviewSection from './ReviewSection';
 import QuotationCardInfo from './variants/QuotationCardInfo';
 import FinishReviewCardInfo from './variants/FinishReviewCardInfo';

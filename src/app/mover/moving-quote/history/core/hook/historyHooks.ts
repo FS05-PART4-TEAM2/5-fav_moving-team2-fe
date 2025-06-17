@@ -7,6 +7,7 @@ import {
   moveTypeToLabel,
   QuotationAPIData,
 } from '../../../request/core/hook/mapToUserCardData';
+import dayjs from 'dayjs';
 
 export interface SentQuotationAPIData extends QuotationAPIData {
   isConfirmedToMe: boolean;
@@ -65,11 +66,17 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
     price: apiData.price ? Number(apiData.price) : undefined,
   };
 
-  let cardType: PresetCardName;
-  if (apiData.status === 'CONFIRMED') {
-    cardType = apiData.isConfirmedToMe ? 'finishRequest' : 'refuse';
-  } else {
-    cardType = 'moveQuotation';
+  const isPastMoveDay = dayjs().isAfter(dayjs(apiData.moveDate).add(1, 'day'), 'day');
+  const isFinishRequest = apiData.isConfirmedToMe === true && isPastMoveDay;
+  const isRefuse = apiData.isConfirmedToMe === false && apiData.status === 'CONFIRMED';
+
+  let cardType: PresetCardName = 'moveQuotation';
+  if (isFinishRequest) {
+    cardType = 'finishRequest';
+  }
+
+  if (isRefuse) {
+    cardType = 'refuse';
   }
 
   return { type: cardType, data: cardData };

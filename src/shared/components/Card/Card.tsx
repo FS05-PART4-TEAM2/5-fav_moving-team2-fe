@@ -60,6 +60,7 @@ export default function Card({ type, data, isModal, height, bgColor, onRequestCl
               <OutlinedButton
                 text="견적 상세보기"
                 width="100%"
+                isButtonBC
                 onClick={() => router.push(`${PATH.mover.movingQuoteHistory}/${data.id}`)}
               />
             )}

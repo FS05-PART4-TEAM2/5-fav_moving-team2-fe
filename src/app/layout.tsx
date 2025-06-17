@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from '@/shared/theme';
 import '../../public/globals.css';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { QueryProvider } from '@/shared/context/QueryProvider';
 import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
 
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <QueryProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {children}
+            <Suspense fallback={<div>페이지 로딩 중...</div>}>{children}</Suspense>
           </ThemeProvider>
         </QueryProvider>
       </body>

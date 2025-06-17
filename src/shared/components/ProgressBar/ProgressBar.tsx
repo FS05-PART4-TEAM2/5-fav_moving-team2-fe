@@ -44,7 +44,7 @@ export default function ProgressBar(props: ProgressBarProps) {
 
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
-  }, [targetValue]);
+  }, [targetValue, isRequest]);
 
   const value = isRequest ? animatedValue : targetValue;
 
