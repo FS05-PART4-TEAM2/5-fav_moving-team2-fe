@@ -17,11 +17,11 @@ const theme = createTheme({
   },
   breakpoints: {
     values: {
-      xs: 0, // mobile
-      sm: 744, // tablet
-      md: 1200, // desktop
+      xs: 0,
+      sm: 744,
+      md: 1200,
       lg: 1500,
-      xl: 1536,
+      xl: 1800,
     },
   },
 });

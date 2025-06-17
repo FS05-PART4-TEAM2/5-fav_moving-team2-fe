@@ -21,6 +21,7 @@ export const colorChips = {
     300: '#373737',
     400: '#1F1F1F',
     500: '#040404',
+    b2b2b: '#2B2B2B',
   },
   grayScale: {
     50: '#FFFFFF',
@@ -38,6 +39,7 @@ export const colorChips = {
   },
   line: {
     f2f2f2: '#F2F2F2',
+    f2f3f8: '#F2F3F8',
     e6e6e6: '#E6E6E6',
   },
 };
