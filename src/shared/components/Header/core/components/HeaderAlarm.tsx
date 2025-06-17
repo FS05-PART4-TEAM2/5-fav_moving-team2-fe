@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNotificationsQuery } from '@/shared/hooks/useNotificationsQuery';
+import { formatNotiTime } from '@/shared/utils/dataFormatter';
 
 interface HeaderAlarmProps {
   isDesktop: boolean;
@@ -99,7 +100,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
           }}
         >
           {isLoading ? (
-            <Stack alignItems="center" padding="16px">
+            <Stack flex={1} alignItems="center" justifyContent="center" padding="16px">
               <CircularProgress size={24} />
             </Stack>
           ) : allNotifications.length === 0 ? (
@@ -153,12 +154,12 @@ const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) =>
         borderBottom: isLast ? 'none' : `1px solid ${colorChips.line.e6e6e6}`,
       }}
     >
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" alignItems="center" gap="2px">
         {content.map((item, idx) => (
           <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} />
         ))}
       </Stack>
-      <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={createdAt} color={colorChips.grayScale[500]} />
+      <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={formatNotiTime(createdAt)} color={colorChips.grayScale[500]} />
     </Stack>
   );
 };
