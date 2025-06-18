@@ -28,10 +28,10 @@ export const ReceivedQuoteFeature = ({ data, isLoading }: ReceivedQuoteFeaturePr
         // 받았던 견적 데이터 있는 경우
         <Stack sx={cardWrapperSx}>
           {data.map((item, idx) => (
-            <>
-              <ReceivedQuoteCard key={item.quotationId} data={item} />
+            <div key={item.quotationId} style={{ width: '100%' }}>
+              <ReceivedQuoteCard data={item} />
               {isMobile && idx !== data.length - 1 && <Stack sx={dividerSx} />}
-            </>
+            </div>
           ))}
         </Stack>
       ) : (

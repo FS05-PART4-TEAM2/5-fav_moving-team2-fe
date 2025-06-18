@@ -42,7 +42,7 @@ export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBas
           <Stack sx={chipSx}>
             <Typo content="출발" className="text_R_14to18" color={colorChips.grayScale[500]} />
           </Stack>
-          <Typo content={shortStartAddress} className="text_M_14to18" color={colorChips.black[300]} />
+          <Typo content={shortStartAddress} className="text_M_14to18" color={colorChips.black[300]} customStyle={{wordBreak: 'keep-all'}}/>
         </Stack>
         <Stack sx={borderRightSx} />
         {/* 도착 */}
@@ -50,7 +50,7 @@ export function MoveDataBase({ moveDate, startAddress, endAddress }: MoveDataBas
           <Stack sx={chipSx}>
             <Typo content="도착" className="text_R_14to18" color={colorChips.grayScale[500]} />
           </Stack>
-          <Typo content={shortEndAddress} className="text_M_14to18" color={colorChips.black[300]} />
+          <Typo content={shortEndAddress} className="text_M_14to18" color={colorChips.black[300]} customStyle={{wordBreak: 'keep-all'}}/>
         </Stack>
       </Stack>
     </Stack>
@@ -67,6 +67,7 @@ const chipSx = {
   backgroundColor: colorChips.background.f4f7fb,
   padding: { xs: '2px 6px', md: '4px 6px' },
   borderRadius: '4px',
+  flexShrink: 0,
 };
 
 const borderRightSx = {

@@ -120,7 +120,7 @@ export default function Page() {
         {isDesktop && (
           <Stack flexShrink={0} width="330px" direction="column" gap="80px">
             {isPending && <SolidButton text={'견적 확정하기'} onClick={handleConfirm} />}
-            <ShareButtons title="견적서 공유하기" shareCategory="url" shareUrl={shareUrl} isDesktop={isDesktop} />
+            <ShareButtons title="기사님 공유하기" shareCategory="url" shareUrl={shareUrl} isDesktop={isDesktop} />
           </Stack>
         )}
       </Stack>

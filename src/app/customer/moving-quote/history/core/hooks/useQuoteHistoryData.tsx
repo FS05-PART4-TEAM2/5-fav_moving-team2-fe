@@ -3,6 +3,7 @@ import { getPendingQuotesApi } from '../service/getPendingQuotesApi';
 import { getReceivedQuotesApi } from '../service/getReceivedQuotesApi';
 import { CustomerQuoteHistoryData } from '@/shared/types/types';
 import { withMinLoadingTime } from '@/shared/utils/loadingUtils';
+import { revalidateCustomerQuoteHistory } from '@/shared/utils/revalidateTags';
 
 interface DataCache {
   pendingQuotes: CustomerQuoteHistoryData[] | null;
@@ -107,10 +108,12 @@ export const useQuoteHistoryData = () => {
       setLoadingStates((prev) => ({ ...prev, receivedQuotes: false }));
     }
   };
-
+  
   // 견적 확정 후 전체 데이터 갱신
+  // TODO: 여기 견적확정 버튼 클릭 후 받았던 견적 갱신되늰지 다시 확인해보기
   const refreshAllQuotes = async () => {
     await Promise.all([refreshPendingQuotes(), refreshReceivedQuotes()]);
+    revalidateCustomerQuoteHistory();
   };
 
   return {

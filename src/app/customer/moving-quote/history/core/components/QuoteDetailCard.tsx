@@ -12,14 +12,14 @@ export const QuoteDetailCard = ({ quoteData }: QuoteDetailCardProps) => {
       <Typo content="견적 정보" className="text_SB_16to24" color={colorChips.black[400]} />
       <Stack sx={dataBoxSx}>
         {quoteData.map((item) => (
-          <Stack key={item.label} direction="row" alignItems="center">
+          <Stack key={item.label}  direction="row" alignItems="flex-start">
             <Typo
               content={item.label}
               className="text_R_14to20"
               color={colorChips.grayScale[300]}
-              customStyle={{ width: '110px' }}
+              customStyle={{ width: '110px', flexShrink: 0 }}
             />
-            <Typo content={item.value} className="text_R_14to20" color={colorChips.black[400]} />
+            <Typo content={item.value} className="text_R_14to20" color={colorChips.black[400]} customStyle={{ wordBreak: 'keep-all' }} />
           </Stack>
         ))}
       </Stack>
