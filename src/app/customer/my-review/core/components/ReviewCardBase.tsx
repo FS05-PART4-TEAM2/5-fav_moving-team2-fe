@@ -152,7 +152,7 @@ const profileBaseSx = {
   gap: { xs: '16px', md: '24px' },
   border: { xs: 'none', md: `1px solid ${colorChips.line.f2f2f2}` },
   borderRadius: '6px',
-  padding: { xs: '10px 8px', md: '16px 18px' },
+  padding: { xs: '10px 0px', md: '16px 18px' },
 };
 
 const profileImageSx = {

@@ -12,6 +12,14 @@ export async function revalidateLikeData() {
   revalidateTag('received-quotes'); // 일반유저 받았던견적
 }
 
+/**
+ * 일반유저 내견적관리 페이지 캐시 전부 무효화
+ */
+export async function revalidateCustomerQuoteHistory() {
+  revalidateTag('pending-quotes');
+  revalidateTag('received-quotes');
+}
+
 export async function revalidateReviewList() {
   revalidateTag('write-review-list');
   revalidateTag('finished-review-list');
