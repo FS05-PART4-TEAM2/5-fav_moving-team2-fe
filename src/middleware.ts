@@ -4,7 +4,7 @@ import { decodeJwt, type JWTPayload } from 'jose';
 interface MyPayload extends JWTPayload {
   sub: string;
   email: string;
-  userType: 'customer' | 'mover';
+  role: 'customer' | 'mover';
 }
 
 function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload {
@@ -13,7 +13,7 @@ function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload
     payload !== null &&
     typeof (payload as any).sub === 'string' &&
     typeof (payload as any).email === 'string' &&
-    ((payload as any).userType === 'customer' || (payload as any).userType === 'mover')
+    ((payload as any).userType === 'customer' || (payload as any).role === 'mover')
   );
 }
 
@@ -53,12 +53,12 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  const { userType } = payload;
+  const { role } = payload;
 
-  if (pathname.startsWith('/customer') && userType !== 'customer') {
+  if (pathname.startsWith('/customer') && role !== 'customer') {
     return NextResponse.redirect(new URL('/unauthorized', req.url));
   }
-  if (pathname.startsWith('/mover') && userType !== 'mover') {
+  if (pathname.startsWith('/mover') && role !== 'mover') {
     return NextResponse.redirect(new URL('/unauthorized', req.url));
   }
 
