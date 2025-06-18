@@ -11,6 +11,8 @@ import { useSearchMoverStore } from '../hooks/useSearchMoverStore';
 
 type FilterType = 'region' | 'service';
 
+type ValueType = MovingType | RegionType | 'ALL';
+
 interface SearchOptionFilterProps {
   filterType: FilterType;
   isOpen?: boolean;
@@ -39,7 +41,7 @@ export const SearchOptionFilter = ({ filterType, isOpen = false, onToggle }: Sea
     }
   };
 
-  const handleItemSelect = (value: RegionType | MovingType) => {
+  const handleItemSelect = (value: ValueType) => {
     // ALL 선택시 null로 변환, 그 외에는 선택된 값으로 설정
     const storeValue = value === 'ALL' ? null : value;
 

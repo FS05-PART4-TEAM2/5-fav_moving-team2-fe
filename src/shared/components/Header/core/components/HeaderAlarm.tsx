@@ -24,13 +24,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     rootMargin: '0px 0px',
   });
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useNotificationsQuery();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useNotificationsQuery();
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -39,16 +33,12 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   // 소켓 수신
-  if (accessToken) {
-    useNotificationSocket(accessToken, (newNoti) => {
-      setRealTimeNotifications((prev) => [newNoti, ...prev]);
-    });
-  }
+  useNotificationSocket(accessToken ?? null, (newNoti) => {
+    if (!accessToken) return;
+    setRealTimeNotifications((prev) => [newNoti, ...prev]);
+  });
 
-  const allNotifications = [
-    ...realTimeNotifications,
-    ...(data?.pages?.flatMap((page) => page.data.data) || []),
-  ];
+  const allNotifications = [...realTimeNotifications, ...(data?.pages?.flatMap((page) => page.data.data) || [])];
 
   return (
     <Stack position="relative">

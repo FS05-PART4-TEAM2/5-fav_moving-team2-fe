@@ -34,6 +34,7 @@ export default function RejectedQuot() {
 
     observer.observe(bottomRef.current);
     return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bottomRef.current, hasNextPage]);
 
   return (

@@ -12,6 +12,7 @@ interface OutlinedButtonProps extends ButtonProps {
   text: string;
   width?: string;
   justifyContent?: 'center' | 'flex-start' | 'space-between';
+  isButtonBC?: boolean;
   isLoading?: boolean;
   hasIcon?: boolean;
   borderRadius?: string;
@@ -20,6 +21,7 @@ interface OutlinedButtonProps extends ButtonProps {
 export const OutlinedButton = ({
   buttonType = 'default',
   buttonSize = 'default',
+  isButtonBC,
   text,
   width = '100%',
   justifyContent = 'center',
@@ -45,12 +47,12 @@ export const OutlinedButton = ({
         padding: '16px 24px',
         borderRadius: borderRadius,
         border: buttonType === 'default' ? `1px solid ${colorChips.primary[300]}` : `1px solid ${disabledColor}`,
-        backgroundColor: 'transparent',
+        backgroundColor: isButtonBC ? colorChips.primary[100] : 'transparent',
         color: buttonType === 'default' ? colorChips.primary[300] : disabledTextColor,
         justifyContent: justifyContent,
         textTransform: 'none',
         '&:hover': {
-          backgroundColor: buttonType === 'default' ? colorChips.primary[100] : 'transparent',
+          backgroundColor: isButtonBC || buttonType !== 'default' ? 'transparent' : colorChips.primary[100],
           boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)', // TODO :여기 Solid 버튼이랑 최대한 맞춰보기
         },
         '&:disabled': {

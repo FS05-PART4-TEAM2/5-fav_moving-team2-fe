@@ -96,7 +96,7 @@ export default function ProfileFormRight({ mode, userType }: ProfileFormProps) {
         </Stack>
       ) : (
         <Stack pt={isMd ? '20px' : ''}>
-          <ProfileFormPassword mode="baseInfo" />
+          <ProfileFormPassword />
         </Stack>
       )}
     </>

@@ -1,9 +1,15 @@
 import QuotationDetail from './core/components/QuotationDetail';
+import { Metadata } from 'next';
 
-interface PageProps {
-  params: { quoteId: string };
+export async function generateMetadata(props: { params: Promise<{ quoteId: string }> }): Promise<Metadata> {
+  const { quoteId } = await props.params;
+  return {
+    title: `견적 ${quoteId}번`,
+    description: '견적 상세 정보입니다',
+  };
 }
 
-export default function Page({ params }: PageProps) {
-  return <QuotationDetail quoteId={params.quoteId} />;
+export default async function Page(props: { params: Promise<{ quoteId: string }> }) {
+  const { quoteId } = await props.params;
+  return <QuotationDetail quoteId={quoteId} />;
 }

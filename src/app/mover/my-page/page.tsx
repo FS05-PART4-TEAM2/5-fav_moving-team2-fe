@@ -8,14 +8,14 @@ import { Divider, Stack, useMediaQuery } from '@mui/material';
 import Card from '@/shared/components/Card/Card';
 import ReviewSummary from './_core/components/ReviewSummary';
 import { CommonPagination } from '@/shared/components/Pagination/CommonPagination';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useUserStore from '@/shared/store/useUserStore';
 import { mapMoverProfileToCardData, mapReviewToCardData, useReviewList } from './_core/hook/myPageHooks';
 import Image from 'next/image';
 
 export default function Page() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
   const [page, setPage] = useState(1);
 
   const { moverData, userInfo } = useUserStore();
@@ -33,7 +33,7 @@ export default function Page() {
   return (
     <Stack height="100%">
       <Stack py={isDesktop ? '32px' : '15px'}>
-        <Typo className="text_SB_14to24" style={{ color: colorChips.black.b2b2b }} content="마이페이지" />
+        <Typo className="text_SB_16to24" style={{ color: colorChips.black.b2b2b }} content="마이페이지" />
       </Stack>
 
       <Stack pt="24px" gap={isDesktop ? '40px' : '24px'}>

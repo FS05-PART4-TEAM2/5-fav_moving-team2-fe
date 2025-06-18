@@ -21,7 +21,7 @@ type InputFieldProps<T extends FieldValues> = {
 export default function InputField<T extends FieldValues>({ name, override = {} }: InputFieldProps<T>) {
   const { control, getValues } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState(false);
-  const { backgroundColor, sx, ...textFieldOverride } = override;
+  const { backgroundColor, sx: overrideSx, ...textFieldOverride } = override ?? {};
 
   const isTextarea = name === 'detailDescription' || name === 'quoteInfo' || name === 'reject';
   const isCommaField = name === 'quoteAmount';
@@ -102,7 +102,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 fontWeight: 400,
                 fontSize: '16px',
                 lineHeight: '26px',
-                backgroundColor: override.backgroundColor ?? 'white',
+                backgroundColor: backgroundColor ?? 'white',
                 ...(isTextarea && {
                   height: '160px',
                   alignItems: 'start',
@@ -154,7 +154,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                   lineHeight: '26px',
                 },
               },
-              ...override?.sx,
+              ...overrideSx,
             })) as SxProps<Theme>
           }
           {...textFieldOverride}

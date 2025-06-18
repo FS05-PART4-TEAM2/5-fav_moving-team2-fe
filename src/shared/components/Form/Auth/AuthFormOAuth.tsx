@@ -1,6 +1,4 @@
 'use client';
-
-import { OAuthLogin } from '@/shared/core/Auth/service';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import theme from '@/shared/theme';

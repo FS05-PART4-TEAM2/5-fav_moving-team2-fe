@@ -13,7 +13,7 @@ export const useCustomerRequestPost = () => {
     customerId: userInfo?.id ?? '',
   });
 
-  const updateParams = (key: keyof CustomerRequestPayload, value: string) => {
+  const updateParams = <K extends keyof CustomerRequestPayload>(key: K, value: CustomerRequestPayload[K]): void => {
     setParams({ ...params, [key]: value });
   };
 

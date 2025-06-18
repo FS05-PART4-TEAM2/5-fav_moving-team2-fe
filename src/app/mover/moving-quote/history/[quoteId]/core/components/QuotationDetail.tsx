@@ -11,7 +11,6 @@ import { getDetailQuotationDetailApi } from '../api/DetailQuotationApi';
 import { mapSentQuotationToCardData } from '../../../core/hook/historyHooks';
 import { useRouter } from 'next/navigation';
 import { mapQuotationDetailDisplay } from '../hook/DetailQuotationHook';
-import { PATH } from '@/shared/constants';
 
 interface QuotationDetailProps {
   quoteId: string;
@@ -61,9 +60,6 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
       </Stack>
     );
 
-  //토의 후 Url까지 넘길려면 추가
-  const shareUrl = `${window.location.origin}${PATH.mover.movingQuoteHistory}/${quoteId}`;
-
   const detail = mapQuotationDetailDisplay(rawData);
   const shareData = {
     moveDay: detail.moveDay,
@@ -74,7 +70,15 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
   };
 
   return (
-    <Stack width="100%" direction="row" height="100%" paddingX="24px" paddingTop="30px" gap="117px">
+    <Stack
+      width="100%"
+      direction="row"
+      height="100%"
+      paddingX="24px"
+      paddingTop="30px"
+      paddingBottom="72px"
+      gap="117px"
+    >
       <Stack width="100%" direction="column" gap={isDesktop ? '40px' : '24px'}>
         <Card type="moveQuotation" data={cardData} />
 
@@ -141,7 +145,7 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
 
       {isDesktop && (
         <Stack>
-          <ShareButtons title="견적서 공유" shareCategory="content" shareData={shareData} isDesktop={false} />
+          <ShareButtons title="견적서 공유" shareCategory="content" shareData={shareData} isDesktop={true} />
         </Stack>
       )}
     </Stack>

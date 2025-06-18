@@ -76,6 +76,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
   // TODO alert부분 나중에 모달로 수정하면 좋을듯
   const onSubmit = async (data: FormTypes) => {
+    const { setUserInfo, setCustomerData, setMoverData } = useUserStore.getState();
     const getServiceKey = (label: string) => SERVICE_TYPES.find((s) => s.label === label)?.key ?? '';
     const getRegionKey = (label: string) => REGIONS.find((r) => r.label === label)?.key ?? '';
 
@@ -89,7 +90,22 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           throw new Error(res?.message ?? '기본 정보 저장에 실패했습니다.');
         }
 
-        alert('프로필이 성공적으로 저장되었습니다.');
+        setUserInfo('customer', {
+          id: res.data.id,
+          username: res.data.username,
+          email: res.data.email,
+          phoneNumber: res.data.phoneNumber,
+          profileImage: res.data.profileImage ?? null,
+          isProfile: res.data.isProfile,
+        });
+
+        setCustomerData({
+          wantService: res.data.wantService ?? null,
+          livingPlace: res.data.livingPlace ?? null,
+          hasQuotation: customerData?.hasQuotation ?? false,
+        });
+
+        alert('기본정보가가 성공적으로 저장되었습니다.');
         router.back();
         return;
       }
@@ -113,6 +129,21 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 등록에 실패했습니다.');
         }
+
+        setUserInfo('customer', {
+          id: res.data.id,
+          username: res.data.username,
+          email: res.data.email,
+          phoneNumber: res.data.phoneNumber,
+          profileImage: res.data.profileImage ?? null,
+          isProfile: res.data.isProfile,
+        });
+
+        setCustomerData({
+          wantService: res.data.wantService ?? null,
+          livingPlace: res.data.livingPlace ?? null,
+          hasQuotation: customerData?.hasQuotation ?? false,
+        });
 
         const hasQuotation = customerData?.hasQuotation;
 
@@ -148,6 +179,21 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           throw new Error(res?.message ?? '프로필 수정에 실패했습니다.');
         }
 
+        setUserInfo('customer', {
+          id: res.data.id,
+          username: res.data.username,
+          email: res.data.email,
+          phoneNumber: res.data.phoneNumber,
+          profileImage: res.data.profileImage ?? null,
+          isProfile: res.data.isProfile,
+        });
+
+        setCustomerData({
+          wantService: res.data.wantService ?? null,
+          livingPlace: res.data.livingPlace ?? null,
+          hasQuotation: customerData?.hasQuotation ?? false,
+        });
+
         alert('프로필이 성공적으로 저장되었습니다.');
         router.back();
         return;
@@ -177,6 +223,24 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 저장에 실패했습니다.');
         }
+        setUserInfo('mover', {
+          id: res.data.id,
+          username: res.data.username,
+          email: res.data.email,
+          phoneNumber: res.data.phoneNumber,
+          profileImage: res.data.profileImage ?? null,
+          isProfile: res.data.isProfile,
+        });
+
+        setMoverData({
+          nickname: res.data.nickname ?? null,
+          serviceList: res.data.serviceList ?? null,
+          serviceArea: res.data.serviceArea ?? null,
+          intro: res.data.intro ?? null,
+          career: res.data.career ?? null,
+          detailDescription: res.data.detailDescription ?? null,
+          likeCount: res.data.likeCount ?? null,
+        });
 
         if (isModify) {
           router.back();
@@ -186,7 +250,6 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         router.push(PATH.mover.movingQuoteRequest);
         return;
       }
-      //TODO 등록 수정 같은 것에는 모달을 넣는게 UX적으로 좋지않나.... 나중에 추가하기
 
       throw new Error('알 수 없는 요청입니다.');
     } catch (e) {
@@ -254,21 +317,11 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
                     width="100%"
                     disabled={isSubmitting || !isDirty || !isValid}
                   />
-                  <OutlinedButton
-                    type="button"
-                    text="취소"
-                    width="100%"
-                    disabled={isSubmitting || !isDirty || !isValid}
-                  />
+                  <OutlinedButton type="button" text="취소" width="100%" onClick={() => router.back()} />
                 </>
               ) : (
                 <>
-                  <OutlinedButton
-                    type="button"
-                    text="취소"
-                    width="100%"
-                    disabled={isSubmitting || !isDirty || !isValid}
-                  />
+                  <OutlinedButton type="button" text="취소" width="100%" onClick={() => router.back()} />
                   <SolidButton
                     type="submit"
                     text="수정하기"

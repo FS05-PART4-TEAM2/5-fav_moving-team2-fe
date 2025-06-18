@@ -21,17 +21,14 @@ interface DatePickerProps {
 export default function DatePicker({ onSelect, value }: DatePickerProps) {
   const initialDayjs = value ? parseKoreanDateString(value) : dayjs();
   const [selected, setSelected] = useState<Dayjs | null>(initialDayjs);
-  const [confirmedDate, setConfirmedDate] = useState<Dayjs | null>(null);
   const [view, setView] = useState<'year' | 'month' | 'day'>('day');
-
-  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleConfirm = () => {
     if (selected) {
-      setConfirmedDate(selected);
       onSelect(selected.format('YYYY-MM-DD') || '');
     }
   };
+  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
@@ -61,12 +58,7 @@ export default function DatePicker({ onSelect, value }: DatePickerProps) {
           value={selected}
           onChange={(newValue) => setSelected(newValue)}
           view={view}
-          onViewChange={(newView) => {
-            setView(newView);
-            if (newView !== 'day') {
-              setConfirmedDate(null);
-            }
-          }}
+          onViewChange={(newView) => setView(newView)}
           views={['year', 'month', 'day']}
           minDate={dayjs().startOf('day')}
           showDaysOutsideCurrentMonth
