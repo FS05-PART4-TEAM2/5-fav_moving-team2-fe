@@ -28,7 +28,7 @@ export const ReviewTotalRating = ({ totalRating }: ReviewTotalRatingProps) => {
   return (
     <Stack direction="column" gap="15px" alignItems="center" justifyContent="center">
       <Stack direction="row" gap="8px" alignItems="center">
-        <Typo content={totalRating.toString()} className="text_B_40to64" color={colorChips.black[400]} />
+        <Typo content={totalRating.toFixed(1).toString()} className="text_B_40to64" color={colorChips.black[400]} />
         <Typo content={'/ 5'} className="text_B_24to38" color={colorChips.grayScale[100]} />
       </Stack>
       <Rating
