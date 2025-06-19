@@ -18,7 +18,8 @@ export const Header = () => {
   const [hasMounted, setHasMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<'alarm' | 'user' | null>(null);
   const [isNavMenuDrawerOpen, setIsNavMenuDrawerOpen] = useState(false);
-  const { userType, userInfo } = useUserStore();
+  const userType = useUserStore((state) => state.userType);
+  const userInfo = useUserStore((state) => state.userInfo);
   const router = useRouter();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
