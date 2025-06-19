@@ -13,7 +13,7 @@ function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload
     payload !== null &&
     typeof (payload as any).sub === 'string' &&
     typeof (payload as any).email === 'string' &&
-    ((payload as any).userType === 'customer' || (payload as any).role === 'mover')
+    ((payload as any).role === 'customer' || (payload as any).role === 'mover')
   );
 }
 
