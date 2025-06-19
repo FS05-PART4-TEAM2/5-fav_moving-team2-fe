@@ -7,13 +7,16 @@ import { ReactNode, Suspense } from 'react';
 import { QueryProvider } from '@/shared/context/QueryProvider';
 import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
 
-// TODO: 메타데이터 설정
 export const metadata: Metadata = {
   title: 'Moving',
   description: 'Moving',
-  metadataBase: new URL('http://localhost:3000'), // 나중에 실제 도메인으로 변경
+  metadataBase: new URL('https://5-favmoving-team2-fe.vercel.app/'),
+  icons: {
+    icon: '/assets/images/logo-icon/logo-img-01.svg',
+    apple: '/assets/images/logo-icon/logo-img-01.svg',
+  },
   openGraph: {
-    title: 'Moving 서비스 ',
+    title: 'Moving',
     description: '믿을 수 있는 이사, Moving에서 간편하게 공유해 보세요.',
     url: '/',
     siteName: 'Moving',

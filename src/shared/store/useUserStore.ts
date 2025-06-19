@@ -64,7 +64,6 @@ const useUserStore = create<UserStore>()(
         set({ moverData });
       },
       logout: () => {
-        // TODO: 여기 쿠키 지우는것도 있어야하지않나
         if (process.env.NODE_ENV === 'development') {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
