@@ -44,7 +44,7 @@ export default function middleware(req: NextRequest) {
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/customer/login', req.url));
   }
 
   let payload: JWTPayload | null | undefined;
