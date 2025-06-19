@@ -22,6 +22,8 @@ const AUTH_PAGES = ['/customer/login', '/customer/signup', '/mover/login', '/mov
 const PUBLIC_PATHS = ['/', '/oauth', ...AUTH_PAGES, '/customer/search-mover'];
 
 export default function middleware(req: NextRequest) {
+  console.log('🔥 middleware 실행됨');
+
   const { pathname } = req.nextUrl;
   const token = req.cookies.get('accessToken')?.value;
   console.log(' pathname', pathname);
@@ -73,5 +75,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/customer/:path*', '/mover/:path*'],
+  matcher: ['/', '/customer/:path*', '/mover/:path*'],
 };
