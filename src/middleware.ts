@@ -25,6 +25,7 @@ export default function middleware(req: NextRequest) {
   console.log('🔥 middleware 실행됨');
 
   const { pathname } = req.nextUrl;
+  const referer = req.headers.get('referer') ?? '';
   const token = req.cookies.get('accessToken')?.value;
   console.log(' pathname', pathname);
   console.log(' token', token);
@@ -53,22 +54,23 @@ export default function middleware(req: NextRequest) {
     console.log('🧩 payload=', payload);
   } catch (err) {
     console.error('디코딩 실패', err);
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/customer/login', req.url));
   }
 
   if (!isPayload(payload)) {
     console.error('payload 검증 실패:', payload);
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/customer/login', req.url));
   }
 
   const { role } = payload;
   console.log('role:', role);
 
-  if (pathname.startsWith('/customer') && role !== 'customer') {
-    return NextResponse.redirect(new URL('/unauthorized', req.url));
-  }
-  if (pathname.startsWith('/mover') && role !== 'mover') {
-    return NextResponse.redirect(new URL('/unauthorized', req.url));
+  const isCustomerRoute = pathname.startsWith('/customer');
+  const isMoverRoute = pathname.startsWith('/mover');
+
+  if ((isCustomerRoute && role !== 'customer') || (isMoverRoute && role !== 'mover')) {
+    const fallbackUrl = referer.includes('/login') ? '/' : referer || '/';
+    return NextResponse.redirect(fallbackUrl);
   }
 
   return NextResponse.next();
