@@ -17,9 +17,7 @@ function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload
   );
 }
 
-const AUTH_PAGES = ['/customer/login', '/customer/signup', '/mover/login', '/mover/signup'];
-
-const PUBLIC_PATHS = ['/', '/oauth', ...AUTH_PAGES, '/customer/search-mover'];
+const AUTH_PAGES = ['/customer/login', '/customer/signup', '/mover/login', '/mover/signup', '/oauth'];
 
 export default function middleware(req: NextRequest) {
   console.log('🔥 middleware 실행됨');
@@ -70,8 +68,9 @@ export default function middleware(req: NextRequest) {
   const isMoverRoute = pathname.startsWith('/mover');
 
   if ((isCustomerRoute && !isCustomer) || (isMoverRoute && !isMover)) {
-    const redirectPath = isCustomer ? '/customer/moving-quote/request' : '/mover/moving-quote/request';
-    return NextResponse.redirect(new URL(redirectPath, req.url));
+    const fallback = role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request';
+    const destination = referer ? new URL(referer, req.url) : new URL(fallback, req.url);
+    return NextResponse.redirect(destination);
   }
 
   return NextResponse.next();
