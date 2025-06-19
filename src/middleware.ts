@@ -19,6 +19,8 @@ function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload
 
 const AUTH_PAGES = ['/customer/login', '/customer/signup', '/mover/login', '/mover/signup', '/oauth'];
 
+const PUBLIC_PATHS = ['/', '/customer/search-mover', ...AUTH_PAGES];
+
 export default function middleware(req: NextRequest) {
   console.log('🔥 middleware 실행됨');
 
@@ -28,16 +30,21 @@ export default function middleware(req: NextRequest) {
   console.log(' pathname', pathname);
   console.log(' token', token);
 
-  if (AUTH_PAGES.includes(pathname)) {
-    if (token) {
-      const payload = decodeJwt(token);
-      return NextResponse.redirect(
-        new URL(
-          payload.role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request',
-          req.url,
-        ),
-      );
+  if (PUBLIC_PATHS.includes(pathname)) {
+    if (AUTH_PAGES.includes(pathname) && token) {
+      try {
+        if (token) {
+          const payload = decodeJwt(token);
+          return NextResponse.redirect(
+            new URL(
+              payload.role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request',
+              req.url,
+            ),
+          );
+        }
+      } catch {}
     }
+
     return NextResponse.next();
   }
 

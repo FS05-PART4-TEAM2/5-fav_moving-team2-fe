@@ -6,6 +6,7 @@ import '../../public/globals.css';
 import { ReactNode, Suspense } from 'react';
 import { QueryProvider } from '@/shared/context/QueryProvider';
 import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
+import FaceHydration from './_core/_components/FaceHydration';
 
 export const metadata: Metadata = {
   title: 'Moving',
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <QueryProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <FaceHydration />
             <Suspense fallback={<div>페이지 로딩 중...</div>}>{children}</Suspense>
           </ThemeProvider>
         </QueryProvider>
