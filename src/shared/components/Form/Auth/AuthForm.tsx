@@ -70,11 +70,16 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         };
         const res = await login(userType, loginData);
 
+        if (!res || !res.data) {
+          throw new Error('로그인에 실패하였습니다.');
+        }
+
         if (userType === 'customer') {
           const customer = (res?.data as CustomerLoginData).customer;
 
           if (!customer) {
-            throw new Error('로그인 응답에 customer 정보가 없습니다.');
+            alert('로그인 정보가 잘못되었습니다. \n 아이디를 다시 확인 해주세요');
+            return;
           }
 
           setUserInfo('customer', {
@@ -115,7 +120,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           const mover = (res?.data as MoverLoginData).mover;
 
           if (!mover) {
-            throw new Error('로그인 응답에 mover 정보가 없습니다.');
+            alert('로그인 정보가 잘못되었습니다. \n 아이디를 다시 확인 해주세요');
+            return;
           }
 
           setUserInfo('mover', {
@@ -168,6 +174,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
       }
     } catch (err) {
       console.error('[Auth 실패]', err);
+      alert('로그인에 실패했습니다. 이메일과 비밀번호를 다시 확인해주세요.');
     }
   };
 
