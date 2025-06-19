@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/shared/core/Auth/service';
 import useUserStore from '@/shared/store/useUserStore';
-import { invalidateQueryKeys } from '@/shared/utils/invalidateQueryKeys';
+import { removeQueryKeys } from '@/shared/utils/invalidateQueryKeys';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchMoverStore } from '@/app/customer/search-mover/core/hooks/useSearchMoverStore';
 
@@ -46,10 +46,10 @@ export const HeaderProfile = ({
   const handleClickLogout = async () => {
     const res = await logout();
     if (res.success) {
-      router.push('/'); // 로그아웃 후 랜딩페이지로 이동
       clearUserStore(); // 유저스토어 초기화
-      invalidateQueryKeys(queryClient); // 캐시 무효화(기사님 데이터)
+      removeQueryKeys(queryClient); // 캐시 무효화(기사님 데이터)
       resetSearchMoverStore(); // 기사님 검색필터 초기화
+      router.push('/'); // 로그아웃 후 랜딩페이지로 이동
     } else {
       alert('다시 시도해주세요.');
     }

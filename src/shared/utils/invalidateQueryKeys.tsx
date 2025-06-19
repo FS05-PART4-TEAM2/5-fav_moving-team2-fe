@@ -6,3 +6,8 @@ export const invalidateQueryKeys = (queryClient: QueryClient) => {
   queryClient.invalidateQueries({ queryKey: moverKeys.all });
   queryClient.invalidateQueries({ queryKey: notificationKeys.list() }); 
 };
+
+export const removeQueryKeys = (queryClient: QueryClient) => {
+  queryClient.removeQueries({ queryKey: moverKeys.all });
+  queryClient.removeQueries({ queryKey: notificationKeys.list() });
+};
