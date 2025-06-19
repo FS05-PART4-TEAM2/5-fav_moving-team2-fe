@@ -37,7 +37,7 @@ const pretendard = localFont({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="kor">
+    <html lang="ko">
       <body className={`${pretendard.className}`}>
         <KakaoScriptLoader />
         <QueryProvider>
