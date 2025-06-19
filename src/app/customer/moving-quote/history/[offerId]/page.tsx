@@ -44,7 +44,7 @@ export default function Page() {
   if (!data) return null;
 
   const moverId = data.offers[0].moverId;
-  const shareUrl = `${window.location.origin}${PATH.customer.searchMoverDetail(moverId)}`;
+  const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${PATH.customer.searchMoverDetail(moverId)}`;
   const toastMsg = '확정하지 않은 견적이에요!';
   const isPending = !data.offers[0].isCompleted; // isCompleted가 false인 경우 : 대기중인 견적
   const isConfirmed = data.offers[0].isConfirmedMover; // 확정견적
