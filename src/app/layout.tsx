@@ -11,10 +11,6 @@ export const metadata: Metadata = {
   title: 'Moving',
   description: 'Moving',
   metadataBase: new URL('https://5-favmoving-team2-fe.vercel.app/'),
-  icons: {
-    icon: '/assets/images/logo-icon/logo-img-01.svg',
-    apple: '/assets/images/logo-icon/logo-img-01.svg',
-  },
   openGraph: {
     title: 'Moving',
     description: '믿을 수 있는 이사, Moving에서 간편하게 공유해 보세요.',
@@ -23,7 +19,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'opengraph-image.png',
+        url: 'https://5-favmoving-team2-fe.vercel.app/opengraph-image.png',
         width: 1200,
         height: 630,
       },
