@@ -30,17 +30,16 @@ export default function middleware(req: NextRequest) {
   console.log(' pathname', pathname);
   console.log(' token', token);
 
-  if (PUBLIC_PATHS.includes(pathname)) {
-    if (AUTH_PAGES.includes(pathname) && token) {
-      try {
-        const payload = decodeJwt(token);
-        if (isPayload(payload)) {
-          const redirectTo = payload.role === 'customer' ? '/customer' : '/mover';
-          return NextResponse.redirect(new URL(redirectTo, req.url));
-        }
-      } catch {}
+  if (AUTH_PAGES.includes(pathname)) {
+    if (token) {
+      const payload = decodeJwt(token);
+      return NextResponse.redirect(
+        new URL(
+          payload.role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request',
+          req.url,
+        ),
+      );
     }
-
     return NextResponse.next();
   }
 
@@ -65,12 +64,14 @@ export default function middleware(req: NextRequest) {
   const { role } = payload;
   console.log('role:', role);
 
+  const isCustomer = role === 'customer';
+  const isMover = role === 'mover';
   const isCustomerRoute = pathname.startsWith('/customer');
   const isMoverRoute = pathname.startsWith('/mover');
 
-  if ((isCustomerRoute && role !== 'customer') || (isMoverRoute && role !== 'mover')) {
-    const fallbackUrl = referer.includes('/login') ? '/' : referer || '/';
-    return NextResponse.redirect(fallbackUrl);
+  if ((isCustomerRoute && !isCustomer) || (isMoverRoute && !isMover)) {
+    const redirectPath = isCustomer ? '/customer/moving-quote/request' : '/mover/moving-quote/request';
+    return NextResponse.redirect(new URL(redirectPath, req.url));
   }
 
   return NextResponse.next();
