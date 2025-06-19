@@ -2,7 +2,7 @@
 
 import { colorChips } from '@/shared/styles/colorChips';
 import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HeaderLogo } from './core/components/HeaderLogo';
 import { DesktopNavMenu } from './core/components/DesktopNavMenu';
 import { NavMenuDrawer } from './core/components/NavMenuDrawer';
@@ -15,14 +15,22 @@ import useUserStore from '@/shared/store/useUserStore';
 import { redirectURL } from '@/lib/redirectURL';
 
 export const Header = () => {
-  const router = useRouter();
-  const theme = useTheme();
+  const [hasMounted, setHasMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<'alarm' | 'user' | null>(null);
   const [isNavMenuDrawerOpen, setIsNavMenuDrawerOpen] = useState(false);
+  const { userType, userInfo } = useUserStore();
+  const router = useRouter();
+  const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
+
   const userMenuIconSize = isDesktop ? 36 : 24;
 
-  const { userType, userInfo } = useUserStore();
   const userName = userInfo?.username ?? '';
   const profileImg = userInfo?.profileImage ?? null;
 
