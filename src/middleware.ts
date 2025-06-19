@@ -4,7 +4,7 @@ import { decodeJwt, type JWTPayload } from 'jose';
 interface MyPayload extends JWTPayload {
   sub: string;
   email: string;
-  userType: 'customer' | 'mover';
+  role: 'customer' | 'mover';
 }
 
 function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload {
@@ -13,28 +13,36 @@ function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload
     payload !== null &&
     typeof (payload as any).sub === 'string' &&
     typeof (payload as any).email === 'string' &&
-    ((payload as any).userType === 'customer' || (payload as any).userType === 'mover')
+    ((payload as any).userType === 'customer' || (payload as any).role === 'mover')
   );
 }
 
-const PUBLIC_PATHS = [
-  '/',
-  '/oauth',
-  '/customer/login',
-  '/customer/signup',
-  '/mover/login',
-  '/mover/signup',
-  '/customer/search-mover',
-];
+const AUTH_PAGES = ['/customer/login', '/customer/signup', '/mover/login', '/mover/signup'];
+
+const PUBLIC_PATHS = ['/', '/oauth', ...AUTH_PAGES, '/customer/search-mover'];
 
 export default function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  console.log('🔥 middleware 실행됨');
 
-  if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
+  const { pathname } = req.nextUrl;
+  const token = req.cookies.get('accessToken')?.value;
+  console.log(' pathname', pathname);
+  console.log(' token', token);
+
+  if (PUBLIC_PATHS.includes(pathname)) {
+    if (AUTH_PAGES.includes(pathname) && token) {
+      try {
+        const payload = decodeJwt(token);
+        if (isPayload(payload)) {
+          const redirectTo = payload.role === 'customer' ? '/customer' : '/mover';
+          return NextResponse.redirect(new URL(redirectTo, req.url));
+        }
+      } catch {}
+    }
+
     return NextResponse.next();
   }
 
-  const token = req.cookies.get('accessToken')?.value;
   if (!token) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
@@ -53,12 +61,13 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  const { userType } = payload;
+  const { role } = payload;
+  console.log('role:', role);
 
-  if (pathname.startsWith('/customer') && userType !== 'customer') {
+  if (pathname.startsWith('/customer') && role !== 'customer') {
     return NextResponse.redirect(new URL('/unauthorized', req.url));
   }
-  if (pathname.startsWith('/mover') && userType !== 'mover') {
+  if (pathname.startsWith('/mover') && role !== 'mover') {
     return NextResponse.redirect(new URL('/unauthorized', req.url));
   }
 
@@ -66,5 +75,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/customer/:path*', '/mover/:path*'],
+  matcher: ['/', '/customer/:path*', '/mover/:path*'],
 };
