@@ -24,7 +24,7 @@ export default function AuthFormOAuth({ userType }: AuthFormOAuthProps) {
   const OAuthImageSize = isMd ? 54 : 72;
 
   const handleOAuthLogin = async (provider: OAuthItemsProps) => {
-    const redirectURL = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${provider}/${userType}/login`;
+    const redirectURL = `${process.env.API_URL}/api/auth/${provider}/${userType}/login`;
     window.location.href = redirectURL;
   };
 

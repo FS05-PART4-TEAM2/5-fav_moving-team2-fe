@@ -79,7 +79,7 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
 };
 
 const customAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || '',
+  baseURL: process.env.API_URL || '',
   withCredentials: true,
   adapter: fetchAdapter,
 });
