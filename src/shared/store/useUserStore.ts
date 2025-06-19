@@ -39,10 +39,12 @@ interface UserStore {
   customerData: CustomerData | null;
   moverData: MoverData | null;
   isAuthenticated: boolean; // 로그인 여부
+  hasRehydrated: boolean;
   setUserInfo: (userType: UserType, userInfo: UserInfo) => void;
   setCustomerData: (customerData: CustomerData) => void;
   setMoverData: (moverData: MoverData) => void;
   logout: () => void;
+  setHasRehydrated: (flag: boolean) => void;
 }
 
 const useUserStore = create<UserStore>()(
@@ -53,7 +55,7 @@ const useUserStore = create<UserStore>()(
       customerData: null,
       moverData: null,
       isAuthenticated: false,
-
+      hasRehydrated: false,
       setUserInfo: (userType: UserType, userInfo: UserInfo) => {
         set({ userType, userInfo, isAuthenticated: true });
       },
@@ -70,10 +72,14 @@ const useUserStore = create<UserStore>()(
         }
         set({ userType: 'temp', userInfo: null, customerData: null, moverData: null, isAuthenticated: false });
       },
+      setHasRehydrated: (flag) => set({ hasRehydrated: flag }),
     }),
     {
       name: 'user-info-storage', // storage name
       skipHydration: true, // 서버 사이드 렌더링 시 하이드레이션 스킵
+      onRehydrateStorage: () => (state, error) => {
+        if (!error) state?.setHasRehydrated(true);
+      },
     },
   ),
 );

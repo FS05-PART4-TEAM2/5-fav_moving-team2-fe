@@ -18,6 +18,7 @@ export const Header = () => {
   const [hasMounted, setHasMounted] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<'alarm' | 'user' | null>(null);
   const [isNavMenuDrawerOpen, setIsNavMenuDrawerOpen] = useState(false);
+  const hasRehydrated = useUserStore((s) => s.hasRehydrated);
   const userType = useUserStore((state) => state.userType);
   const userInfo = useUserStore((state) => state.userInfo);
   const router = useRouter();
@@ -28,7 +29,7 @@ export const Header = () => {
     setHasMounted(true);
   }, []);
 
-  if (!hasMounted) return null;
+  if (!hasMounted || !hasRehydrated) return null;
 
   const userMenuIconSize = isDesktop ? 36 : 24;
 
