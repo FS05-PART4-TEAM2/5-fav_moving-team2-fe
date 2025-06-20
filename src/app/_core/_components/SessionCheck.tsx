@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import useUserStore from '@/shared/store/useUserStore';
 import customAxios from '@/lib/customAxios';
