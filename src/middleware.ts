@@ -21,6 +21,10 @@ const AUTH_PAGES = ['/customer/login', '/customer/signup', '/mover/login', '/mov
 
 const PUBLIC_PATHS = ['/', '/customer/search-mover', ...AUTH_PAGES];
 
+function isPublic(pathname: string) {
+  return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + '/'));
+}
+
 export default function middleware(req: NextRequest) {
   console.log('🔥 middleware 실행됨');
 
@@ -30,7 +34,7 @@ export default function middleware(req: NextRequest) {
   console.log(' pathname', pathname);
   console.log(' token', token);
 
-  if (PUBLIC_PATHS.includes(pathname)) {
+  if (isPublic(pathname)) {
     if (AUTH_PAGES.includes(pathname) && token) {
       try {
         if (token) {
