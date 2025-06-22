@@ -64,7 +64,7 @@ export default function RequestIndex() {
   };
 
   // count
-  const { data: statsData } = useMoverQuotationStats(queryParams);
+  const { data: statsData, refetch: refetchStats } = useMoverQuotationStats(queryParams);
 
   const CheckboxMoveType = [
     { label: '소형이사', count: statsData?.moveTypeStats?.SMALL_MOVE ?? 0, checked: selected['소형이사'] },
@@ -248,6 +248,7 @@ export default function RequestIndex() {
               onClose={handleCloseModal}
               onSuccess={() => {
                 refetch();
+                refetchStats();
                 handleCloseModal();
               }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}
@@ -263,6 +264,7 @@ export default function RequestIndex() {
               onClose={handleCloseModal}
               onSuccess={() => {
                 refetch();
+                refetchStats();
                 handleCloseModal();
               }}
               requestCardData={quotations.find((card: UserCardData) => card.id === selectedId)!}

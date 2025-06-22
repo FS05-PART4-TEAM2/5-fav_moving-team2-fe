@@ -103,6 +103,20 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 fontSize: '16px',
                 lineHeight: '26px',
                 backgroundColor: backgroundColor ?? 'white',
+                border: backgroundColor ? '1px solid transparent' : `1px solid ${colorChips.line['e6e6e6']}`,
+                '&:hover': {
+                  border: `1px solid ${colorChips.primary[300]}`,
+                },
+                '&.Mui-focused': {
+                  border: `1px solid ${colorChips.primary[300]}`,
+                },
+                '&.Mui-error': {
+                  border: `1px solid ${colorChips.secondary.red[200]}`,
+                },
+                '& fieldset': {
+                  border: 'none',
+                },
+
                 ...(isTextarea && {
                   height: '160px',
                   alignItems: 'start',
@@ -112,6 +126,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                   lineHeight: '32px',
                 },
               },
+
               '& .MuiInputBase-inputMultiline': isTextarea
                 ? {
                     overflowY: 'auto',
