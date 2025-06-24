@@ -103,8 +103,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
+          localStorage.setItem('accessToken', res.data.accessToken);
           if (process.env.NODE_ENV === 'development') {
-            localStorage.setItem('accessToken', res.data.accessToken);
             localStorage.setItem('refreshToken', res.data.refreshToken);
           }
 
@@ -149,8 +149,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
+          localStorage.setItem('accessToken', res.data.accessToken);
           if (process.env.NODE_ENV === 'development') {
-            localStorage.setItem('accessToken', res.data.accessToken);
             localStorage.setItem('refreshToken', res.data.refreshToken);
           }
 

@@ -141,20 +141,18 @@ customAxios.interceptors.response.use(
           const refreshToken = localStorage.getItem('refreshToken');
           if (!refreshToken) throw new Error('No refresh token');
 
-          res = await customAxios.get('/api/auth/refresh', {
+          res = await customAxios.post('/api/auth/refresh', {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
             },
           });
         } else {
-          res = await customAxios.get('/api/auth/refresh');
+          res = await customAxios.post('/api/auth/refresh');
         }
 
         const newAccessToken = res.data.accessToken;
 
-        if (process.env.NODE_ENV === 'development') {
-          localStorage.setItem('accessToken', newAccessToken);
-        }
+        localStorage.setItem('accessToken', newAccessToken);
 
         customAxios.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
         onTokenRefreshed(newAccessToken);

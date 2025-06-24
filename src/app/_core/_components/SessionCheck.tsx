@@ -18,7 +18,7 @@ export default function SessionCheck() {
 
     // 세션 존재 확인
     customAxios
-      .get('/api/auth/refresh') // 쿠키에 refreshToken 포함됨
+      .post('/api/auth/refresh') // 쿠키에 refreshToken 포함됨
       .then(() => {
         setChecked(true); // 세션 유효
       })
