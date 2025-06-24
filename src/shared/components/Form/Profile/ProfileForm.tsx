@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { PATH, REGIONS, SERVICE_TYPES } from '@/shared/constants';
 import useUserStore from '@/shared/store/useUserStore';
+import customAxios from '@/lib/customAxios';
 
 interface ProfileFormProps {
   mode: 'create' | 'modify' | 'baseInfo';
@@ -126,10 +127,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const res = await updateCustomerProfile(formData);
 
-        await fetch('/api/auth/refresh', {
-          method: 'POST',
-          credentials: 'include',
-        });
+        await customAxios.post('/api/auth/refresh');
 
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 등록에 실패했습니다.');
@@ -225,10 +223,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const res = await updateMoverProfile(formData);
 
-        await fetch('/api/auth/refresh', {
-          method: 'POST',
-          credentials: 'include',
-        });
+        await customAxios.post('/api/auth/refresh');
 
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 저장에 실패했습니다.');

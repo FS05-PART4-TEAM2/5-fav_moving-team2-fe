@@ -1,6 +1,6 @@
 import { SearchMoverDetailResponse } from '@/shared/types/types';
 
-const apiUrl = process.env.API_URL;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface MoverDetailResponse {
   success: boolean;
