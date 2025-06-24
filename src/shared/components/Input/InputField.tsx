@@ -19,7 +19,7 @@ type InputFieldProps<T extends FieldValues> = {
 };
 
 export default function InputField<T extends FieldValues>({ name, override = {} }: InputFieldProps<T>) {
-  const { control, getValues } = useFormContext<T>();
+  const { control, getValues, trigger } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState(false);
   const { backgroundColor, sx: overrideSx, ...textFieldOverride } = override ?? {};
 
@@ -28,7 +28,12 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
   const preset = fieldPresets[name];
   if (!preset) throw new Error(`정의되지 않은 필드 이름: ${name}`);
 
-  const isPasswordField = name === 'password' || name === 'passwordConfirm';
+  const isPasswordField =
+    name === 'password' ||
+    name === 'passwordConfirm' ||
+    name === 'currentPassword' ||
+    name === 'newPassword' ||
+    name === 'newPasswordConfirm';
   const inputType = isPasswordField ? (showPassword ? 'text' : 'password') : preset.type;
 
   let resolvedRules = (preset.rules ?? {}) as RegisterOptions<T, Path<T>>;
@@ -82,6 +87,11 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 }
               : field.onChange
           }
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              trigger(name);
+            }
+          }}
           InputProps={{
             ...override?.InputProps,
             endAdornment: isPasswordField ? (

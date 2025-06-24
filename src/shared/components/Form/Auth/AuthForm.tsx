@@ -28,7 +28,9 @@ type FormValues = LoginPayload & Partial<SignupPayload> & { passwordConfirm?: st
 
 export default function AuthForm({ mode, userType }: AuthFormProps) {
   const queryClient = useQueryClient();
-  const methods = useForm<FormValues>();
+  const methods = useForm<FormValues>({
+    mode: 'onTouched',
+  });
   const {
     watch,
     handleSubmit,
@@ -70,18 +72,18 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         };
         const res = await login(userType, loginData);
 
-        if (!res || !res.data) {
-          throw new Error('로그인에 실패하였습니다.');
+        if (!res.success || !res.data) {
+          alert(res.message || '로그인에 실패했습니다.');
+          return;
         }
 
         if (userType === 'customer') {
           const customer = (res?.data as CustomerLoginData).customer;
 
           if (!customer) {
-            alert('로그인 정보가 잘못되었습니다. \n 아이디를 다시 확인 해주세요');
+            alert('고객 로그인 정보가 존재하지 않습니다.');
             return;
           }
-
           setUserInfo('customer', {
             id: customer.id,
             username: customer.username,
@@ -101,8 +103,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
+          localStorage.setItem('accessToken', res.data.accessToken);
           if (process.env.NODE_ENV === 'development') {
-            localStorage.setItem('accessToken', res.data.accessToken);
             localStorage.setItem('refreshToken', res.data.refreshToken);
           }
 
@@ -120,7 +122,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           const mover = (res?.data as MoverLoginData).mover;
 
           if (!mover) {
-            alert('로그인 정보가 잘못되었습니다. \n 아이디를 다시 확인 해주세요');
+            alert('기사 로그인 정보가 존재하지 않습니다.');
             return;
           }
 
@@ -147,8 +149,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
+          localStorage.setItem('accessToken', res.data.accessToken);
           if (process.env.NODE_ENV === 'development') {
-            localStorage.setItem('accessToken', res.data.accessToken);
             localStorage.setItem('refreshToken', res.data.refreshToken);
           }
 
@@ -162,19 +164,28 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
       if (isSignup) {
         const { username, email, password, phoneNumber } = data as SignupPayload;
 
-        await signup(userType, {
+        const res = await signup(userType, {
           username,
           email,
           password,
           phoneNumber,
         });
 
+        if (!res.success) {
+          alert(res.message || '회원가입에 실패했습니다.');
+          return;
+        }
+
         const redirectPath = userType === 'customer' ? PATH.customer.login : PATH.mover.login;
         return router.push(redirectPath);
       }
     } catch (err) {
-      console.error('[Auth 실패]', err);
-      alert('로그인에 실패했습니다. 이메일과 비밀번호를 다시 확인해주세요.');
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ??
+        (err as Error)?.message ??
+        '처리 중 오류가 발생했습니다.';
+      alert(message);
+      return;
     }
   };
 

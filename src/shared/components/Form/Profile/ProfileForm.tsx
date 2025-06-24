@@ -127,7 +127,10 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const res = await updateCustomerProfile(formData);
 
-        await customAxios.post('/api/auth/refresh');
+        const refreshRes = await customAxios.post('/api/auth/refresh');
+
+        const newToken = refreshRes.data.accessToken;
+        localStorage.setItem('accessToken', newToken);
 
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 등록에 실패했습니다.');
@@ -223,7 +226,10 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const res = await updateMoverProfile(formData);
 
-        await customAxios.post('/api/auth/refresh');
+        const refreshRes = await customAxios.post('/api/auth/refresh');
+
+        const newToken = refreshRes.data.accessToken;
+        localStorage.setItem('accessToken', newToken);
 
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 저장에 실패했습니다.');
