@@ -36,8 +36,8 @@ export default function OAuthCallbackIndex() {
 
     const OAuthLogin = async () => {
       try {
+        localStorage.setItem('accessToken', accessToken);
         if (process.env.NODE_ENV === 'development') {
-          localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
         }
 
