@@ -126,6 +126,11 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const res = await updateCustomerProfile(formData);
 
+        await fetch('/api/auth/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        });
+
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 등록에 실패했습니다.');
         }
@@ -219,6 +224,11 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         formData.append('serviceArea', regionKeys.join(','));
 
         const res = await updateMoverProfile(formData);
+
+        await fetch('/api/auth/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        });
 
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '프로필 저장에 실패했습니다.');
