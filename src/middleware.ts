@@ -100,5 +100,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api/auth/refresh|api/auth/logout|_next/static|_next/image|favicon.ico|.*\\.).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.).*)'],
 };
