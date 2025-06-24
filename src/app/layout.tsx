@@ -7,6 +7,7 @@ import { ReactNode, Suspense } from 'react';
 import { QueryProvider } from '@/shared/context/QueryProvider';
 import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
 import FaceHydration from './_core/_components/FaceHydration';
+import SessionCheck from './_core/_components/SessionCheck';
 import AlertListener from './_core/_components/AlertListener';
 
 export const metadata: Metadata = {
@@ -46,7 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <FaceHydration />
-
+            <SessionCheck />
             <Suspense fallback={null}>
               <AlertListener />
             </Suspense>
