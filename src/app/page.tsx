@@ -73,7 +73,7 @@ export default function Home() {
             </Stack>
           </Stack>
 
-          {!isTemp && (
+          {isTemp && (
             <Stack sx={authBtnWrapperSx}>
               <SolidButton width={authBtnWidth} text="로그인" onClick={handleClickLogin} borderRadius="50px" />
               <OutlinedButton width={authBtnWidth} text="회원가입" onClick={handleClickSignup} borderRadius="50px" />
