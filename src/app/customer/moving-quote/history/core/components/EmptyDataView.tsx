@@ -16,6 +16,7 @@ export const EmptyDataView = ({ type, hasQuotation = true }: EmptyDataViewProps)
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const imgSrc = '/assets/images/empty-images/car-02.svg';
+  // TODO: 현재 활성견적(이사날짜 안지남)이 있지만 확정하여 받았떤견적에 넘어간 경우 뷰 다르게 해야함
   const quotationEmptyMsg = '현재 진행 중인 이사 견적이 없어요.\n새로운 이사 정보를 등록해보세요.';
   const pendingEmptyMsg = '아직 받은 견적이 없어요.\n기사님께 지정 요청을 할 수 있어요!';
   const receivedEmptyMsg = '아직 확정된 견적 내역이 없어요.';

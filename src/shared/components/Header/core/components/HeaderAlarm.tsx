@@ -41,7 +41,11 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
   // 소켓 수신
   useNotificationSocket(accessToken ?? null, (newNoti) => {
     if (!accessToken) return;
-    setRealTimeNotifications((prev) => [newNoti, ...prev]);
+    // setRealTimeNotifications((prev) => [newNoti, ...prev]);
+    if (newNoti) {
+      // 소켓에 새로운 알림 있으면 쿼리 refetch해서 리스트 업데이트
+      refetch(); // TODO: 소켓으로 새 알림 받으면 refetch해서 리스트 업데이트해야할듯 . 지금 왔따가 조금 있으면 사라지는거같은데..?
+    }
   });
 
   // 알림 클릭 시 읽음 처리
@@ -58,8 +62,13 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
           }
         } else {
           if (type === 'QUOTE_CONFIRMED') {
-            // 기사님 : 견적 확정 알림만 견적 상세 페이지로 이동
+            // 기사님 : 견적 확정 알림 - 견적 상세 페이지로 이동
             router.push(PATH.mover.offerDetail(quotationId)); 
+            onToggle();
+          }
+          else if (type === 'QUOTE_ARRIVED') {
+            // 기사님 : 새로운 지정견적요청 알림 - 받은 요청 페이지로 이동
+            router.push(PATH.mover.movingQuoteRequest); 
             onToggle();
           }
         }
