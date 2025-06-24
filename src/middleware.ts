@@ -52,7 +52,10 @@ export default function middleware(req: NextRequest) {
   }
 
   if (!token) {
-    const url = new URL('/customer/login', req.url);
+    const isMoverRoute = pathname.startsWith('/mover');
+    const redirectPath = isMoverRoute ? '/mover/login' : '/customer/login';
+
+    const url = new URL(redirectPath, req.url);
     url.searchParams.set('alert', '로그인이 필요한 페이지입니다.');
     return NextResponse.redirect(url);
   }
