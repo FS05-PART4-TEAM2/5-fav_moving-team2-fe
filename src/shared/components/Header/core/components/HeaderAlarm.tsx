@@ -41,10 +41,9 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
   // 소켓 수신
   useNotificationSocket(accessToken ?? null, (newNoti) => {
     if (!accessToken) return;
-    // setRealTimeNotifications((prev) => [newNoti, ...prev]);
     if (newNoti) {
       // 소켓에 새로운 알림 있으면 쿼리 refetch해서 리스트 업데이트
-      refetch(); // TODO: 소켓으로 새 알림 받으면 refetch해서 리스트 업데이트해야할듯 . 지금 왔따가 조금 있으면 사라지는거같은데..?
+      refetch();
     }
   });
 
