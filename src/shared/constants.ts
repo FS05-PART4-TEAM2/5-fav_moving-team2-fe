@@ -8,6 +8,7 @@ export const PATH = {
     profile: '/customer/profile', // 프로필 등록
     movingQuoteRequest: '/customer/moving-quote/request', // 견적 요청
     movingQuoteHistory: '/customer/moving-quote/history', // 내 견적 관리
+    offerDetail: (offerId: string) => `/customer/moving-quote/history/${offerId}`, // 일반유저 견적상세 페이지
     searchMover: '/customer/search-mover', // 기사님 찾기
     searchMoverDetail: (moverId: string) => `/customer/search-mover/${moverId}`, // 기사님 상세 페이지
     myPage: '/customer/my-page', // 프로필수정
@@ -22,6 +23,7 @@ export const PATH = {
     profile: '/mover/profile', // 프로필 등록
     movingQuoteRequest: '/mover/moving-quote/request', // 받은 요청
     movingQuoteHistory: '/mover/moving-quote/history', // 내 견적 관리
+    offerDetail: (quoteId: string) => `/mover/moving-quote/history/${quoteId}`, // 기사님 견적상세 페이지
     myPage: '/mover/my-page', // 마이페이지
     editProfile: '/mover/my-page/edit-profile', // 프로필 수정
     editInfo: '/mover/my-page/edit-info', // 기본정보 수정

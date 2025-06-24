@@ -57,7 +57,6 @@ export default async function Page({ params }: PageProps) {
     }
 
     const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${PATH.customer.searchMoverDetail(moverId)}`;
-    console.log('shareUrl: ', shareUrl);
     const shareLinkTitle = '나만 알기엔 아쉬운 기사님인가요?';
     const moverInfo = moverResponse.data;
 

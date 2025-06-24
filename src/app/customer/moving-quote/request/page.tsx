@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Stack, Box, CircularProgress } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { Header } from '@/shared/components/Header/Header';
@@ -14,29 +13,12 @@ import useUserStore from '@/shared/store/useUserStore';
 export default function Page() {
   const { customerData } = useUserStore();
   const { requestStep } = useRequestStepStore();
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const headerRef = useRef<HTMLDivElement>(null);
   const hasQuotation = customerData?.hasQuotation ?? false;
-
-  useEffect(() => {
-    // hasOngoingQuote / 화면크기 변경 시 헤더 높이 재계산
-    const updateHeaderHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
-      }
-    };
-
-    updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-
-    return () => {
-      window.removeEventListener('resize', updateHeaderHeight);
-    };
-  }, [hasQuotation]);
+  const headerHeight = hasQuotation ? {xs: '127px', md: '184px'} : {xs: '150px', md: '160px'};
 
   return (
     <Stack sx={{ minHeight: '100vh', width: '100%' }}>
-      <Stack ref={headerRef} sx={headerContainerSx}>
+      <Stack  sx={headerContainerSx}>
         <Stack direction="column" width="100%" alignItems="center">
           {/* 헤더, 프로그레스바 */}
           <Header />
@@ -61,8 +43,7 @@ export default function Page() {
         </Stack>
       </Stack>
 
-      <Stack sx={{ ...mainContainerSx, marginTop: `${headerHeight}px` }}>
-        {headerRef.current ? (
+      <Stack sx={{ ...mainContainerSx, marginTop: headerHeight }}>
           <Stack sx={contentContainerSx}>
             {hasQuotation ? (
               // 현재 진행중 견적 있는 경우
@@ -72,12 +53,6 @@ export default function Page() {
               <QuoteRequestFormFeature />
             )}
           </Stack>
-        ) : (
-          // 헤더 높이 계산하는 동안 로딩인디케이터
-          <Stack sx={{ height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
-            <CircularProgress size={40} />
-          </Stack>
-        )}
       </Stack>
     </Stack>
   );
