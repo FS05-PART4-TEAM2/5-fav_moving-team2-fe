@@ -39,15 +39,12 @@ export default function middleware(req: NextRequest) {
   if (isPublic(pathname)) {
     if (AUTH_PAGES.includes(pathname) && token) {
       try {
-        if (token) {
-          const payload = decodeJwt(token);
-          return NextResponse.redirect(
-            new URL(
-              payload.role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request',
-              req.url,
-            ),
-          );
-        }
+        const payload = decodeJwt(token) as MyPayload;
+        const redirectPath =
+          payload.role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request';
+        const url = new URL(redirectPath, req.url);
+        url.searchParams.set('alert', '이미 로그인된 상태입니다.');
+        return NextResponse.redirect(url);
       } catch {}
     }
 
@@ -55,7 +52,9 @@ export default function middleware(req: NextRequest) {
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL('/customer/login', req.url));
+    const url = new URL('/customer/login', req.url);
+    url.searchParams.set('alert', '로그인이 필요한 페이지입니다.');
+    return NextResponse.redirect(url);
   }
 
   let payload: JWTPayload | null | undefined;
@@ -64,12 +63,16 @@ export default function middleware(req: NextRequest) {
     console.log('🧩 payload=', payload);
   } catch (err) {
     console.error('디코딩 실패', err);
-    return NextResponse.redirect(new URL('/customer/login', req.url));
+    const url = new URL('/customer/login', req.url);
+    url.searchParams.set('alert', '로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.');
+    return NextResponse.redirect(url);
   }
 
   if (!isPayload(payload)) {
     console.error('payload 검증 실패:', payload);
-    return NextResponse.redirect(new URL('/customer/login', req.url));
+    const url = new URL('/customer/login', req.url);
+    url.searchParams.set('alert', '로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.');
+    return NextResponse.redirect(url);
   }
 
   const { role, isProfile } = payload;
@@ -82,7 +85,9 @@ export default function middleware(req: NextRequest) {
   if (!isProfile && (isCustomer || isMover)) {
     const profilePath = isCustomer ? '/customer/profile' : '/mover/profile';
     if (!pathname.startsWith(profilePath)) {
-      return NextResponse.redirect(new URL(profilePath, req.url));
+      const url = new URL(profilePath, req.url);
+      url.searchParams.set('alert', '프로필 작성을 먼저 완료해 주세요.');
+      return NextResponse.redirect(url);
     }
     return NextResponse.next();
   }
@@ -92,8 +97,12 @@ export default function middleware(req: NextRequest) {
 
   if ((isCustomerRoute && !isCustomer) || (isMoverRoute && !isMover)) {
     const fallback = role === 'customer' ? '/customer/moving-quote/request' : '/mover/moving-quote/request';
-    const destination = referer ? new URL(referer, req.url) : new URL(fallback, req.url);
-    return NextResponse.redirect(destination);
+    const alertMessage = isCustomer
+      ? '일반 회원은 기사님 페이지에 접근할 수 없습니다.'
+      : '기사님은 고객 페이지에 접근할 수 없습니다.';
+    const url = referer ? new URL(referer, req.url) : new URL(fallback, req.url);
+    url.searchParams.set('alert', alertMessage);
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
