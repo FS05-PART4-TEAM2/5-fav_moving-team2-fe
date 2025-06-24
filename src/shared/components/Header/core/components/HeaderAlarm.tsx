@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNotificationsQuery } from '@/shared/hooks/useNotificationsQuery';
 import { formatNotiTime } from '@/shared/utils/dataFormatter';
+import { patchNotificationsReadApi } from '@/shared/service/patchNotificationsReadApi';
 
 interface HeaderAlarmProps {
   isDesktop: boolean;
@@ -37,6 +38,19 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     if (!accessToken) return;
     setRealTimeNotifications((prev) => [newNoti, ...prev]);
   });
+
+  const handleClickAlarmCard = async (id: string) => {
+    try {
+      const result = await patchNotificationsReadApi(id);
+      if (result) {
+        console.log('각 타입과 id에 맞는 페이지로 이동');
+      } else {
+        alert('다시 시도해주세요');
+      }
+    } catch (error) {
+      alert('다시 시도해주세요');
+    }
+  };
 
   const allNotifications = [...realTimeNotifications, ...(data?.pages?.flatMap((page) => page.data.data) || [])];
 
@@ -100,12 +114,13 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
           ) : (
             <>
               {allNotifications.map((item, idx) => (
-                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined}>
+                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined} onClick={() => handleClickAlarmCard(item.id)}>
                   <AlarmCard
                     isDesktop={isDesktop}
                     content={item.segments}
                     createdAt={item.createdAt}
                     isLast={idx === allNotifications.length - 1}
+                    isRead={item.isRead}
                   />
                 </div>
               ))}
@@ -130,9 +145,11 @@ interface AlarmCardProps {
   }[];
   createdAt: string;
   isLast: boolean;
+  isRead: boolean;
 }
 
-const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) => {
+// TODO: 클릭 이벤트 추가
+const AlarmCard = ({ isDesktop, content, createdAt, isLast, isRead }: AlarmCardProps) => {
   return (
     <Stack
       direction="column"
@@ -141,12 +158,13 @@ const AlarmCard = ({ isDesktop, content, createdAt, isLast }: AlarmCardProps) =>
       padding={isDesktop ? '16px 24px' : '12px 16px'}
       gap="2px"
       sx={{
+        cursor: 'pointer',
         borderBottom: isLast ? 'none' : `1px solid ${colorChips.line.e6e6e6}`,
       }}
     >
       <Stack direction="row" alignItems="center" gap="4px" flexWrap="wrap">
         {content.map((item, idx) => (
-          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} customStyle={{ wordBreak: 'keep-all' }} />
+          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={isRead? colorChips.black[200] : item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} customStyle={{ wordBreak: 'keep-all' }} />
         ))}
       </Stack>
       <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={formatNotiTime(createdAt)} color={colorChips.grayScale[500]} />
