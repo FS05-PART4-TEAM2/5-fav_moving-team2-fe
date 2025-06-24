@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNotificationsQuery } from '@/shared/hooks/useNotificationsQuery';
 import { formatNotiTime } from '@/shared/utils/dataFormatter';
+import {getAccessToken} from '@/shared/utils/getCookie'
 
 interface HeaderAlarmProps {
   isDesktop: boolean;
@@ -17,7 +18,8 @@ interface HeaderAlarmProps {
 }
 
 export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggle }: HeaderAlarmProps) => {
-  const accessToken = localStorage.getItem('accessToken');
+  // const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getAccessToken();
   const [realTimeNotifications, setRealTimeNotifications] = useState<NotificationItem[]>([]);
   const { ref, inView } = useInView({
     threshold: 0,
