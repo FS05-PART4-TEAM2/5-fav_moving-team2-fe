@@ -48,6 +48,7 @@ const nextConfig: NextConfig = {
 
         // 알림(Notification)
         { source: '/api/notifications', destination: `${backend}/api/notifications` },
+        { source: '/api/notifications/:id/read', destination: `${backend}/api/notifications/:id/read` },
 
         // 프로필 수정 및 조회
         { source: '/api/profile/mover/info', destination: `${backend}/api/profile/mover/info` },
