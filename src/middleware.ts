@@ -5,6 +5,7 @@ interface MyPayload extends JWTPayload {
   sub: string;
   email: string;
   role: 'customer' | 'mover';
+  isProfile: boolean;
 }
 
 function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload {
@@ -13,7 +14,8 @@ function isPayload(payload: JWTPayload | null | undefined): payload is MyPayload
     payload !== null &&
     typeof (payload as any).sub === 'string' &&
     typeof (payload as any).email === 'string' &&
-    ((payload as any).role === 'customer' || (payload as any).role === 'mover')
+    ((payload as any).role === 'customer' || (payload as any).role === 'mover') &&
+    typeof payload.isProfile === 'boolean'
   );
 }
 
@@ -70,11 +72,21 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/customer/login', req.url));
   }
 
-  const { role } = payload;
+  const { role, isProfile } = payload;
   console.log('role:', role);
+  console.log('isProfile:', isProfile);
 
   const isCustomer = role === 'customer';
   const isMover = role === 'mover';
+
+  if (!isProfile && (isCustomer || isMover)) {
+    const profilePath = isCustomer ? '/customer/profile' : '/mover/profile';
+    if (!pathname.startsWith(profilePath)) {
+      return NextResponse.redirect(new URL(profilePath, req.url));
+    }
+    return NextResponse.next();
+  }
+
   const isCustomerRoute = pathname.startsWith('/customer');
   const isMoverRoute = pathname.startsWith('/mover');
 
