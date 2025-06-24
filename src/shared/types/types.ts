@@ -51,6 +51,10 @@ export type RegionType =
   | 'BUSAN'
   | 'JEJU';
 export type MoverFilterOption = 'MOSTREVIEW' | 'BESTRATING' | 'HIGHESTEXP' | 'MOSTCONFIRM';
+export type NotificationType =
+  | "QUOTE_ARRIVED"   // 새로운 견적
+  | "QUOTE_CONFIRMED" // 확정 견적
+  | "MOVE_SCHEDULE";  // 이사 당일
 
 export interface GlobalResponse {
   success: boolean;
@@ -68,12 +72,13 @@ export interface GlobalResponseWithGeneric<T> {
 
 export interface NotificationItem {
   id: string;
-  type: string;
+  type: NotificationType;
   segments: {
     text: string;
     isHighlight: boolean;
   }[];
   isRead: boolean;
+  quotationId: string;
   createdAt: string;
 }
 

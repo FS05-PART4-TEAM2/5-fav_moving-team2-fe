@@ -1,7 +1,7 @@
 import { useNotificationSocket } from '@/shared/hooks/useNotificationSocket';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { NotificationItem } from '@/shared/types/types';
+import { NotificationItem, NotificationType } from '@/shared/types/types';
 import { Collapse, Stack, CircularProgress } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,9 @@ import { useInView } from 'react-intersection-observer';
 import { useNotificationsQuery } from '@/shared/hooks/useNotificationsQuery';
 import { formatNotiTime } from '@/shared/utils/dataFormatter';
 import { patchNotificationsReadApi } from '@/shared/service/patchNotificationsReadApi';
+import useUserStore from '@/shared/store/useUserStore';
+import { useRouter } from 'next/navigation';
+import { PATH } from '@/shared/constants';
 
 interface HeaderAlarmProps {
   isDesktop: boolean;
@@ -18,6 +21,8 @@ interface HeaderAlarmProps {
 }
 
 export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggle }: HeaderAlarmProps) => {
+  const router = useRouter();
+  const {userType} = useUserStore();
   const accessToken = localStorage.getItem('accessToken');
   const [realTimeNotifications, setRealTimeNotifications] = useState<NotificationItem[]>([]);
   const { ref, inView } = useInView({
@@ -25,7 +30,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     rootMargin: '0px 0px',
   });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useNotificationsQuery();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, refetch } = useNotificationsQuery();
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -39,11 +44,25 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     setRealTimeNotifications((prev) => [newNoti, ...prev]);
   });
 
-  const handleClickAlarmCard = async (id: string) => {
+  // 알림 클릭 시 읽음 처리
+  const handleClickAlarmCard = async (id: string, type: NotificationType, quotationId: string) => {
     try {
-      const result = await patchNotificationsReadApi(id);
-      if (result) {
-        console.log('각 타입과 id에 맞는 페이지로 이동');
+      const result = await patchNotificationsReadApi(id, accessToken ?? '');
+      if (result.success) {
+        refetch();
+        if (userType === 'customer') {
+          if (type !== 'MOVE_SCHEDULE') {
+            // 일반유저 : 이사날 알림 외 모든 알림 견적 상세 페이지로 이동
+            router.push(PATH.customer.offerDetail(quotationId)); 
+            onToggle();
+          }
+        } else {
+          if (type === 'QUOTE_CONFIRMED') {
+            // 기사님 : 견적 확정 알림만 견적 상세 페이지로 이동
+            router.push(PATH.mover.offerDetail(quotationId)); 
+            onToggle();
+          }
+        }
       } else {
         alert('다시 시도해주세요');
       }
@@ -114,7 +133,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
           ) : (
             <>
               {allNotifications.map((item, idx) => (
-                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined} onClick={() => handleClickAlarmCard(item.id)}>
+                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined} onClick={() => handleClickAlarmCard(item.id, item.type, item.quotationId)}>
                   <AlarmCard
                     isDesktop={isDesktop}
                     content={item.segments}
@@ -148,7 +167,6 @@ interface AlarmCardProps {
   isRead: boolean;
 }
 
-// TODO: 클릭 이벤트 추가
 const AlarmCard = ({ isDesktop, content, createdAt, isLast, isRead }: AlarmCardProps) => {
   return (
     <Stack
@@ -164,10 +182,10 @@ const AlarmCard = ({ isDesktop, content, createdAt, isLast, isRead }: AlarmCardP
     >
       <Stack direction="row" alignItems="center" gap="4px" flexWrap="wrap">
         {content.map((item, idx) => (
-          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={isRead? colorChips.black[200] : item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} customStyle={{ wordBreak: 'keep-all' }} />
+          <Typo className={isDesktop ? 'text_M_16' : 'text_M_14'} content={item.text} color={isRead? colorChips.grayScale[200] : item.isHighlight ? colorChips.primary[300] : colorChips.black[400]} key={idx} customStyle={{ wordBreak: 'keep-all' }} />
         ))}
       </Stack>
-      <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={formatNotiTime(createdAt)} color={colorChips.grayScale[500]} />
+      <Typo className={isDesktop ? 'text_M_14' : 'text_M_13'} content={formatNotiTime(createdAt)} color={isRead ? colorChips.grayScale[200] : colorChips.grayScale[500]} />
     </Stack>
   );
 };
