@@ -142,8 +142,52 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     rules: {
       required: '전화번호는 필수입니다',
       pattern: {
-        value: /^[0-9]{10,11}$/,
-        message: '10~11자리 숫자만 입력해주세요',
+        value: /^(01[016789]|02|0[3-6][1-5]|070)/,
+        message: '유효한 전화번호 형식이 아닙니다',
+      },
+      validate: (value: string) => {
+        const onlyDigits = value.replace(/\D/g, '');
+        const prefix3 = onlyDigits.slice(0, 3);
+        const prefix2 = onlyDigits.slice(0, 2);
+
+        if (!/^\d+$/.test(onlyDigits)) {
+          return '숫자만 입력해 주세요';
+        }
+
+        // 휴대폰 번호 (010~019)
+        if (/^01[016789]$/.test(prefix3)) {
+          if (![10, 11].includes(onlyDigits.length)) {
+            return '휴대폰 번호는 10~11자리여야 합니다';
+          }
+          return true;
+        }
+
+        // 서울 (02)
+        if (prefix2 === '02') {
+          if (onlyDigits.length !== 10) {
+            return '서울 지역번호(02)는 총 10자리여야 합니다';
+          }
+          return true;
+        }
+
+        // 지역번호 (031~065)
+        if (/^0[3-6][1-5]$/.test(prefix3)) {
+          if (![10, 11].includes(onlyDigits.length)) {
+            return '지역번호는 총 10자리 또는 11자리여야 합니다';
+          }
+          return true;
+        }
+
+        // 인터넷 전화 (070)
+        if (prefix3 === '070') {
+          if (onlyDigits.length !== 11) {
+            return '인터넷 번호는 총 11자리여야 합니다';
+          }
+          return true;
+        }
+
+        // 위 조건 어디에도 안 걸리면
+        return '유효한 전화번호 형식이 아닙니다';
       },
     },
   },
