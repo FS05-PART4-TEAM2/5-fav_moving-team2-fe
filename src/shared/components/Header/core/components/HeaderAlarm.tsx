@@ -133,7 +133,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
           ) : (
             <>
               {allNotifications.map((item, idx) => (
-                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined} onClick={() => handleClickAlarmCard(item.id, item.type, item.quotationId)}>
+                <div key={item.id || idx} ref={idx === allNotifications.length - 1 ? ref : undefined} onClick={() => handleClickAlarmCard(item.id, item.type, item.receivedQuoteId)}>
                   <AlarmCard
                     isDesktop={isDesktop}
                     content={item.segments}

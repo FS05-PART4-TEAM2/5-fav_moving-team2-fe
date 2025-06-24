@@ -78,7 +78,7 @@ export interface NotificationItem {
     isHighlight: boolean;
   }[];
   isRead: boolean;
-  quotationId: string;
+  receivedQuoteId: string;
   createdAt: string;
 }
 
