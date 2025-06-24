@@ -1,10 +1,10 @@
 import { useNotificationSocket } from '@/shared/hooks/useNotificationSocket';
 import { colorChips } from '@/shared/styles/colorChips';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { NotificationItem, NotificationType } from '@/shared/types/types';
+import { NotificationType } from '@/shared/types/types';
 import { Collapse, Stack, CircularProgress } from '@mui/material';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNotificationsQuery } from '@/shared/hooks/useNotificationsQuery';
 import { formatNotiTime } from '@/shared/utils/dataFormatter';
@@ -24,7 +24,6 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
   const router = useRouter();
   const {userType} = useUserStore();
   const accessToken = localStorage.getItem('accessToken');
-  const [realTimeNotifications, setRealTimeNotifications] = useState<NotificationItem[]>([]);
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: '0px 0px',
@@ -79,7 +78,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
     }
   };
 
-  const allNotifications = [...realTimeNotifications, ...(data?.pages?.flatMap((page) => page.data.data) || [])];
+  const allNotifications = [...(data?.pages?.flatMap((page) => page.data.data) || [])];
 
   return (
     <Stack position="relative">
