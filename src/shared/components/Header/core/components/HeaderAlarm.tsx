@@ -66,7 +66,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
       } else {
         alert('다시 시도해주세요');
       }
-    } catch (error) {
+    } catch {
       alert('다시 시도해주세요');
     }
   };
