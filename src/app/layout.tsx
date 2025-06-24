@@ -48,7 +48,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <CssBaseline />
             <FaceHydration />
             <SessionCheck />
-            <AlertListener />
+            <Suspense fallback={null}>
+              <AlertListener />
+            </Suspense>
             <Suspense fallback={<div>페이지 로딩 중...</div>}>{children}</Suspense>
           </ThemeProvider>
         </QueryProvider>
