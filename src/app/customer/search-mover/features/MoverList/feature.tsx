@@ -54,7 +54,11 @@ export const MoverListFeature = () => {
       {hasNextPage && (
         <>
           <div ref={ref} style={{ height: '20px', marginTop: '20px' }} />
-          {isFetchingNextPage && <CircularProgress size={24} />}
+          {isFetchingNextPage && (
+            <Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+              <CircularProgress size={24} />
+            </Stack>
+          )}
         </>
       )}
     </Stack>
