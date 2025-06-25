@@ -14,7 +14,7 @@ export default function Page() {
   const { customerData } = useUserStore();
   const { requestStep } = useRequestStepStore();
   const hasQuotation = customerData?.hasQuotation ?? false;
-  const headerHeight = hasQuotation ? {xs: '127px', md: '184px'} : {xs: '150px', md: '160px'};
+  const headerHeight = hasQuotation ? {xs: '127px', md: '184px'} : {xs: '150px', md: '216px'};
 
   return (
     <Stack sx={{ minHeight: '100vh', width: '100%' }}>
