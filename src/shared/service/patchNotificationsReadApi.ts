@@ -7,6 +7,7 @@ export async function patchNotificationsReadApi(id: string, token: string) {
     const requestHeaders: HeadersInit = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
+      'credentials': 'include',
     };
 
     const url = `${apiUrl}/api/notifications/${id}/read`;
