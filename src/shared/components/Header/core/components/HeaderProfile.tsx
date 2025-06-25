@@ -47,6 +47,7 @@ export const HeaderProfile = ({
     const res = await logout();
     if (res.success) {
       clearUserStore(); // 유저스토어 초기화
+      localStorage.removeItem('accessToken'); // 스토리지에서 토큰 삭제
       removeQueryKeys(queryClient); // 캐시 무효화(기사님 데이터)
       resetSearchMoverStore(); // 기사님 검색필터 초기화
       router.push('/'); // 로그아웃 후 랜딩페이지로 이동

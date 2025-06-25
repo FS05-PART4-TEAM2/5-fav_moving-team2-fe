@@ -44,9 +44,9 @@ export const useCustomerLikeMover = ({ initialStatus, initialLikeCount, moverId 
       setLikeCount(shouldLike ? likeCount + 1 : likeCount - 1);
     },
     onSuccess: () => {
-      // 성공 시 moverDetail 쿼리 무효화하여 최신 데이터 가져오기
+      // 성공 시 moverDetail, likeList 쿼리 무효화하여 최신 데이터 가져오기
       queryClient.invalidateQueries({
-        queryKey: moverKeys.detail(moverId),
+        queryKey: moverKeys.all,
       });
     },
     onError: () => {
