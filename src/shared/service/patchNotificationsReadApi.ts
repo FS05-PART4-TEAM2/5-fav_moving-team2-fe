@@ -15,6 +15,7 @@ export async function patchNotificationsReadApi(id: string, token: string) {
     const res = await fetch(url, {
       method: 'PATCH',
       headers: requestHeaders,
+      credentials: 'include',
     });
 
     const data: GlobalResponse = await res.json();
