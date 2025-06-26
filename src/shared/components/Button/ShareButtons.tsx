@@ -22,7 +22,6 @@ interface ShareButtonsProps {
   };
 }
 
-// TODO: 공유하기 클릭 이벤트핸들러 추가
 export const ShareButtons = ({
   title,
   shareUrl,
