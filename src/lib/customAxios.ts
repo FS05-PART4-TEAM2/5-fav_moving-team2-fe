@@ -148,7 +148,6 @@ function addRefreshSubscriber(cb: (token: string) => void) {
 const responseInterceptor = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.response.use(
     function (response) {
-      console.log('response', response);
       // 401 상태 코드 체크
       if (response.status === 401) {
         return Promise.reject(response);
@@ -195,7 +194,6 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
           const newRefreshToken = res.data.refreshToken;
 
           if (!newAccessToken) {
-            console.log('No new access token received');
             return Promise.reject(new Error('No access token received'));
           }
 
