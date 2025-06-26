@@ -2,7 +2,7 @@
 
 import Grid from '@mui/material/Grid';
 import { Stack, Divider } from '@mui/material';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { OutlinedButton } from '../../Button/OutlinedButton';
 import { SolidButton } from '../../Button/SolidButton';
 import { useMediaQuery } from '@mui/system';
@@ -12,7 +12,12 @@ import ProfileFormHeader from './ProfileFormHeader';
 import ProfileFormLeft from './ProfileFormLeft';
 import ProfileFormRight from './ProfileFormRight';
 import { CustomerProfileForm, MoverBaseInfoForm, MoverProfileForm } from '@/shared/types/types';
-import { updateCustomerProfile, updateMoverBaseInfo, updateMoverProfile } from '@/shared/core/profile/service';
+import {
+  BaseInfoPayload,
+  updateCustomerProfile,
+  updateMoverBaseInfo,
+  updateMoverProfile,
+} from '@/shared/core/profile/service';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { PATH, REGIONS, SERVICE_TYPES } from '@/shared/constants';
@@ -22,39 +27,151 @@ import customAxios from '@/lib/customAxios';
 interface ProfileFormProps {
   mode: 'create' | 'modify' | 'baseInfo';
   userType: 'customer' | 'mover';
-  defaultValues?: Partial<FormTypes>;
 }
 
-type FormTypes = CustomerProfileForm | MoverProfileForm | MoverBaseInfoForm;
+type FormTypes = (CustomerProfileForm | MoverProfileForm | MoverBaseInfoForm) & {
+  newPasswordConfirm?: string;
+};
 
-export default function ProfileForm({ mode, userType, defaultValues }: ProfileFormProps) {
-  const { customerData } = useUserStore();
-  const methods = useForm<FormTypes>({
-    mode: 'onChange',
-    defaultValues: defaultValues ?? {
-      service: [],
-      region: [],
-    },
-  });
-
-  const {
-    reset,
-    handleSubmit,
-    formState: { isSubmitting, isValid, isDirty },
-  } = methods;
-  const router = useRouter();
-  const isMd = useMediaQuery(theme.breakpoints.down('md'));
-
-  useEffect(() => {
-    if (defaultValues) {
-      reset(defaultValues);
-    }
-  }, [defaultValues, reset]);
-
+export default function ProfileForm({ mode, userType }: ProfileFormProps) {
+  const { userInfo, customerData, moverData } = useUserStore();
   const isModify = mode === 'modify';
   const isBaseInfo = mode === 'baseInfo';
   const isCustomer = userType === 'customer';
   const isCreate = mode === 'create';
+
+  const getServiceKey = (label: string) => SERVICE_TYPES.find((s) => s.label === label)?.key ?? '';
+  const getRegionKey = (label: string) => REGIONS.find((r) => r.label === label)?.key ?? '';
+  const getRegionLabel = (key: string) => REGIONS.find((r) => r.key === key)?.label ?? '';
+  const getServiceLabel = (key: string) => SERVICE_TYPES.find((s) => s.key === key)?.label ?? '';
+
+  const isCustomerDefault = isCustomer && userInfo && customerData;
+  const isMoverDefault = !isCustomer && userInfo && moverData;
+
+  const getDefaultValues = (): FormTypes => {
+    if (!isCreate) {
+      if (isCustomerDefault) {
+        return {
+          username: userInfo.username ?? '',
+          phoneNumber: userInfo.phoneNumber ?? '',
+          email: userInfo.email ?? '',
+          service: (customerData.wantService ?? []).map(getServiceLabel),
+          region: (customerData.livingPlace ?? []).map(getRegionLabel),
+          currentPassword: '',
+          newPassword: '',
+          newPasswordConfirm: '',
+        };
+      }
+
+      if (isMoverDefault) {
+        const sharedValues = {
+          username: userInfo.username ?? '',
+          phoneNumber: userInfo.phoneNumber ?? '',
+          email: userInfo.email ?? '',
+          nickname: moverData.nickname ?? '',
+          career: moverData.career ?? '',
+          intro: moverData.intro ?? '',
+          detailDescription: moverData.detailDescription ?? '',
+          currentPassword: '',
+          newPassword: '',
+          newPasswordConfirm: '',
+        };
+        return {
+          ...sharedValues,
+          service: (moverData.serviceList ?? []).map(getServiceLabel),
+          region: (moverData.serviceArea ?? []).map(getRegionLabel),
+          serviceList: (moverData.serviceList ?? []).map(getServiceLabel),
+          serviceArea: (moverData.serviceArea ?? []).map(getRegionLabel),
+        };
+      }
+    }
+
+    return {
+      username: '',
+      phoneNumber: '',
+      email: '',
+      nickname: '',
+      career: '',
+      intro: '',
+      detailDescription: '',
+      service: [],
+      region: [],
+      serviceList: [],
+      serviceArea: [],
+      currentPassword: '',
+      newPassword: '',
+      newPasswordConfirm: '',
+    };
+  };
+
+  const methods = useForm<FormTypes>({
+    mode: 'onChange',
+    defaultValues: getDefaultValues(),
+  });
+
+  const {
+    reset,
+    trigger,
+    control,
+    handleSubmit,
+    formState: { isValid, isSubmitting, isDirty },
+    getValues,
+  } = methods;
+
+  useEffect(() => {
+    if (!isCreate) {
+      reset(getDefaultValues(), { keepDefaultValues: true });
+      trigger();
+    }
+  }, [isCustomer, mode, userInfo, customerData, moverData, reset]);
+
+  const isMd = useMediaQuery(theme.breakpoints.down('md'));
+  const router = useRouter();
+  const newPassword = useWatch({ control, name: 'newPassword', defaultValue: '' });
+  const currentPassword = useWatch({ control, name: 'currentPassword', defaultValue: '' });
+
+  const wantsPwdChange = !!newPassword || !!currentPassword || !!getValues('newPasswordConfirm');
+  const passwordsFilled = !!newPassword && !!currentPassword && !!getValues('newPasswordConfirm');
+  const moverBasic =
+    !isCustomer &&
+    isModify &&
+    ['username', 'email', 'phoneNumber', 'nickname', 'career', 'intro', 'detailDescription'].every(
+      (name) => !!getValues(name as keyof FormTypes),
+    );
+
+  const enableSubmit = (() => {
+    if (isCreate) {
+      return isDirty && isValid;
+    }
+
+    if (isCustomer && isModify) {
+      if (wantsPwdChange) {
+        return isDirty && isValid && passwordsFilled;
+      }
+      return isDirty && isValid;
+    }
+
+    if (!isCustomer && isBaseInfo) {
+      if (wantsPwdChange) {
+        return isValid && passwordsFilled;
+      }
+      return isDirty && isValid;
+    }
+
+    if (!isCustomer && isModify) {
+      return moverBasic && isValid;
+    }
+
+    return false;
+  })();
+
+  useEffect(() => {
+    trigger('newPasswordConfirm');
+  }, [newPassword, trigger]);
+
+  useEffect(() => {
+    trigger('newPassword');
+  }, [currentPassword, trigger]);
 
   const dividerSpacing = {
     create: {
@@ -78,20 +195,30 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
   // TODO alert부분 나중에 모달로 수정하면 좋을듯
   const onSubmit = async (data: FormTypes) => {
     const { setUserInfo, setCustomerData, setMoverData } = useUserStore.getState();
-    const getServiceKey = (label: string) => SERVICE_TYPES.find((s) => s.label === label)?.key ?? '';
-    const getRegionKey = (label: string) => REGIONS.find((r) => r.label === label)?.key ?? '';
 
     try {
       // mover 기본 수정 일떄
       if (isBaseInfo && !isCustomer) {
         const d = data as MoverBaseInfoForm;
-        const res = await updateMoverBaseInfo(d);
+        const payload: BaseInfoPayload = {
+          username: d.username,
+          email: d.email,
+          phoneNumber: d.phoneNumber,
+          ...(d.currentPassword && d.newPassword
+            ? {
+                currPassword: d.currentPassword,
+                newPassword: d.newPassword,
+              }
+            : {}),
+        };
+
+        const res = await updateMoverBaseInfo(payload);
 
         if (!res || res.success !== true) {
           throw new Error(res?.message ?? '기본 정보 저장에 실패했습니다.');
         }
 
-        setUserInfo('customer', {
+        setUserInfo('mover', {
           id: res.data.id,
           username: res.data.username,
           email: res.data.email,
@@ -100,10 +227,17 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           isProfile: res.data.isProfile,
         });
 
-        setCustomerData({
-          wantService: res.data.wantService ?? null,
-          livingPlace: res.data.livingPlace ?? null,
-          hasQuotation: customerData?.hasQuotation ?? false,
+        setMoverData({
+          nickname: res.data.nickname ?? null,
+          serviceList: res.data.serviceList ?? null,
+          serviceArea: res.data.serviceArea ?? null,
+          intro: res.data.intro ?? null,
+          career: res.data.career ?? null,
+          detailDescription: res.data.detailDescription ?? null,
+          likeCount: res.data.likeCount ?? null,
+          totalRating: res.data.totalRating ?? null,
+          reviewCounts: res.data.reviewCounts ?? null,
+          confirmQuotation: res.data.confirmQuotation ?? null,
         });
 
         alert('기본정보가가 성공적으로 저장되었습니다.');
@@ -148,10 +282,10 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         setCustomerData({
           wantService: res.data.wantService ?? null,
           livingPlace: res.data.livingPlace ?? null,
-          hasQuotation: customerData?.hasQuotation ?? false,
+          hasQuotation: res.data.hasQuotation ?? false,
         });
 
-        const hasQuotation = customerData?.hasQuotation;
+        const hasQuotation = res.data.hasQuotation;
 
         if (!hasQuotation) {
           router.push(PATH.customer.movingQuoteRequest);
@@ -170,8 +304,10 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         const regionKeys = (d.region ?? []).map(getRegionKey).filter(Boolean);
 
         if (d.username) formData.append('username', d.username);
-        if (d.currPassword) formData.append('currPassword', d.currPassword);
-        if (d.newPassword) formData.append('newPassword', d.newPassword);
+        if (d.currPassword && d.newPassword) {
+          formData.append('currPassword', d.currPassword);
+          formData.append('newPassword', d.newPassword);
+        }
         if (d.profileImage && d.profileImage instanceof File) {
           formData.append('profileImage', d.profileImage);
         }
@@ -197,7 +333,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         setCustomerData({
           wantService: res.data.wantService ?? null,
           livingPlace: res.data.livingPlace ?? null,
-          hasQuotation: customerData?.hasQuotation ?? false,
+          hasQuotation: res.data.hasQuotation ?? false,
         });
 
         alert('프로필이 성공적으로 저장되었습니다.');
@@ -251,6 +387,9 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
           career: res.data.career ?? null,
           detailDescription: res.data.detailDescription ?? null,
           likeCount: res.data.likeCount ?? null,
+          totalRating: res.data.totalRating ?? null,
+          reviewCounts: res.data.reviewCounts ?? null,
+          confirmQuotation: res.data.confirmQuotation ?? null,
         });
 
         if (isModify) {
@@ -306,12 +445,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
               <ProfileFormRight mode={mode} userType={userType} />
 
               {isCreate && !isCustomer && (
-                <SolidButton
-                  type="submit"
-                  text="시작하기"
-                  width="100%"
-                  disabled={isSubmitting || !isDirty || !isValid}
-                />
+                <SolidButton type="submit" text="시작하기" width="100%" disabled={isSubmitting || !enableSubmit} />
               )}
             </Stack>
           </Grid>
@@ -322,23 +456,13 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center" alignItems="center">
               {isMd ? (
                 <>
-                  <SolidButton
-                    type="submit"
-                    text="수정하기"
-                    width="100%"
-                    disabled={isSubmitting || !isDirty || !isValid}
-                  />
+                  <SolidButton type="submit" text="수정하기" width="100%" disabled={isSubmitting || !enableSubmit} />
                   <OutlinedButton type="button" text="취소" width="100%" onClick={() => router.back()} />
                 </>
               ) : (
                 <>
                   <OutlinedButton type="button" text="취소" width="100%" onClick={() => router.back()} />
-                  <SolidButton
-                    type="submit"
-                    text="수정하기"
-                    width="100%"
-                    disabled={isSubmitting || !isDirty || !isValid}
-                  />
+                  <SolidButton type="submit" text="수정하기" width="100%" disabled={isSubmitting || !enableSubmit} />
                 </>
               )}
             </Stack>
@@ -348,7 +472,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
         {isCreate && isCustomer && (
           <Stack mt={7} width="100%">
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center" alignItems="center">
-              <SolidButton type="submit" text="시작하기" width="100%" disabled={isSubmitting || !isDirty || !isValid} />
+              <SolidButton type="submit" text="시작하기" width="100%" disabled={isSubmitting || !enableSubmit} />
             </Stack>
           </Stack>
         )}

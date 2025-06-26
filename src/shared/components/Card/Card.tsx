@@ -22,7 +22,7 @@ interface CardProps {
 
 export default function Card({ type, data, isModal, height, bgColor, onRequestClick, onRejectClick }: CardProps) {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
-  const isMobile = useMediaQuery('(max-width:375px)');
+  const isMobile = useMediaQuery('(max-width:420px)');
   const router = useRouter();
 
   const isProfile = type === 'profile';

@@ -151,6 +151,9 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
             career: String(mover.career),
             detailDescription: mover.detailDescription,
             likeCount: mover.likeCount,
+            totalRating: mover.totalRating,
+            reviewCounts: mover.reviewCounts,
+            confirmQuotation: mover.confirmQuotation,
           });
 
           invalidateQueryKeys(queryClient);
