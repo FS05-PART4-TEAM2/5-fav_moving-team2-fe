@@ -11,6 +11,7 @@ import useUserStore from '@/shared/store/useUserStore';
 import { PATH } from '@/shared/constants';
 import { OAuthProfile } from '@/shared/core/Auth/service';
 import { GetCustomerProfileData, GetMoverProfileData } from '@/shared/types/types';
+import customAxios from '@/lib/customAxios';
 
 const blink = keyframes`
   0%   { opacity: 0; }
@@ -34,8 +35,15 @@ export default function OAuthCallbackIndex() {
       return;
     }
 
+    const refresh = async () => {
+      await customAxios.post('/api/auth/refresh', {
+        refreshToken,
+      });
+    };
+
     const OAuthLogin = async () => {
       try {
+        await refresh();
         localStorage.setItem('accessToken', accessToken);
         if (process.env.NODE_ENV === 'development') {
           localStorage.setItem('refreshToken', refreshToken);
