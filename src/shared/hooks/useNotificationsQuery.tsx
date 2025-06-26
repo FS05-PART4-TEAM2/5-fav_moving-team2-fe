@@ -12,7 +12,7 @@ export function useNotificationsQuery() {
   const { isAuthenticated, userType } = useUserStore();
   const enabled = isAuthenticated && userType !== 'temp';
 
-  return useInfiniteQuery({
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, refetch, isLoading } = useInfiniteQuery({
     queryKey: notificationKeys.list(),
     queryFn: ({ pageParam }) => 
       getNotificationsApi({ cursorId: pageParam.cursorId, cursorDate: pageParam.cursorDate, limit: 10 }),
@@ -29,4 +29,13 @@ export function useNotificationsQuery() {
     initialPageParam: { cursorId: null, cursorDate: null } as PageParam,
     enabled,
   });
+
+  return {
+    data,
+    hasNextPage,
+    isLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+  };
 }

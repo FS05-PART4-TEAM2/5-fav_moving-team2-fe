@@ -1,5 +1,5 @@
 // InputField에 들어가는 값 Preset 설정
-import { RegisterOptions } from 'react-hook-form';
+import { RegisterOptions, UseFormGetValues } from 'react-hook-form';
 
 // Preset 종류
 export type PresetFieldName =
@@ -27,12 +27,22 @@ type FieldPreset = {
   type?: string;
   autoComplete?: string;
   defaultValue: string;
-  rules?: RegisterOptions;
+  rules?: RegisterOptions | ((getValues: UseFormGetValues<any>) => RegisterOptions);
 };
 
 // 로그인, 회원가입, 비밀번호 수정시 비교를 위한 함수
 const validatePasswordConfirm = (value: string, getPassword: () => string): true | string => {
   return value === getPassword() || '비밀번호가 일치하지 않습니다';
+};
+
+const isSimplePassword = (password: string): boolean => {
+  // 같은 문자 4개 이상 반복 → 차단
+  if (/([a-zA-Z0-9!@#$%^&*()])\1{3,}/.test(password)) return true;
+
+  // 숫자만으로 구성된 경우 → 차단
+  if (/^\d+$/.test(password)) return true;
+
+  return false;
 };
 
 export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
@@ -149,6 +159,7 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
         const onlyDigits = value.replace(/\D/g, '');
         const prefix3 = onlyDigits.slice(0, 3);
         const prefix2 = onlyDigits.slice(0, 2);
+        const onlyDigitsLimitToSeoul = onlyDigits.length !== 9 && onlyDigits.length !== 10;
 
         if (!/^\d+$/.test(onlyDigits)) {
           return '숫자만 입력해 주세요';
@@ -162,10 +173,10 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
           return true;
         }
 
-        // 서울 (02)
+        // 서울 (02) 총 9자리 or 10자리 고려
         if (prefix2 === '02') {
-          if (onlyDigits.length !== 10) {
-            return '서울 지역번호(02)는 총 10자리여야 합니다';
+          if (onlyDigitsLimitToSeoul) {
+            return '서울 지역번호(02)는 총 9자리 또는 10자리여야 합니다';
           }
           return true;
         }
@@ -199,8 +210,14 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     rules: {
       required: '비밀번호를 입력해 주세요',
       pattern: {
-        value: /^(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{9,}$/,
-        message: '숫자와 특수문자를 포함해 9자 이상 입력해주세요',
+        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{9,}$/,
+        message: '영문, 숫자, 특수문자를 포함해 9자 이상 입력해주세요',
+      },
+      validate: (value: string) => {
+        if (isSimplePassword(value)) {
+          return '너무 단순한 비밀번호입니다. 다른 비밀번호를 입력해 주세요';
+        }
+        return true;
       },
     },
   },
@@ -209,10 +226,13 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     type: 'password',
     autoComplete: 'new-password',
     defaultValue: '',
-    rules: {
-      required: '비밀번호 확인이 필요합니다',
-      validate: () => true,
-    },
+    rules: (getValues) => ({
+      validate: (value: string) => {
+        if (!value) return true;
+        return value === getValues('password') || '비밀번호가 일치하지 않습니다';
+      },
+      deps: ['password', 'passwordConfirm'],
+    }),
   },
   reject: {
     placeholder: '최소 10자 이상 입력해주세요',
@@ -286,7 +306,12 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
         value: 6,
         message: '비밀번호는 최소 6자 이상이어야 합니다',
       },
-      validate: () => true,
+      validate: (value: string) => {
+        if (isSimplePassword(value)) {
+          return '너무 단순한 비밀번호입니다. 다른 비밀번호를 입력해 주세요';
+        }
+        return true;
+      },
     },
   },
   newPasswordConfirm: {
@@ -294,10 +319,13 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     type: 'password',
     autoComplete: 'new-password',
     defaultValue: '',
-    rules: {
-      required: '새 비밀번호 확인이 필요합니다',
-      validate: () => true,
-    },
+    rules: (getValues) => ({
+      validate: (value: string) => {
+        if (!value) return true;
+        return value === getValues('password') || '새 비밀번호가 일치하지 않습니다';
+      },
+      deps: ['newPassword', 'newPasswordConfirm'],
+    }),
   },
 
   quoteAmount: {

@@ -129,7 +129,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const refreshRes = await customAxios.post('/api/auth/refresh');
 
-        const newToken = refreshRes.data.accessToken;
+        const newToken = refreshRes.data.data.accessToken;
         localStorage.setItem('accessToken', newToken);
 
         if (!res || res.success !== true) {
@@ -228,7 +228,7 @@ export default function ProfileForm({ mode, userType, defaultValues }: ProfileFo
 
         const refreshRes = await customAxios.post('/api/auth/refresh');
 
-        const newToken = refreshRes.data.accessToken;
+        const newToken = refreshRes.data.data.accessToken;
         localStorage.setItem('accessToken', newToken);
 
         if (!res || res.success !== true) {

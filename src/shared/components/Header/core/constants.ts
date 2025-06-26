@@ -1,6 +1,5 @@
 import { PATH } from '@/shared/constants';
 
-// TODO: 기사님 프로필 드롭다운에 마이페이지 말고 뭐들어가야되는지 몰라서 일단 한개만 넣음
 export const ProfileDrowndownMenu = {
   customer: [
     {

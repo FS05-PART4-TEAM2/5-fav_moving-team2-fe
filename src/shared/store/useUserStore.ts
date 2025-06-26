@@ -66,8 +66,8 @@ const useUserStore = create<UserStore>()(
         set({ moverData });
       },
       logout: () => {
+        localStorage.removeItem('accessToken'); // accessTokend은 dev/prod 환경 둘다 삭제
         if (process.env.NODE_ENV === 'development') {
-          localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
         }
         set({ userType: 'temp', userInfo: null, customerData: null, moverData: null, isAuthenticated: false });

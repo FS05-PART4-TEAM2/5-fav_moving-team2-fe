@@ -6,7 +6,6 @@ import { colorChips } from '@/shared/styles/colorChips';
 import { useState } from 'react';
 import { WriteReviewModal } from './WriteReviewModal';
 
-// TODO: 작성가능한 리뷰 api 완성되면 수정
 interface WriteReviewListProps {
   data: CustomerWriteReviewItem[];
 }
