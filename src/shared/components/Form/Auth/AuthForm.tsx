@@ -2,7 +2,7 @@
 
 import InputField from '@/shared/components/Input/InputField';
 import { Stack } from '@mui/material';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { SolidButton } from '../../Button/SolidButton';
 import useUserStore from '@/shared/store/useUserStore';
 import { useRouter } from 'next/navigation';
@@ -18,6 +18,7 @@ import { CustomerLoginData, LoginPayload, MoverLoginData, SignupPayload } from '
 import { invalidateQueryKeys } from '@/shared/utils/invalidateQueryKeys';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchMoverStore } from '@/app/customer/search-mover/core/hooks/useSearchMoverStore';
+import { useEffect } from 'react';
 
 interface AuthFormProps {
   mode: 'login' | 'signup';
@@ -33,12 +34,19 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
   });
   const {
     watch,
+    control,
     handleSubmit,
+    trigger,
     formState: { isSubmitting },
   } = methods;
   const router = useRouter();
   const { setUserInfo, setCustomerData, setMoverData } = useUserStore();
   const { reset: resetSearchMoverStore } = useSearchMoverStore();
+
+  const password = useWatch({ control, name: 'password', defaultValue: '' });
+  useEffect(() => {
+    trigger('passwordConfirm');
+  }, [password, trigger]);
 
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const isLogin = mode === 'login';

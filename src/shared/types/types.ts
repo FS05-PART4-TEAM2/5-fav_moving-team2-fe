@@ -378,7 +378,7 @@ export interface MoverDetailReviewResponse {
 export interface AssignMoverResponse {
   id: string;
   status: QuotationStatus;
-  rejectedReason: string | null; // TODO: 이유 타입 정의
+  rejectedReason: string | null; 
   moverId: string;
   customerId: string;
   quotationId: string;

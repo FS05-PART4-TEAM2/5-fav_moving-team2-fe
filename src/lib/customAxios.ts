@@ -1,4 +1,4 @@
-import axios, { AxiosAdapter, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosAdapter, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 // url 타입 보강
 type URLQueryParams = Record<string, string | number | boolean>;
@@ -10,6 +10,17 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
       revalidate?: number;
       tags?: string[];
     };
+  };
+}
+
+// Error 타입 확장
+interface CustomError extends Error {
+  response?: {
+    data: any;
+    status: number;
+    statusText: string;
+    headers: Record<string, string>;
+    config: ExtendedAxiosRequestConfig;
   };
 }
 
@@ -68,6 +79,21 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
   const contentType = response.headers.get('Content-Type') || '';
   const responseData = contentType.includes('application/json') ? await response.json() : await response.text();
 
+  // 401 응답을 error로 처리
+  if (response.status === 401) {
+    const error = new Error('Unauthorized') as CustomError;
+    error.response = {
+      data: responseData,
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+      config: internalConfig,
+    };
+    // config 정보도 직접 추가
+    (error as any).config = internalConfig;
+    throw error;
+  }
+
   return {
     data: responseData,
     status: response.status,
@@ -78,30 +104,33 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
   };
 };
 
-const customAxios = axios.create({
-  baseURL: process.env.API_URL || '',
-  withCredentials: true,
-  adapter: fetchAdapter,
-});
+const requestInterceptor = (axiosInstance: AxiosInstance) => {
+  axiosInstance.interceptors.request.use(
+    function (config) {
+      if (process.env.NODE_ENV === 'development') {
+        const token = localStorage.getItem('accessToken');
 
-customAxios.interceptors.request.use((config) => {
-  if (process.env.NODE_ENV === 'development') {
-    const token = localStorage.getItem('accessToken');
-
-    if (token) {
-      if (config.headers && typeof config.headers.set === 'function') {
-        config.headers.set('Authorization', `Bearer ${token}`);
-      } else {
-        config.headers = {
-          ...config.headers,
-          Authorization: `Bearer ${token}`,
-        } as typeof config.headers;
+        if (token) {
+          if (config.headers && typeof config.headers.set === 'function') {
+            config.headers.set('Authorization', `Bearer ${token}`);
+          } else {
+            config.headers = {
+              ...config.headers,
+              Authorization: `Bearer ${token}`,
+            } as typeof config.headers;
+          }
+        }
       }
-    }
-  }
 
-  return config;
-});
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
+    }
+  );
+
+  return axiosInstance;
+};
 
 // 응답 인터셉터
 let isRefreshing = false;
@@ -116,61 +145,100 @@ function addRefreshSubscriber(cb: (token: string) => void) {
   refreshSubscribers.push(cb);
 }
 
-customAxios.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const status = error.response?.status;
-    const originalRequest = error.config;
-
-    if (status === 401 && !originalRequest._retry) {
-      if (isRefreshing) {
-        return new Promise((resolve) => {
-          addRefreshSubscriber((token) => {
-            originalRequest.headers['Authorization'] = `Bearer ${token}`;
-            resolve(customAxios(originalRequest));
-          });
-        });
+const responseInterceptor = (axiosInstance: AxiosInstance) => {
+  axiosInstance.interceptors.response.use(
+    function (response) {
+      // 401 상태 코드 체크
+      if (response.status === 401) {
+        return Promise.reject(response);
       }
+      return response;
+    },
+    async function (error) {
+      const status = error.response?.status;
+      const originalRequest = error.config || error.response?.config;
 
-      originalRequest._retry = true;
-      isRefreshing = true;
-
-      try {
-        let res;
-        if (process.env.NODE_ENV === 'development') {
-          const refreshToken = localStorage.getItem('refreshToken');
-          if (!refreshToken) throw new Error('No refresh token');
-
-          res = await customAxios.post('/api/auth/refresh', {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`,
-            },
+      if (status === 401 && !originalRequest._retry) {
+        if (isRefreshing) {
+          return new Promise((resolve) => {
+            addRefreshSubscriber((token) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(axiosInstance(originalRequest));
+            });
           });
-        } else {
-          res = await customAxios.post('/api/auth/refresh');
         }
 
-        const newAccessToken = res.data.accessToken;
+        originalRequest._retry = true;
+        isRefreshing = true;
 
-        localStorage.setItem('accessToken', newAccessToken);
+        try {
+          let res;
+          if (process.env.NODE_ENV === 'development') {
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (!refreshToken) {
+              localStorage.removeItem('accessToken');
+              localStorage.removeItem('refreshToken');
+              return Promise.reject(error);
+            }
 
-        customAxios.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        onTokenRefreshed(newAccessToken);
+            res = await axiosInstance.post('/api/auth/refresh', {}, {
+              headers: {
+                Authorization: `refresh-token ${refreshToken}`
+              },
+            });
+          } else {
+            res = await axiosInstance.post('/api/auth/refresh');
+          }
 
-        return customAxios(originalRequest);
-      } catch (refreshErr) {
-        return Promise.reject(refreshErr);
-      } finally {
-        isRefreshing = false;
+          const newAccessToken = res.data.accessToken;
+          const newRefreshToken = res.data.refreshToken;
+
+          if (!newAccessToken) {
+            return Promise.reject(new Error('No access token received'));
+          }
+
+          localStorage.setItem('accessToken', newAccessToken);
+          if (newRefreshToken) {
+            localStorage.setItem('refreshToken', newRefreshToken);
+          }
+
+          axiosInstance.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          onTokenRefreshed(newAccessToken);
+
+          // 원래 요청의 헤더도 업데이트
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axiosInstance(originalRequest);
+        } catch (refreshErr) {
+          console.error('Token refresh failed:', refreshErr);
+          return Promise.reject(refreshErr);
+        } finally {
+          isRefreshing = false;
+        }
       }
+
+      const data = error.response?.data;
+      const message =
+        typeof data === 'string' ? data : typeof data?.message === 'string' ? data.message : '요청에 실패했습니다.';
+
+      return Promise.reject(new Error(message));
     }
+  );
+  return axiosInstance;
+};
 
-    const data = error.response?.data;
-    const message =
-      typeof data === 'string' ? data : typeof data?.message === 'string' ? data.message : '요청에 실패했습니다.';
+const AxiosDefault = () => {
+  const axiosInstance = axios.create({
+    baseURL: process.env.API_URL || '',
+    withCredentials: true,
+    adapter: fetchAdapter,
+  });
 
-    return Promise.reject(new Error(message));
-  },
-);
+  requestInterceptor(axiosInstance);
+  responseInterceptor(axiosInstance);
+
+  return axiosInstance;
+};
+
+const customAxios = AxiosDefault(); // 인스턴스 생성
 
 export default customAxios;
