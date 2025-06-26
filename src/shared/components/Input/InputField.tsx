@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { fieldPresets, PresetFieldName, presetValidators } from './InputFieldPresets';
+import { fieldPresets, PresetFieldName } from './InputFieldPresets';
 import { SxProps, Theme } from '@mui/material';
 import { colorChips } from '@/shared/styles/colorChips';
 
@@ -36,19 +36,26 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
     name === 'newPasswordConfirm';
   const inputType = isPasswordField ? (showPassword ? 'text' : 'password') : preset.type;
 
-  let resolvedRules = (preset.rules ?? {}) as RegisterOptions<T, Path<T>>;
+  let resolvedRules: Omit<
+    RegisterOptions<T, Path<T> & PresetFieldName>,
+    'disabled' | 'setValueAs' | 'valueAsNumber' | 'valueAsDate'
+  > = {};
 
-  if (name === 'passwordConfirm' && typeof presetValidators.passwordConfirm === 'function') {
-    const getPassword = () => getValues('password' as Path<T>);
-    resolvedRules = {
-      ...resolvedRules,
-      validate: (value: string) => presetValidators.passwordConfirm(value, getPassword),
-    };
+  if (typeof preset.rules === 'function') {
+    resolvedRules = preset.rules(getValues) as Omit<
+      RegisterOptions<T, Path<T> & PresetFieldName>,
+      'disabled' | 'setValueAs' | 'valueAsNumber' | 'valueAsDate'
+    >;
+  } else {
+    resolvedRules = (preset.rules ?? {}) as Omit<
+      RegisterOptions<T, Path<T> & PresetFieldName>,
+      'disabled' | 'setValueAs' | 'valueAsNumber' | 'valueAsDate'
+    >;
   }
 
   const formatComma = (value: string): string => {
     const raw = value.replace(/,/g, '');
-    if (!raw || isNaN(Number(raw)) || Number(raw) === 0) return ''; // ← 핵심
+    if (!raw || isNaN(Number(raw)) || Number(raw) === 0) return '';
     return Number(raw).toLocaleString();
   };
 
@@ -72,10 +79,12 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
           maxRows={isTextarea ? 12 : undefined}
           value={
             isCommaField
-              ? field.value === '0' || field.value === 0 || !field.value
+              ? !field.value || isNaN(Number(field.value))
                 ? ''
-                : formatComma(field.value)
-              : field.value ?? ''
+                : formatComma(String(field.value))
+              : typeof field.value === 'string' || typeof field.value === 'number'
+              ? field.value
+              : ''
           }
           onChange={
             isCommaField
