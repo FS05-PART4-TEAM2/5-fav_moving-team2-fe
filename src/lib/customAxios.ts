@@ -191,16 +191,13 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
             // 배포 환경에서는 쿠키 기반으로 refresh
             res = await axiosInstance.post('/api/auth/refresh');
           }
-          console.log('refresh res', res);
           // 개발/배포 환경 모두에서 새로운 accessToken을 로컬스토리지에 저장
-          const newAccessToken = res.data.accessToken;
-          console.log('newAccessToken', newAccessToken);
+          const newAccessToken = res.data.data.accessToken;
           if (!newAccessToken) {
             return Promise.reject(new Error('No access token received'));
           }
           // 개발/배포 환경 모두에서 로컬스토리지 업데이트
           localStorage.setItem('accessToken', newAccessToken);
-          console.log('newAccessToken 로컬스토리지 저장 완료');
 
           // axios 인스턴스의 기본 헤더 업데이트
           axiosInstance.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
