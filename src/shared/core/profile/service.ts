@@ -15,11 +15,11 @@ export async function updateMoverProfile(formData: FormData) {
   return res.data;
 }
 
-interface BaseInfoPayload {
+export interface BaseInfoPayload {
   username: string;
   email: string;
   phoneNumber: string;
-  currPassword?: string;
+  currentPassword?: string;
   newPassword?: string;
 }
 

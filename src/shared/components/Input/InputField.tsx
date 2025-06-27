@@ -16,9 +16,10 @@ type InputFieldProps<T extends FieldValues> = {
   override?: Partial<Omit<TextFieldProps, 'name'>> & {
     backgroundColor?: string;
   };
+  mode?: 'create' | 'modify' | 'baseInfo';
 };
 
-export default function InputField<T extends FieldValues>({ name, override = {} }: InputFieldProps<T>) {
+export default function InputField<T extends FieldValues>({ name, override = {}, mode }: InputFieldProps<T>) {
   const { control, getValues, trigger } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState(false);
   const { backgroundColor, sx: overrideSx, ...textFieldOverride } = override ?? {};
@@ -77,6 +78,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
           multiline={isTextarea}
           minRows={isTextarea ? 6 : undefined}
           maxRows={isTextarea ? 12 : undefined}
+          disabled={name === 'email' && (mode === 'modify' || mode === 'baseInfo')}
           value={
             isCommaField
               ? !field.value || isNaN(Number(field.value))
@@ -135,6 +137,10 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                 '& fieldset': {
                   border: 'none',
                 },
+                '&.Mui-disabled': {
+                  pointerEvents: 'none',
+                  cursor: 'not-allowed',
+                },
 
                 ...(isTextarea && {
                   height: '160px',
@@ -174,6 +180,7 @@ export default function InputField<T extends FieldValues>({ name, override = {} 
                     scrollbarColor: `${colorChips.grayScale[300]}, transparent`,
                   }
                 : {},
+
               '& .MuiFormHelperText-root': {
                 textAlign: 'right',
                 marginLeft: 0,

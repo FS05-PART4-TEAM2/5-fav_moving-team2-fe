@@ -30,6 +30,9 @@ export interface MoverData {
   intro: string | null;
   career: string | null;
   detailDescription: string | null;
+  totalRating: number | null;
+  reviewCounts: number | null;
+  confirmQuotation: number | null;
   likeCount: number | null;
 }
 

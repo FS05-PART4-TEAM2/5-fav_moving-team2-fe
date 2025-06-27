@@ -45,6 +45,9 @@ export interface UserCardData {
   status?: QuotationStatus;
   isAssigned?: boolean;
   isAssignQuo?: boolean;
+  reviewCounts?: number;
+  totalRating?: number;
+  confirmedCounts?: number;
 }
 
 export type CardButtonType = 'solid' | 'outlined';
