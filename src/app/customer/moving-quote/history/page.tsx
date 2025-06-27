@@ -10,7 +10,7 @@ import { useSearchParams } from 'next/navigation';
 
 export default function CustomerMovingQuoteHistoryPage() {
   const { tabBarType, setTabBarType } = useTabBarType();
-  const { dataCache, loadingStates, loadPendingQuotes, loadReceivedQuotes } = useQuoteHistoryData();
+  const { dataCache, loadingStates } = useQuoteHistoryData();
   const searchParams = useSearchParams();
 
   // URL 파라미터로 탭 설정
@@ -22,17 +22,6 @@ export default function CustomerMovingQuoteHistoryPage() {
       setTabBarType('pendingQuote');
     }
   }, [searchParams, setTabBarType]);
-
-  // 탭 변경 시 해당 데이터가 없으면 로드
-
-  useEffect(() => {
-    if (tabBarType === 'pendingQuote') {
-      loadPendingQuotes();
-    } else if (tabBarType === 'receivedQuote') {
-      loadReceivedQuotes();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabBarType]);
 
   return (
     <Stack flex={1} justifyContent="center" alignItems="center" height="100%">

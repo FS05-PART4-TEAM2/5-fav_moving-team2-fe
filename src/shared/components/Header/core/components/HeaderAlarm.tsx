@@ -49,7 +49,7 @@ export const HeaderAlarm = ({ isDesktop, userMenuIconSize, openDropdown, onToggl
   // 알림 클릭 시 읽음 처리
   const handleClickAlarmCard = async (id: string, type: NotificationType, quotationId: string) => {
     try {
-      const result = await patchNotificationsReadApi(id, accessToken ?? '');
+      const result = await patchNotificationsReadApi(id);
       if (result.success) {
         refetch();
         if (userType === 'customer') {

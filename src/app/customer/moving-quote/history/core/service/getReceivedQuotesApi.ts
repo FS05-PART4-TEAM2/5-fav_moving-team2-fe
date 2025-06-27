@@ -8,13 +8,6 @@ interface ReceivedQuotesResponse {
 }
 
 export async function getReceivedQuotesApi() {
-  const res = await customAxios.get<ReceivedQuotesResponse>('/api/receivedQuo/customer/completed', {
-    fetchOptions: {
-      // cache: 'force-cache',
-      next: {
-        tags: ['received-quotes'],
-      },
-    },
-  });
+  const res = await customAxios.get<ReceivedQuotesResponse>('/api/receivedQuo/customer/completed');
   return res.data;
 }
