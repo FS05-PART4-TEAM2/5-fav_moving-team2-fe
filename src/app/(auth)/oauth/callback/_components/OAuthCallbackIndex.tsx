@@ -96,6 +96,9 @@ export default function OAuthCallbackIndex() {
             career: user.career,
             detailDescription: user.detailDescription,
             likeCount: user.likeCount,
+            totalRating: user.totalRating,
+            reviewCounts: user.reviewCounts,
+            confirmQuotation: user.confirmQuotation,
           });
 
           if (!user.isProfile) {

@@ -175,7 +175,7 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
           let res;
           if (process.env.NODE_ENV === 'development') {
             const refreshToken = localStorage.getItem('refreshToken');
-            
+
             if (!refreshToken) {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
@@ -191,14 +191,13 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
             // 배포 환경에서는 쿠키 기반으로 refresh
             res = await axiosInstance.post('/api/auth/refresh');
           }
-          // 개발/배포 환경 모두에서 새로운 accessToken을 로컬스토리지에 저장
           const newAccessToken = res.data.data.accessToken;
           if (!newAccessToken) {
             return Promise.reject(new Error('No access token received'));
           }
           // 개발/배포 환경 모두에서 로컬스토리지 업데이트
           localStorage.setItem('accessToken', newAccessToken);
-
+          
           // axios 인스턴스의 기본 헤더 업데이트
           axiosInstance.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
           onTokenRefreshed(newAccessToken);

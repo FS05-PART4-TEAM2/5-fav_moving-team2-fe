@@ -1,128 +1,62 @@
-import { useState, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getPendingQuotesApi } from '../service/getPendingQuotesApi';
 import { getReceivedQuotesApi } from '../service/getReceivedQuotesApi';
-import { CustomerQuoteHistoryData } from '@/shared/types/types';
-import { withMinLoadingTime } from '@/shared/utils/loadingUtils';
-import { revalidateCustomerQuoteHistory } from '@/shared/utils/revalidateTags';
-
-interface DataCache {
-  pendingQuotes: CustomerQuoteHistoryData[] | null;
-  receivedQuotes: CustomerQuoteHistoryData[] | null;
-}
+import { customerQuoteHistoryKeys } from '@/shared/utils/queryKeys';
 
 export const useQuoteHistoryData = () => {
-  const [dataCache, setDataCache] = useState<DataCache>({
-    pendingQuotes: null,
-    receivedQuotes: null,
-  });
-  const [loadingStates, setLoadingStates] = useState({
-    pendingQuotes: false,
-    receivedQuotes: false,
-  });
-
-  // 이미 로딩을 시도했는지 추적
-  const loadAttempted = useRef({
-    pendingQuotes: false,
-    receivedQuotes: false,
-  });
-
-  // 대기중 견적 데이터 로드
-  const loadPendingQuotes = async () => {
-    // 이미 데이터가 있거나 현재 로딩 중이면 재요청하지 않음
-    if (dataCache.pendingQuotes || loadingStates.pendingQuotes) return;
-
-    try {
-      setLoadingStates((prev) => ({ ...prev, pendingQuotes: true }));
-
-      // 이미 한 번 로딩을 시도했다면 최소 로딩 시간 없이 빠르게 로드
-      const shouldShowMinLoading = !loadAttempted.current.pendingQuotes;
-      loadAttempted.current.pendingQuotes = true;
-
-      const response = shouldShowMinLoading
-        ? await withMinLoadingTime(getPendingQuotesApi())
-        : await getPendingQuotesApi();
-
-      if (response.success) {
-        setDataCache((prev) => ({ ...prev, pendingQuotes: response.data }));
-      }
-    } catch {
-      alert('다시 시도해주세요.');
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, pendingQuotes: false }));
-    }
-  };
-
-  // 받았던 견적 데이터 로드
-  const loadReceivedQuotes = async () => {
-    // 이미 데이터가 있거나 현재 로딩 중이면 재요청하지 않음
-    if (dataCache.receivedQuotes || loadingStates.receivedQuotes) return;
-
-    try {
-      setLoadingStates((prev) => ({ ...prev, receivedQuotes: true }));
-
-      // 이미 한 번 로딩을 시도했다면 최소 로딩 시간 없이 빠르게 로드
-      const shouldShowMinLoading = !loadAttempted.current.receivedQuotes;
-      loadAttempted.current.receivedQuotes = true;
-
-      const response = shouldShowMinLoading
-        ? await withMinLoadingTime(getReceivedQuotesApi())
-        : await getReceivedQuotesApi();
-
-      if (response.success) {
-        setDataCache((prev) => ({ ...prev, receivedQuotes: response.data }));
-      }
-    } catch {
-      alert('다시 시도해주세요.');
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, receivedQuotes: false }));
-    }
-  };
-
-  // 강제 리패치 - 견적 확정 후 데이터 갱신용
-  const refreshPendingQuotes = async () => {
-    try {
-      setLoadingStates((prev) => ({ ...prev, pendingQuotes: true }));
+  const { 
+    data: pendingQuotes, 
+    isLoading: isPendingLoading,
+    refetch: refetchPending 
+  } = useQuery({
+    queryKey: customerQuoteHistoryKeys.pendingList(),
+    queryFn: async () => {
       const response = await getPendingQuotesApi();
-
-      if (response.success) {
-        setDataCache((prev) => ({ ...prev, pendingQuotes: response.data }));
+      if (!response.success) {
+        throw new Error('Failed to fetch pending quotes');
       }
-    } catch {
-      alert('다시 시도해주세요.');
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, pendingQuotes: false }));
-    }
-  };
+      return response.data;
+    },
+  });
 
-  const refreshReceivedQuotes = async () => {
-    try {
-      setLoadingStates((prev) => ({ ...prev, receivedQuotes: true }));
+  const { 
+    data: receivedQuotes, 
+    isLoading: isReceivedLoading,
+    refetch: refetchReceived 
+  } = useQuery({
+    queryKey: customerQuoteHistoryKeys.receivedList(),
+    queryFn: async () => {
       const response = await getReceivedQuotesApi();
-
-      if (response.success) {
-        setDataCache((prev) => ({ ...prev, receivedQuotes: response.data }));
+      if (!response.success) {
+        throw new Error('Failed to fetch received quotes');
       }
-    } catch {
-      alert('다시 시도해주세요.');
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, receivedQuotes: false }));
-    }
-  };
-  
+      return response.data;
+    },
+  });
+
   // 견적 확정 후 전체 데이터 갱신
-  // TODO: 여기 견적확정 버튼 클릭 후 받았던 견적 갱신되늰지 다시 확인해보기
   const refreshAllQuotes = async () => {
-    await Promise.all([refreshPendingQuotes(), refreshReceivedQuotes()]);
-    revalidateCustomerQuoteHistory();
+    try {
+      await Promise.all([
+        refetchReceived(),
+        refetchPending()
+      ]);
+    } catch {
+      alert('견적 데이터 갱신 중 오류가 발생했습니다.');
+    }
   };
 
   return {
-    dataCache,
-    loadingStates,
-    loadPendingQuotes,
-    loadReceivedQuotes,
-    refreshPendingQuotes,
-    refreshReceivedQuotes,
+    dataCache: {
+      pendingQuotes: pendingQuotes ?? null,
+      receivedQuotes: receivedQuotes ?? null,
+    },
+    loadingStates: {
+      pendingQuotes: isPendingLoading,
+      receivedQuotes: isReceivedLoading,
+    },
+    refreshPendingQuotes: refetchPending,
+    refreshReceivedQuotes: refetchReceived,
     refreshAllQuotes,
   };
 };

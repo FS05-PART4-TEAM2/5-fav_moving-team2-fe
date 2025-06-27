@@ -8,6 +8,7 @@ import { colorChips } from '@/shared/styles/colorChips';
 import Image from 'next/image';
 import { useMediaQuery } from '@mui/system';
 import theme from '@/shared/theme';
+import useUserStore from '@/shared/store/useUserStore';
 
 export default function ProfileImageUploader() {
   const {
@@ -15,9 +16,26 @@ export default function ProfileImageUploader() {
     formState: { errors },
   } = useFormContext();
 
+  const { userInfo } = useUserStore();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    if (userInfo?.profileImage && typeof userInfo.profileImage === 'string') {
+      (async () => {
+        try {
+          const res = await fetch(userInfo.profileImage!);
+          const blob = await res.blob();
+          const file = new File([blob], 'profile.jpg', { type: blob.type });
+          setPreviewUrl(URL.createObjectURL(file));
+        } catch {
+          console.error('기본 이미지 로딩 실패');
+        }
+      })();
+    }
+  }, [userInfo?.profileImage]);
+
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -49,9 +67,12 @@ export default function ProfileImageUploader() {
         name="profileImage"
         control={control}
         rules={{
-          validate: (value) => {
-            if (!value) return '이미지를 선택해주세요.';
-            if (value.size > 10 * 1024 * 1024) return '10MB 이하만 업로드 가능합니다.';
+          validate: (file: File | null) => {
+            if (!file && userInfo?.profileImage) {
+              return true;
+            }
+            if (!file) return '이미지를 선택해주세요.';
+            if (file.size > 10 * 1024 * 1024) return '10MB 이하만 업로드 가능합니다.';
             return true;
           },
         }}

@@ -113,7 +113,7 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     rules: {
       required: '한 줄 소개를 입력해 주세요',
       minLength: {
-        value: 2,
+        value: 8,
         message: '8자 이상이어야 합니다',
       },
     },
@@ -291,28 +291,37 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     type: 'password',
     autoComplete: 'current-password',
     defaultValue: '',
-    rules: {
-      required: '현재 비밀번호를 입력해 주세요',
-    },
+    rules: (getValues) => ({
+      validate: (value) => {
+        const pwd = getValues('newPassword');
+        if (pwd && !value) return '새 비밀번호 입력 시 현재 비밀번호는 필수입니다';
+        return true;
+      },
+    }),
   },
   newPassword: {
     placeholder: '새 비밀번호를 입력해 주세요',
     type: 'password',
     autoComplete: 'new-password',
     defaultValue: '',
-    rules: {
-      required: '새 비밀번호를 입력해 주세요',
-      minLength: {
-        value: 6,
-        message: '비밀번호는 최소 6자 이상이어야 합니다',
+    rules: (getValues) => ({
+      pattern: {
+        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{9,}$/,
+        message: '영문, 숫자, 특수문자를 포함해 9자 이상 입력해주세요',
       },
       validate: (value: string) => {
+        if (!value) return true;
         if (isSimplePassword(value)) {
           return '너무 단순한 비밀번호입니다. 다른 비밀번호를 입력해 주세요';
         }
+        if (value === getValues('currentPassword')) {
+          return '현재 비밀번호와 동일한 비밀번호는 사용할 수 없습니다';
+        }
         return true;
       },
-    },
+
+      deps: ['currentPassword', 'newPassword'],
+    }),
   },
   newPasswordConfirm: {
     placeholder: '새 비밀번호를 다시 입력해 주세요',
@@ -322,7 +331,7 @@ export const fieldPresets: Record<PresetFieldName, FieldPreset> = {
     rules: (getValues) => ({
       validate: (value: string) => {
         if (!value) return true;
-        return value === getValues('password') || '새 비밀번호가 일치하지 않습니다';
+        return value === getValues('newPassword') || '새 비밀번호가 일치하지 않습니다';
       },
       deps: ['newPassword', 'newPasswordConfirm'],
     }),

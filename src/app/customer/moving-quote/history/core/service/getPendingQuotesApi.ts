@@ -8,13 +8,6 @@ interface PendingQuotesResponse {
 }
 
 export async function getPendingQuotesApi() {
-  const res = await customAxios.get<PendingQuotesResponse>('/api/receivedQuo/customer/pending', {
-    fetchOptions: {
-      // cache: 'force-cache',
-      next: {
-        tags: ['pending-quotes'],
-      },
-    },
-  });
+  const res = await customAxios.get<PendingQuotesResponse>('/api/receivedQuo/customer/pending');
   return res.data;
 }

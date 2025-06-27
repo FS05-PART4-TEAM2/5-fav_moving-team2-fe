@@ -8,7 +8,6 @@ import { SolidButton } from '@/shared/components/Button/SolidButton';
 import Textarea from '@/shared/components/Input/TextArea';
 import Image from 'next/image';
 import { useCustomerReviewPost } from '../hooks/useCustomerReviewPost';
-import { revalidateReviewList } from '@/shared/utils/revalidateTags';
 
 interface WriteReviewModalProps {
   offerData: CustomerWriteReviewItem;
@@ -24,7 +23,6 @@ export const WriteReviewModal = ({ offerData, isOpen, onClose }: WriteReviewModa
   const handleClickSubmitButton = () => {
     // 리뷰 등록 후 캐시 초기화, 모달 닫기
     handleSubmit();
-    revalidateReviewList();
     onClose();
   };
 

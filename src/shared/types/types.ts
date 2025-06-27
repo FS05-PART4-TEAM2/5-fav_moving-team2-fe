@@ -52,9 +52,9 @@ export type RegionType =
   | 'JEJU';
 export type MoverFilterOption = 'MOSTREVIEW' | 'BESTRATING' | 'HIGHESTEXP' | 'MOSTCONFIRM';
 export type NotificationType =
-  | "QUOTE_ARRIVED"   // 새로운 견적
-  | "QUOTE_CONFIRMED" // 확정 견적
-  | "MOVE_SCHEDULE";  // 이사 당일
+  | 'QUOTE_ARRIVED' // 새로운 견적
+  | 'QUOTE_CONFIRMED' // 확정 견적
+  | 'MOVE_SCHEDULE'; // 이사 당일
 
 export interface GlobalResponse {
   success: boolean;
@@ -167,7 +167,7 @@ export interface MoverBaseInfoForm {
   username: string;
   email: string;
   phoneNumber: string;
-  currPassword?: string;
+  currentPassword?: string;
   newPassword?: string;
 }
 
@@ -378,7 +378,7 @@ export interface MoverDetailReviewResponse {
 export interface AssignMoverResponse {
   id: string;
   status: QuotationStatus;
-  rejectedReason: string | null; 
+  rejectedReason: string | null;
   moverId: string;
   customerId: string;
   quotationId: string;
@@ -546,6 +546,7 @@ export interface GetMoverProfileData {
   likeCount: number;
   totalRating: number;
   reviewCounts: number;
+  confirmQuotation: number;
   serviceList: string[] | null;
   serviceArea: string[] | null;
 }
@@ -573,6 +574,7 @@ export interface MoverLoginData {
     likeCount: number;
     totalRating: number;
     reviewCounts: number;
+    confirmQuotation: number;
     createdAt: string;
   };
 }

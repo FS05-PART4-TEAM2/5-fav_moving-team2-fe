@@ -7,3 +7,8 @@ export async function getReviewList(id: string, page: number): Promise<MoverDeta
   });
   return res.data.data;
 }
+
+export async function getMoverDetail(id: string) {
+  const res = await customAxios.get(`/api/mover/${id}`);
+  return res.data.data;
+}

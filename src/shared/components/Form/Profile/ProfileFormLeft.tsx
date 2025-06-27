@@ -57,6 +57,7 @@ export default function ProfileFormLeft({ mode, userType }: ProfileFormProps) {
               override={{
                 backgroundColor: colorChips.background['f7f7f7'],
               }}
+              mode={mode}
             />
           </Stack>
           <Divider sx={{ borderColor: colorChips.line['f2f2f2'] }} />

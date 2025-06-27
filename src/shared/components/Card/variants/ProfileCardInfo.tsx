@@ -71,7 +71,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
                 />
               </Stack>
               <Typo className={isMdDown ? 'text_M_13' : 'text_M_16'} style={{ color: colorChips.black[300] }}>
-                {data.review?.averageScore?.toFixed(1) ?? '0.0'}
+                {(data.totalRating ?? 0).toFixed(1)}
               </Typo>
               <Typo
                 className={isMdDown ? 'text_M_13' : 'text_M_16'}
@@ -81,7 +81,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
                   paddingRight: isMdDown ? '8px' : '16px',
                 }}
               >
-                ({data.review?.reviewer ?? 0})
+                ({data.reviewCounts ?? 0})
               </Typo>
             </Stack>
 
