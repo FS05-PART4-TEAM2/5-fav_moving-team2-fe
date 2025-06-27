@@ -7,7 +7,7 @@ export async function patchNotificationsReadApi(id: string) {
   try {
     const res = await customAxios.patch<GlobalResponse>(`/api/notifications/${id}/read`);
     return res.data;
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: '알림 읽음 처리에 실패했습니다.',
