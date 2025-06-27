@@ -69,7 +69,7 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
     : JSON.stringify(data);
 
   const response = await fetch(fullUrl, {
-    method,
+    method: method.toUpperCase(),
     headers: requestHeaders,
     body,
     credentials: 'include',
