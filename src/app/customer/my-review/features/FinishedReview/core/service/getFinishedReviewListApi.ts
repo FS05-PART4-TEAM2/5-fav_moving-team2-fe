@@ -13,14 +13,6 @@ type FinishedReviewListPayload = {
 };
 
 export async function getFinishedReviewListApi(customerId: string, payload: FinishedReviewListPayload) {
-  const res = await customAxios.get<FinishedReviewListResponse>(`/api/review/customer/${customerId}`, {
-    params: payload,
-    fetchOptions: {
-      // cache: 'force-cache',
-      next: {
-        tags: ['finished-review-list'],
-      },
-    },
-  });
+  const res = await customAxios.get<FinishedReviewListResponse>(`/api/review/customer/${customerId}`, { params: payload });
   return res.data;
 }

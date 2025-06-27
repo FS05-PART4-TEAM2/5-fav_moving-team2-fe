@@ -13,14 +13,6 @@ type WriteReviewListPayload = {
 };
 
 export async function getWriteReviewListApi(payload: WriteReviewListPayload) {
-  const res = await customAxios.get<WriteReviewListResponse>('/api/review/customer/offer', {
-    params: payload,
-    fetchOptions: {
-      // cache: 'force-cache',
-      next: {
-        tags: ['write-review-list'],
-      },
-    },
-  });
+  const res = await customAxios.get<WriteReviewListResponse>('/api/review/customer/offer', { params: payload });
   return res.data;
 }

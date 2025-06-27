@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { WriteReviewPayload } from '@/shared/types/types';
 import { postCustomerReviewApi } from '../service/postCustomerReviewApi';
+import { useWriteReviewList } from './useWriteReviewList';
+import { useFinishedReviewList } from '@/app/customer/my-review/features/FinishedReview/core/hooks/useFinishedReviewList';
 
 export const useCustomerReviewPost = (offerId: string) => {
+  const { refetch: refetchWriteReviewList } = useWriteReviewList();
+  const { refetch: refetchFinishedReviewList } = useFinishedReviewList();
+
   const [params, setParams] = useState<WriteReviewPayload>({
     content: '',
     rating: 0,
@@ -24,6 +29,9 @@ export const useCustomerReviewPost = (offerId: string) => {
     const res = await postCustomerReviewApi(offerId, params);
     if (res.success) {
       alert('리뷰가 등록되었습니다!');
+      // 리뷰 등록 후 리스트 데이터 갱신
+      refetchWriteReviewList?.();
+      refetchFinishedReviewList?.();
     }
   };
 
