@@ -41,7 +41,7 @@ export const useQuoteHistoryData = () => {
         refetchReceived(),
         refetchPending()
       ]);
-    } catch (error) {
+    } catch {
       alert('견적 데이터 갱신 중 오류가 발생했습니다.');
     }
   };
