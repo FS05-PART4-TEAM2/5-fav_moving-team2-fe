@@ -1,4 +1,10 @@
-import axios, { AxiosAdapter, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosAdapter,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
 // url 타입 보강
 type URLQueryParams = Record<string, string | number | boolean>;
@@ -91,6 +97,12 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
     };
     // config 정보도 직접 추가
     (error as any).config = internalConfig;
+
+    // error.message를 넘겨 alert를 띄우기 위해 넘김
+    if (typeof responseData === 'object' && responseData !== null && 'message' in responseData) {
+      error.message = responseData.message;
+    }
+
     throw error;
   }
 
@@ -126,7 +138,7 @@ const requestInterceptor = (axiosInstance: AxiosInstance) => {
     },
     function (error) {
       return Promise.reject(error);
-    }
+    },
   );
 
   return axiosInstance;
@@ -182,11 +194,15 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
               return Promise.reject(error);
             }
 
-            res = await axiosInstance.post('/api/auth/refresh', {}, {
-              headers: {
-                Authorization: `refresh-token ${refreshToken}`
+            res = await axiosInstance.post(
+              '/api/auth/refresh',
+              {},
+              {
+                headers: {
+                  Authorization: `refresh-token ${refreshToken}`,
+                },
               },
-            });
+            );
           } else {
             // 배포 환경에서는 쿠키 기반으로 refresh
             res = await axiosInstance.post('/api/auth/refresh');
@@ -197,7 +213,7 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
           }
           // 개발/배포 환경 모두에서 로컬스토리지 업데이트
           localStorage.setItem('accessToken', newAccessToken);
-          
+
           // axios 인스턴스의 기본 헤더 업데이트
           axiosInstance.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
           onTokenRefreshed(newAccessToken);
@@ -217,7 +233,7 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
         typeof data === 'string' ? data : typeof data?.message === 'string' ? data.message : '요청에 실패했습니다.';
 
       return Promise.reject(new Error(message));
-    }
+    },
   );
   return axiosInstance;
 };
