@@ -33,6 +33,7 @@ export interface MoverData {
   totalRating: number | null;
   reviewCounts: number | null;
   confirmQuotation: number | null;
+  confirmedCounts?: number | null;
   likeCount: number | null;
 }
 
