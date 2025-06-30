@@ -88,8 +88,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         if (userType === 'customer') {
           const { accessToken, refreshToken, customer } = res.data as CustomerLoginData;
 
-          if (!customer) {
-            alert('고객 로그인 정보가 존재하지 않습니다.');
+          if (!accessToken || !customer) {
+            alert(res.message || '고객 로그인 정보가 존재하지 않습니다.');
             return;
           }
           setUserInfo('customer', {
@@ -129,8 +129,8 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         if (userType === 'mover') {
           const { accessToken, refreshToken, mover } = res.data as MoverLoginData;
 
-          if (!mover) {
-            alert('기사 로그인 정보가 존재하지 않습니다.');
+          if (!accessToken || !mover) {
+            alert(res.message || '기사 로그인 정보가 존재하지 않습니다.');
             return;
           }
 
