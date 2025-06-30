@@ -86,7 +86,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         }
 
         if (userType === 'customer') {
-          const customer = (res?.data as CustomerLoginData).customer;
+          const { accessToken, refreshToken, customer } = res.data as CustomerLoginData;
 
           if (!customer) {
             alert('고객 로그인 정보가 존재하지 않습니다.');
@@ -111,9 +111,9 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
-          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('accessToken', accessToken);
           if (process.env.NODE_ENV === 'development') {
-            localStorage.setItem('refreshToken', res.data.refreshToken);
+            localStorage.setItem('refreshToken', refreshToken);
           }
 
           if (!customer.isProfile) {
@@ -127,7 +127,7 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           }
         }
         if (userType === 'mover') {
-          const mover = (res?.data as MoverLoginData).mover;
+          const { accessToken, refreshToken, mover } = res.data as MoverLoginData;
 
           if (!mover) {
             alert('기사 로그인 정보가 존재하지 않습니다.');
@@ -160,9 +160,9 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
           resetSearchMoverStore();
 
           //development 일때만 로컬에 저장
-          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('accessToken', accessToken);
           if (process.env.NODE_ENV === 'development') {
-            localStorage.setItem('refreshToken', res.data.refreshToken);
+            localStorage.setItem('refreshToken', refreshToken);
           }
 
           if (!mover.isProfile) {
@@ -191,10 +191,18 @@ export default function AuthForm({ mode, userType }: AuthFormProps) {
         return router.push(redirectPath);
       }
     } catch (err) {
-      const message =
-        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ??
-        (err as Error)?.message ??
-        '처리 중 오류가 발생했습니다.';
+      const customError = err as {
+        response?: {
+          data?: {
+            message?: string;
+            errorCode?: string;
+          };
+          status?: number;
+        };
+        message?: string;
+      };
+
+      const message = customError.response?.data?.message || customError.message || '처리 중 오류가 발생했습니다.';
       alert(message);
       return;
     }
