@@ -51,8 +51,20 @@ export function mapMoverProfileToCardData(moverData: MoverData, userInfo: UserIn
   };
 }
 export function mapReviewToCardData(review: MoverReviewListItem): UserCardData {
+  const nickname = review.customerNick.split(' ')[0];
+
+  const getMaskedNickname = (name: string) => {
+    if (name.length <= 3) {
+      return name[0] + '*'.repeat(name.length - 1);
+    } else {
+      return name.slice(0, 3) + '*'.repeat(name.length - 3);
+    }
+  };
+
+  const formattedNickname = getMaskedNickname(nickname);
+
   return {
-    name: review.customerNick,
+    name: formattedNickname,
     review: {
       content: review.content,
       averageScore: review.rating,

@@ -75,9 +75,13 @@ export default function RequestIndex() {
   const CheckboxFilterType = [
     {
       label: '서비스 가능 지역',
-      count:
-        (statsData?.startRegionStats?.[selectedRegion?.[0] ?? ''] ?? 0) +
-        (statsData?.endRegionStats?.[selectedRegion?.[0] ?? ''] ?? 0),
+      count: Array.isArray(selectedRegion)
+        ? selectedRegion.reduce(
+            (acc, region) =>
+              acc + (statsData?.startRegionStats?.[region] ?? 0) + (statsData?.endRegionStats?.[region] ?? 0),
+            0,
+          )
+        : 0,
       checked: selected['서비스 가능 지역'],
     },
     { label: '지정 견적 요청', count: statsData?.assignedQuotationCount ?? 0, checked: selected['지정 견적 요청'] },

@@ -18,8 +18,8 @@ export default function MoverMovingQuoteHistoryPage() {
         alignItems="flex-start"
         bgcolor={colorChips.background.f7f7f7}
       ></Stack>
-      {tabBarType === 'quoteOffer' && <QuoteOffer />}
-      {tabBarType === 'rejectedQuote' && <RejectedQuot />}
+      {tabBarType === 'quoteOffer' && <QuoteOffer tabType="quoteOffer" />}
+      {tabBarType === 'rejectedQuote' && <RejectedQuot tabType="rejectedQuote" />}
     </Stack>
   );
 }
