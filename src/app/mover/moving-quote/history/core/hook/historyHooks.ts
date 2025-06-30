@@ -1,12 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchRejectedQuotations, fetchSentQuotations } from '../Api/historyApi';
 import { PresetCardName, UserCardData } from '@/shared/components/Card/CardPresets';
-import {
-  cutAddress,
-  isValidStatus,
-  moveTypeToLabel,
-  QuotationAPIData,
-} from '../../../request/core/hook/mapToUserCardData';
+import { cutAddress, moveTypeToLabel, QuotationAPIData } from '../../../request/core/hook/mapToUserCardData';
 import dayjs from 'dayjs';
 
 export interface SentQuotationAPIData extends QuotationAPIData {
@@ -25,28 +20,28 @@ interface RejectedQuotationAPIData {
   price: number;
 }
 
-export function useInfiniteRejectedQuotations() {
+export function useInfiniteRejectedQuotations(tabType: string) {
   return useInfiniteQuery({
-    queryKey: ['infiniteRejectedQuotations'],
+    queryKey: ['infiniteRejectedQuotations', tabType],
     queryFn: ({ pageParam = 1 }) => fetchRejectedQuotations({ pageParam }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNextPage ? allPages.length + 1 : undefined;
     },
     initialPageParam: 1,
-    staleTime: 1000 * 60 * 3,
+    staleTime: 0,
   });
 }
 
 // 보낸 견적
-export function useInfiniteSentQuotations() {
+export function useInfiniteSentQuotations(tabType: string) {
   return useInfiniteQuery({
-    queryKey: ['infiniteSentQuotations'],
+    queryKey: ['infiniteSentQuotations', tabType],
     queryFn: ({ pageParam = 1 }) => fetchSentQuotations({ pageParam }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.hasNextPage ? allPages.length + 1 : undefined;
     },
     initialPageParam: 1,
-    staleTime: 1000 * 60 * 3,
+    staleTime: 0,
   });
 }
 
@@ -54,6 +49,33 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
   type: PresetCardName;
   data: UserCardData;
 } {
+  const isPastMoveDay = dayjs().isAfter(dayjs(apiData.moveDate).add(1, 'day'), 'day');
+  let cardType: PresetCardName = 'moveQuotation';
+  let displayStatus: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'REFUSED';
+
+  const isFinishRequest = apiData.isConfirmedToMe === true && apiData.status === 'COMPLETED' && isPastMoveDay;
+  const isRefuse = apiData.isConfirmedToMe === false && apiData.status === 'COMPLETED';
+  const isConfirmedQuotation = apiData.isConfirmedToMe === true && apiData.status === 'CONFIRMED';
+  const isConfirmPending = apiData.isConfirmedToMe === false && apiData.status === 'CONFIRMED';
+
+  if (isFinishRequest) {
+    //  이사 완료
+    cardType = 'finishRequest';
+    displayStatus = 'COMPLETED';
+  } else if (isConfirmedQuotation || isConfirmPending) {
+    // 확정 견적 / 확정 대기
+    cardType = 'moveQuotation';
+    displayStatus = 'CONFIRMED';
+  } else if (isRefuse) {
+    //  거절된 견적
+    cardType = 'refuse';
+    displayStatus = 'REFUSED';
+  } else {
+    //  견적 대기
+    cardType = 'moveQuotation';
+    displayStatus = 'PENDING';
+  }
+
   const cardData: UserCardData = {
     id: apiData.id,
     name: apiData.customerNick,
@@ -62,22 +84,10 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
     startPoint: cutAddress(apiData.startAddress),
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
-    status: isValidStatus(apiData.status) ? apiData.status : undefined,
+    isConfirmedToMe: apiData.isConfirmedToMe,
+    status: displayStatus,
     price: apiData.price ? Number(apiData.price) : undefined,
   };
-
-  const isPastMoveDay = dayjs().isAfter(dayjs(apiData.moveDate).add(1, 'day'), 'day');
-  const isFinishRequest = apiData.isConfirmedToMe === true && isPastMoveDay;
-  const isRefuse = apiData.isConfirmedToMe === false && apiData.status === 'CONFIRMED';
-
-  let cardType: PresetCardName = 'moveQuotation';
-  if (isFinishRequest) {
-    cardType = 'finishRequest';
-  }
-
-  if (isRefuse) {
-    cardType = 'refuse';
-  }
 
   return { type: cardType, data: cardData };
 }
@@ -90,7 +100,7 @@ export function mapRejectedQuotationToCardData(apiData: RejectedQuotationAPIData
     startPoint: cutAddress(apiData.startAddress),
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
-    isAssigned: false,
+    isAssigned: true,
     price: apiData.price ? Number(apiData.price) : undefined,
   };
 }

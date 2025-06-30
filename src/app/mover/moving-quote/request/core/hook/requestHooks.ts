@@ -14,7 +14,7 @@ export const useMoverQuotations = (params: GetMoverQuotationsParams) =>
     queryFn: ({ pageParam }) => getMoverQuotations({ ...params, ...pageParam }),
     initialPageParam: undefined,
     getNextPageParam: (last) => last.nextCursor ?? undefined,
-    staleTime: 1000 * 60 * 3,
+    staleTime: 0,
     refetchOnWindowFocus: false,
   });
 
@@ -22,6 +22,6 @@ export function useMoverQuotationStats(params: Omit<GetMoverQuotationsParams, 'c
   return useQuery({
     queryKey: ['moverQuotationStats', params],
     queryFn: () => getMoverQuotationStats(params),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
   });
 }

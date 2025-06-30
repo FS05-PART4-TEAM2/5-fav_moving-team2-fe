@@ -8,13 +8,15 @@ import Image from 'next/image';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { colorChips } from '@/shared/styles/colorChips';
 
-export default function QuoteOffer() {
+export default function QuoteOffer({ tabType }: { tabType: string }) {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteSentQuotations();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, refetch } =
+    useInfiniteSentQuotations(tabType);
 
   const list = data?.pages.flatMap((page) => page.list) ?? [];
+
   const cards = list.map(mapSentQuotationToCardData);
 
   const isJustifyContent = isPending || isFetchingNextPage || list.length === 0;
@@ -35,6 +37,10 @@ export default function QuoteOffer() {
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bottomRef.current, hasNextPage]);
+
+  useEffect(() => {
+    refetch();
+  }, [tabType, refetch]);
 
   return (
     <Grid container spacing={2} width="100%" justifyContent={isJustifyContent ? 'center' : ''}>
