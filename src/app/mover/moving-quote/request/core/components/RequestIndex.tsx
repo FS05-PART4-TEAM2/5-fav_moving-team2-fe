@@ -75,8 +75,8 @@ export default function RequestIndex() {
   const CheckboxFilterType = [
     {
       label: '서비스 가능 지역',
-      count: Array.isArray(selectedRegion)
-        ? selectedRegion.reduce(
+      count: Array.isArray(moverData?.serviceArea)
+        ? moverData.serviceArea.reduce(
             (acc, region) =>
               acc + (statsData?.startRegionStats?.[region] ?? 0) + (statsData?.endRegionStats?.[region] ?? 0),
             0,
