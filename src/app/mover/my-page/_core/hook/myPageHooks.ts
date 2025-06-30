@@ -10,7 +10,7 @@ export const useReviewList = (id: string, page: number) => {
     queryKey: ['reviewList', id, page],
     queryFn: () => getReviewList(id, page),
     enabled: !!id,
-    staleTime: 1000 * 60 * 3,
+    staleTime: 0,
     placeholderData: (prev) => prev,
   });
 };
@@ -20,7 +20,7 @@ export function useMoverDetail(id: string) {
     queryKey: ['moverDetail', id],
     queryFn: () => getMoverDetail(id),
     enabled: !!id,
-    staleTime: 1000 * 60 * 3,
+    staleTime: 0,
     placeholderData: (prev) => prev,
   });
 }
