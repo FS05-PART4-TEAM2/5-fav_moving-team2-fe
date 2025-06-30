@@ -22,7 +22,9 @@ export default function ProfileImageUploader() {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    if (userInfo?.profileImage && typeof userInfo.profileImage === 'string') {
+    if (!userInfo?.profileImage || typeof userInfo.profileImage !== 'string') return;
+
+    if (process.env.NODE_ENV === 'development') {
       (async () => {
         try {
           const res = await fetch(userInfo.profileImage!);
@@ -30,9 +32,11 @@ export default function ProfileImageUploader() {
           const file = new File([blob], 'profile.jpg', { type: blob.type });
           setPreviewUrl(URL.createObjectURL(file));
         } catch {
-          console.error('기본 이미지 로딩 실패');
+          console.error('이미지 fetch 실패');
         }
       })();
+    } else {
+      setPreviewUrl(userInfo.profileImage);
     }
   }, [userInfo?.profileImage]);
 
