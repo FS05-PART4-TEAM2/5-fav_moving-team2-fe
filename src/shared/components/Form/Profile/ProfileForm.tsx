@@ -304,8 +304,8 @@ export default function ProfileForm({ mode, userType }: ProfileFormProps) {
         const regionKeys = (d.region ?? []).map(getRegionKey).filter(Boolean);
 
         if (d.username) formData.append('username', d.username);
-        if (d.currPassword && d.newPassword) {
-          formData.append('currPassword', d.currPassword);
+        if (d.currentPassword && d.newPassword) {
+          formData.append('currPassword', d.currentPassword);
           formData.append('newPassword', d.newPassword);
         }
         if (d.profileImage && d.profileImage instanceof File) {

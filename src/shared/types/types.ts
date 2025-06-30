@@ -144,7 +144,7 @@ export interface FormUIFields {
 export interface CustomerProfileForm extends FormUIFields {
   profileImage?: File;
   username?: string;
-  currPassword?: string;
+  currentPassword?: string;
   newPassword?: string;
   phoneNumber: string;
   wantService: string[];
