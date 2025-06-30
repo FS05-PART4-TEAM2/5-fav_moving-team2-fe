@@ -72,10 +72,7 @@ export default function ProfileImageUploader() {
         control={control}
         rules={{
           validate: (file: File | null) => {
-            if (!file && userInfo?.profileImage) {
-              return true;
-            }
-            if (!file) return '이미지를 선택해주세요.';
+            if (!file) return true;
             if (file.size > 10 * 1024 * 1024) return '10MB 이하만 업로드 가능합니다.';
             return true;
           },
