@@ -21,6 +21,7 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 // Error 타입 확장
 interface CustomError extends Error {
+  config?: ExtendedAxiosRequestConfig;
   response?: {
     data: any;
     status: number;
@@ -88,6 +89,9 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
   // 401 응답을 error로 처리
   if (response.status === 401) {
     const error = new Error('Unauthorized') as CustomError;
+
+    error.config = internalConfig;
+
     error.response = {
       data: responseData,
       status: response.status,
@@ -95,8 +99,6 @@ const fetchAdapter: AxiosAdapter = async (config: AxiosRequestConfig): Promise<A
       headers: Object.fromEntries(response.headers.entries()),
       config: internalConfig,
     };
-    // config 정보도 직접 추가
-    (error as any).config = internalConfig;
 
     // error.message를 넘겨 alert를 띄우기 위해 넘김
     if (typeof responseData === 'object' && responseData !== null && 'message' in responseData) {
