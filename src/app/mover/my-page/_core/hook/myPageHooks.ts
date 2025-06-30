@@ -47,7 +47,7 @@ export function mapMoverProfileToCardData(moverData: MoverData, userInfo: UserIn
     career: Number(moverData.career ?? 0),
     totalRating: Number(moverData.totalRating ?? 0),
     reviewCounts: Number(moverData.reviewCounts ?? 0),
-    confirmation: Number(moverData.confirmQuotation ?? 0),
+    confirmation: Number(moverData.confirmedCounts ?? 0),
   };
 }
 export function mapReviewToCardData(review: MoverReviewListItem): UserCardData {

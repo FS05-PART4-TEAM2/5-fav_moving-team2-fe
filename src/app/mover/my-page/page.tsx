@@ -28,7 +28,6 @@ export default function Page() {
 
   const { data: moverDetail } = useMoverDetail(userId);
   const { data } = useReviewList(userId, page);
-
   if (!userInfo || !moverDetail) return null;
 
   const reviews = data?.list ?? [];
