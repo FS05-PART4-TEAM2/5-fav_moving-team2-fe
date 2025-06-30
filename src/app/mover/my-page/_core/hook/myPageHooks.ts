@@ -44,10 +44,10 @@ export function mapMoverProfileToCardData(moverData: MoverData, userInfo: UserIn
     region: mapKeysToLabels(moverData.serviceArea, REGIONS),
     detailDescription: moverData.intro ?? undefined,
     likeCount: moverData.likeCount ?? undefined,
-    career: moverData.career ? Number(moverData.career) : undefined,
-    totalRating: moverData.totalRating ? Number(moverData.totalRating) : undefined,
-    reviewCounts: moverData.reviewCounts ? Number(moverData.reviewCounts) : undefined,
-    confirmation: moverData.confirmQuotation ? Number(moverData.confirmQuotation) : undefined,
+    career: Number(moverData.career ?? 0),
+    totalRating: Number(moverData.totalRating ?? 0),
+    reviewCounts: Number(moverData.reviewCounts ?? 0),
+    confirmation: Number(moverData.confirmQuotation ?? 0),
   };
 }
 export function mapReviewToCardData(review: MoverReviewListItem): UserCardData {
