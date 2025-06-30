@@ -16,6 +16,8 @@ export type PresetCardName =
   | 'review' // 리뷰 카드
   | 'refuse'; //유저에 의해 거절
 
+type QuotationDisplayStatus = QuotationStatus | 'REFUSED';
+
 export interface UserCardData {
   id?: string;
   name?: string;
@@ -42,11 +44,12 @@ export interface UserCardData {
   quoteAmount?: number;
   reviewContent?: string;
   createTime?: string;
-  status?: QuotationStatus;
+  status?: QuotationDisplayStatus;
   isAssigned?: boolean;
   isAssignQuo?: boolean;
   reviewCounts?: number;
   totalRating?: number;
+  isConfirmedToMe?: boolean;
   confirmedCounts?: number;
 }
 

@@ -49,6 +49,7 @@ export function mapToUserCardData(apiData: QuotationAPIData): UserCardData {
     endPoint: cutAddress(apiData.endAddress),
     service: [moveTypeToLabel(apiData.moveType)],
     isAssigned: apiData.isAssigned,
+    isAssignQuo: apiData.isAssigned,
     status: isValidStatus(apiData.status) ? apiData.status : undefined,
   };
 }

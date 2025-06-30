@@ -107,6 +107,23 @@ export const Category = {
       md: '34px',
     },
   },
+  confirmedWait: {
+    type: '확정 대기',
+    radius: '4px',
+    color: colorChips.primary[400],
+    bgColor: colorChips.line['f2f3f8'],
+    className: 'text_SB_16',
+    mobileClassName: 'text_SB_13',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 6px',
+      md: '4px 6px',
+    },
+    height: {
+      xs: '26px',
+      md: '34px',
+    },
+  },
   confirmed: {
     type: '확정 견적',
     radius: '4px',
@@ -174,6 +191,40 @@ export const Category = {
     height: {
       sm: '24px',
       md: '28px',
+    },
+  },
+  done: {
+    type: '이사 완료',
+    radius: '4px',
+    color: colorChips.primary[400],
+    bgColor: colorChips.line['f2f3f8'],
+    className: 'text_SB_16',
+    mobileClassName: 'text_SB_13',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 6px',
+      md: '4px 6px',
+    },
+    height: {
+      xs: '26px',
+      md: '34px',
+    },
+  },
+  refuse: {
+    type: '거절된 견적',
+    radius: '4px',
+    color: colorChips.primary[400],
+    bgColor: colorChips.line['f2f3f8'],
+    className: 'text_SB_16',
+    mobileClassName: 'text_SB_13',
+    shadow: '4px 4px 8px rgba(217, 217, 217, 0.1)',
+    padding: {
+      xs: '2px 6px',
+      md: '4px 6px',
+    },
+    height: {
+      xs: '26px',
+      md: '34px',
     },
   },
 } as const;

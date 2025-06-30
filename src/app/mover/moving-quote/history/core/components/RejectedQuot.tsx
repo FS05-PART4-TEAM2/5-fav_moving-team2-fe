@@ -9,13 +9,15 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import Image from 'next/image';
 import { colorChips } from '@/shared/styles/colorChips';
 
-export default function RejectedQuot() {
+export default function RejectedQuot({ tabType }: { tabType: string }) {
   const isMd = useMediaQuery(theme.breakpoints.down('md'));
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useInfiniteRejectedQuotations();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, refetch } =
+    useInfiniteRejectedQuotations(tabType);
 
   const list = data?.pages.flatMap((page) => page.list) ?? [];
+  console.log('RejectedQuotlist', list);
   const cards = list.map(mapRejectedQuotationToCardData);
 
   const isJustifyContent = isPending || isFetchingNextPage || list.length === 0;
@@ -36,6 +38,10 @@ export default function RejectedQuot() {
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bottomRef.current, hasNextPage]);
+
+  useEffect(() => {
+    refetch();
+  }, [tabType, refetch]);
 
   return (
     <Grid container spacing={2} width="100%" justifyContent={isJustifyContent ? 'center' : ''}>

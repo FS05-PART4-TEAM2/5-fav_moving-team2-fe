@@ -22,7 +22,7 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
   const isMd = useMediaQuery(theme.breakpoints.up('md'));
   const showButtons = type === 'request';
-  const isConfirmRequest = type === 'confirmRequest';
+  const isConfirmRequest = type === 'confirmRequest' || type === 'rejectRequest';
   const isAssigned = !!data.isAssigned;
   const formatted = (date: string): string => {
     return dayjs(date).format('YYYY.MM.DD(dd)');
@@ -150,7 +150,7 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
       );
     }
 
-    if (isMd) {
+    if (isMd || isConfirmRequest) {
       return (
         <>
           <Divider />
@@ -301,10 +301,10 @@ export default function RequestConfirmCardInfo({ type, data, onClickRequest, onC
       borderRadius={isMdDown ? '16px' : '24px'}
     >
       <Stack direction={isSm ? 'column' : 'row'} justifyContent="space-between" alignItems="flex-start">
-        {!isModal && <Typo className={isMdDown ? 'text_SB_16' : 'text_SB_20'}>{`${data.name} 고객님`}</Typo>}
+        {!isModal && <Typo className={isSm ? 'text_SB_16' : 'text_SB_20'}>{`${data.name} 고객님`}</Typo>}
 
         {isSm && !isModal && (
-          <Stack direction="row" alignItems="center" sx={{ textWrap: 'nowrap' }} gap="8px">
+          <Stack direction="row" alignItems="center" sx={{ textWrap: 'nowrap' }} gap="8px" paddingTop="16px">
             <Typo
               className="text_M_14"
               style={{

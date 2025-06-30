@@ -80,7 +80,7 @@ export default function QuotationDetail({ quoteId }: QuotationDetailProps) {
       gap="117px"
     >
       <Stack width="100%" direction="column" gap={isDesktop ? '40px' : '24px'}>
-        <Card type="moveQuotation" data={cardData} />
+        <Card type="confirmRequest" data={cardData} />
 
         {!isDesktop && (
           <>

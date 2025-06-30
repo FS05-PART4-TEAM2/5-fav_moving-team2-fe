@@ -28,6 +28,7 @@ export default function Card({ type, data, isModal, height, bgColor, onRequestCl
   const isProfile = type === 'profile';
   const isReview = type === 'review';
   const isFinish = type === 'rejectRequest' || type === 'finishRequest' || type === 'refuse';
+  const isFinishExcludeReject = type === 'finishRequest' || type === 'refuse';
 
   return (
     <Box position="relative" width="100%">
@@ -56,7 +57,7 @@ export default function Card({ type, data, isModal, height, bgColor, onRequestCl
                 : '이사 완료된 견적이에요'}
             </Typo>
 
-            {isFinish && (
+            {isFinishExcludeReject && (
               <OutlinedButton
                 text="견적 상세보기"
                 width="100%"

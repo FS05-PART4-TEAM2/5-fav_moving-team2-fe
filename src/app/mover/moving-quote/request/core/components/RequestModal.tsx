@@ -51,7 +51,6 @@ export default function RequestModal({ mode, requestCardData, onClose, onSuccess
         const payload = {
           price: Number(data.quoteAmount),
           comment: data.comment ?? '',
-
           customerId: requestCardData.customerId as string,
           quotationId: requestCardData.id as string,
           isAssignQuo: !!requestCardData.isAssignQuo,

@@ -24,6 +24,9 @@ const labelToCategoryKey: Record<string, CategoryKey> = {
   '지정 견적 요청': 'select',
   '견적 대기': 'wait',
   '확정 견적': 'confirmed',
+  '확정 대기': 'confirmedWait',
+  '이사 완료': 'done',
+  '거절된 견적': 'refuse',
 };
 
 export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
@@ -53,6 +56,7 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
     type !== 'finishReview';
 
   const services: string[] = Array.isArray(data.service) ? data.service : [];
+
   const name: string = data.name || data.name || '';
   const detailDescription: string = data.detailDescription || '';
 
@@ -68,7 +72,10 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
               {data.status?.toUpperCase() === 'PENDING' && <Chip type="wait" />}
-              {data.status?.toUpperCase() === 'CONFIRMED' && <Chip type="confirmed" />}
+              {data.status?.toUpperCase() === 'CONFIRMED' &&
+                (data.isAssigned || data.isConfirmedToMe ? <Chip type="confirmed" /> : <Chip type="confirmedWait" />)}
+              {data.status?.toUpperCase() === 'COMPLETED' && <Chip type="done" />}
+              {data.status?.toUpperCase() === 'REFUSED' && <Chip type="refuse" />}
 
               {services.map((label, idx) => {
                 const category = labelToCategoryKey[label];
