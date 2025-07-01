@@ -8,6 +8,7 @@ import { QueryProvider } from '@/shared/context/QueryProvider';
 import KakaoScriptLoader from '@/shared/context/KakaoScriptLoader';
 import FaceHydration from './_core/_components/FaceHydration';
 import AlertListener from './_core/_components/AlertListener';
+import SessionCheck from './_core/_components/SessionCheck';
 
 export const metadata: Metadata = {
   title: 'Moving',
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <FaceHydration />
+            <SessionCheck />
             <Suspense fallback={null}>
               <AlertListener />
             </Suspense>
