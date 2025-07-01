@@ -47,7 +47,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <FaceHydration />
-            <SessionCheck />
             <Suspense fallback={null}>
               <AlertListener />
             </Suspense>
