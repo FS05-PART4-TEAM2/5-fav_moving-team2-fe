@@ -16,8 +16,6 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
     return dayjs(date).format('YYYY-MM-DD');
   };
 
-  console.log('review data', data);
-
   return (
     <Stack direction="column">
       <Stack direction="row" alignItems="center" paddingBottom="8px">
