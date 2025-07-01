@@ -1,4 +1,4 @@
-import { Divider, Stack, useMediaQuery } from '@mui/material';
+import { Divider, Rating, Stack, useMediaQuery } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { UserCardData } from './CardPresets';
 import theme from '@/shared/theme';
@@ -15,6 +15,8 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
   const formattedDate = (date: string) => {
     return dayjs(date).format('YYYY-MM-DD');
   };
+
+  console.log('review data', data);
 
   return (
     <Stack direction="column">
@@ -42,23 +44,26 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
         </Typo>
       </Stack>
 
-      <Stack
-        position="relative"
-        sx={{
-          width: {
-            xs: '20px',
-            md: '24px',
-          },
-          height: { xs: '20px', md: '24px' },
-          mb: isMdDown ? '8px' : '12px',
-        }}
-      >
-        <Image
-          src="/assets/images/star-icon/star-yellow-24x24.svg"
-          alt="like icon"
-          fill
-          style={{ objectFit: 'contain' }}
-        />
+      <Stack direction="row" spacing={0.5} mb={isMdDown ? '8px' : '12px'}>
+        <Stack
+          position="relative"
+          sx={{
+            width: {
+              xs: '20px',
+              md: '24px',
+            },
+            height: { xs: '20px', md: '24px' },
+          }}
+        >
+          <Rating
+            name="reviews"
+            value={data.review?.averageScore}
+            precision={0.1}
+            readOnly
+            icon={<StarIcon filled={true} />}
+            emptyIcon={<StarIcon filled={false} />}
+          />
+        </Stack>
       </Stack>
 
       <Typo
@@ -72,3 +77,12 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
     </Stack>
   );
 }
+
+const StarIcon = ({ filled = true }: { filled?: boolean }) => (
+  <Image
+    src={filled ? `/assets/images/star-icon/star-yellow-24x24.svg` : `/assets/images/star-icon/star-gray-24x24.svg`}
+    alt="star"
+    width={24}
+    height={24}
+  />
+);

@@ -51,6 +51,7 @@ export interface UserCardData {
   totalRating?: number;
   isConfirmedToMe?: boolean;
   confirmedCounts?: number;
+  rating?: number;
 }
 
 export type CardButtonType = 'solid' | 'outlined';
