@@ -71,9 +71,9 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
         {(services.length > 0 || detailDescription) && type !== 'profile' && type !== 'review' ? (
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
             <Stack direction="row" flexWrap="wrap" sx={{ gap: { xs: '8px', md: '12px' }, flex: 1, minWidth: 0 }}>
-              {data.status?.toUpperCase() === 'PENDING' && <Chip type="wait" />}
-              {data.status?.toUpperCase() === 'CONFIRMED' &&
-                (data.isAssigned || data.isConfirmedToMe ? <Chip type="confirmed" /> : <Chip type="confirmedWait" />)}
+              {data.status?.toUpperCase() === 'PENDING' &&
+                (data.isConfirmedToMe != null ? <Chip type="confirmedWait" /> : <Chip type="wait" />)}
+              {data.status?.toUpperCase() === 'CONFIRMED' && data.isConfirmedToMe && <Chip type="confirmed" />}
               {data.status?.toUpperCase() === 'COMPLETED' && <Chip type="done" />}
               {data.status?.toUpperCase() === 'REFUSED' && <Chip type="refuse" />}
 
