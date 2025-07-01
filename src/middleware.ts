@@ -38,6 +38,10 @@ export default function middleware(req: NextRequest) {
   console.log(' pathname', pathname);
   console.log(' token', token);
 
+  if (pathname === '/api/auth/login' || pathname === '/api/auth/signup') {
+    return NextResponse.next();
+  }
+
   if (isPublic(pathname)) {
     if (AUTH_PAGES.includes(pathname) && token) {
       try {
