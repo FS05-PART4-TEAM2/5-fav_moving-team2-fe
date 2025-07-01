@@ -2,7 +2,7 @@
 
 import { SolidButton } from '@/shared/components/Button/SolidButton';
 import { Typo } from '@/shared/styles/Typo/Typo';
-import { Box, Typography, Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
