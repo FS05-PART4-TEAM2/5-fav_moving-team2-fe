@@ -44,7 +44,7 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
         </Typo>
       </Stack>
 
-      <Stack direction="row" spacing={1} mb={isMdDown ? '8px' : '12px'}>
+      <Stack direction="row" spacing={0.5} mb={isMdDown ? '8px' : '12px'}>
         {Array.from({ length: data.review?.averageScore || 0 }).map((_, index) => (
           <Stack
             key={index}
