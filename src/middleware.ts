@@ -74,8 +74,9 @@ export default function middleware(req: NextRequest) {
     }
 
     if (refresh) {
-      console.log('→ 페이지 요청, refreshToken 있음 => 401 상태 반환');
-      return new NextResponse(null, { status: 401 });
+      const url = req.nextUrl.clone();
+      url.pathname = '/api/auth/refresh';
+      return NextResponse.rewrite(url);
     }
 
     console.log(`→ Redirecting to ${pathname.startsWith('/mover') ? 'mover' : 'customer'} login`);
