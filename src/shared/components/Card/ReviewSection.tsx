@@ -1,4 +1,4 @@
-import { Divider, Stack, useMediaQuery } from '@mui/material';
+import { Divider, Rating, Stack, useMediaQuery } from '@mui/material';
 import { Typo } from '@/shared/styles/Typo/Typo';
 import { UserCardData } from './CardPresets';
 import theme from '@/shared/theme';
@@ -45,26 +45,25 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
       </Stack>
 
       <Stack direction="row" spacing={0.5} mb={isMdDown ? '8px' : '12px'}>
-        {Array.from({ length: data.review?.averageScore || 0 }).map((_, index) => (
-          <Stack
-            key={index}
-            position="relative"
-            sx={{
-              width: {
-                xs: '20px',
-                md: '24px',
-              },
-              height: { xs: '20px', md: '24px' },
-            }}
-          >
-            <Image
-              src="/assets/images/star-icon/star-yellow-24x24.svg"
-              alt={`star-${index + 1}`}
-              fill
-              style={{ objectFit: 'contain' }}
-            />
-          </Stack>
-        ))}
+        <Stack
+          position="relative"
+          sx={{
+            width: {
+              xs: '20px',
+              md: '24px',
+            },
+            height: { xs: '20px', md: '24px' },
+          }}
+        >
+          <Rating
+            name="reviews"
+            value={data.review?.averageScore}
+            precision={0.1}
+            readOnly
+            icon={<StarIcon filled={true} />}
+            emptyIcon={<StarIcon filled={false} />}
+          />
+        </Stack>
       </Stack>
 
       <Typo
@@ -78,3 +77,12 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
     </Stack>
   );
 }
+
+const StarIcon = ({ filled = true }: { filled?: boolean }) => (
+  <Image
+    src={filled ? `/assets/images/star-icon/star-yellow-24x24.svg` : `/assets/images/star-icon/star-gray-24x24.svg`}
+    alt="star"
+    width={24}
+    height={24}
+  />
+);
