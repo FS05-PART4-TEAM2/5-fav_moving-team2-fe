@@ -58,14 +58,13 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
   const isConfirmedQuotation =
     (apiData.isConfirmedToMe === true && apiData.status === 'CONFIRMED') ||
     (apiData.isConfirmedToMe === true && apiData.status === 'COMPLETED');
-  const isConfirmPending = apiData.isConfirmedToMe === false && apiData.status === 'CONFIRMED';
 
   if (isFinishRequest) {
     //  이사 완료
     cardType = 'finishRequest';
     displayStatus = 'COMPLETED';
-  } else if (isConfirmedQuotation || isConfirmPending) {
-    // 확정 견적 / 확정 대기
+  } else if (isConfirmedQuotation) {
+    // 확정 견적
     cardType = 'moveQuotation';
     displayStatus = 'CONFIRMED';
   } else if (isRefuse) {
