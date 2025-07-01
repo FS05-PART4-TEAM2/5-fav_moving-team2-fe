@@ -171,6 +171,15 @@ const responseInterceptor = (axiosInstance: AxiosInstance) => {
     async function (error) {
       const status = error.response?.status;
       const originalRequest = error.config || error.response?.config;
+      const isAuthApi =
+        originalRequest?.url?.endsWith('/api/auth/mover/login') ||
+        originalRequest?.url?.endsWith('/api/auth/customer/login') ||
+        originalRequest?.url?.endsWith('/api/auth/customer/login') ||
+        originalRequest?.url?.endsWith('/api/auth/mover/signup');
+
+      if (isAuthApi) {
+        return Promise.reject(error);
+      }
 
       if (status === 401 && !originalRequest._retry) {
         if (isRefreshing) {

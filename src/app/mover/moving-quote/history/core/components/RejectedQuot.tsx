@@ -17,7 +17,7 @@ export default function RejectedQuot({ tabType }: { tabType: string }) {
     useInfiniteRejectedQuotations(tabType);
 
   const list = data?.pages.flatMap((page) => page.list) ?? [];
-  console.log('RejectedQuotlist', list);
+
   const cards = list.map(mapRejectedQuotationToCardData);
 
   const isJustifyContent = isPending || isFetchingNextPage || list.length === 0;
