@@ -34,11 +34,15 @@ export default function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl;
   const referer = req.headers.get('referer') ?? '';
-  const token = req.cookies.get('accessToken')?.value;
+  const token = req.cookies?.get?.('accessToken')?.value ?? null;
+  const refresh = req.cookies?.get?.('refreshToken')?.value ?? null;
   console.log(' pathname', pathname);
   console.log(' token', token);
 
-  if (pathname === '/api/auth/login' || pathname === '/api/auth/signup') {
+  const isAuthApi = pathname.startsWith('/api/auth/') && (pathname.endsWith('/login') || pathname.endsWith('/signup'));
+
+  if (isAuthApi) {
+    console.log('↩️ Auth API bypass middleware for', pathname);
     return NextResponse.next();
   }
 
@@ -58,15 +62,23 @@ export default function middleware(req: NextRequest) {
   }
 
   if (!token) {
+    if (refresh) {
+      console.log('🔄 refreshToken present, rewriting to /api/auth/refresh');
+      const url = req.nextUrl.clone();
+      url.pathname = '/api/auth/refresh';
+      return NextResponse.rewrite(url);
+    }
     const isApiRequest = pathname.startsWith('/api');
+    console.log('Is API request?', isApiRequest);
 
     if (isApiRequest) {
+      console.log('→ sending 401 JSON: Unauthorized: No token');
       return new NextResponse(JSON.stringify({ message: 'Unauthorized: No token' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
       });
     }
-
+    console.log(`→ Redirecting to ${pathname.startsWith('/mover') ? 'mover' : 'customer'} login`);
     const isMoverRoute = pathname.startsWith('/mover');
     const redirectPath = isMoverRoute ? '/mover/login' : '/customer/login';
 
