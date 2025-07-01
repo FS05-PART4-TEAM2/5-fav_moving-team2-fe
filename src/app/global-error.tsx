@@ -5,7 +5,7 @@ import { Typo } from '@/shared/styles/Typo/Typo';
 import { Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const theme = useTheme();
 
   return (
