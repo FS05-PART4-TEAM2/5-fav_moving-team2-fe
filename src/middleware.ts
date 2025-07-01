@@ -74,9 +74,7 @@ export default function middleware(req: NextRequest) {
     }
 
     if (refresh) {
-      const url = req.nextUrl.clone();
-      url.pathname = '/api/auth/refresh';
-      return NextResponse.rewrite(url);
+      return NextResponse.next();
     }
 
     console.log(`→ Redirecting to ${pathname.startsWith('/mover') ? 'mover' : 'customer'} login`);
