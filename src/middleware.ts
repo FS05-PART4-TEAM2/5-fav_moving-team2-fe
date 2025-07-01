@@ -62,12 +62,6 @@ export default function middleware(req: NextRequest) {
   }
 
   if (!token) {
-    if (refresh) {
-      console.log('🔄 refreshToken present, rewriting to /api/auth/refresh');
-      const url = req.nextUrl.clone();
-      url.pathname = '/api/auth/refresh';
-      return NextResponse.rewrite(url);
-    }
     const isApiRequest = pathname.startsWith('/api');
     console.log('Is API request?', isApiRequest);
 
@@ -78,6 +72,12 @@ export default function middleware(req: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
+
+    if (refresh) {
+      console.log('→ 페이지 요청, refreshToken 있음 => 401 상태 반환');
+      return new NextResponse(null, { status: 401 });
+    }
+
     console.log(`→ Redirecting to ${pathname.startsWith('/mover') ? 'mover' : 'customer'} login`);
     const isMoverRoute = pathname.startsWith('/mover');
     const redirectPath = isMoverRoute ? '/mover/login' : '/customer/login';
