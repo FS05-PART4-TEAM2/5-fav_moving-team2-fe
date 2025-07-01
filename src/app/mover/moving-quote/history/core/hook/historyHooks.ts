@@ -55,7 +55,9 @@ export function mapSentQuotationToCardData(apiData: SentQuotationAPIData): {
 
   const isFinishRequest = apiData.isConfirmedToMe === true && apiData.status === 'COMPLETED' && isPastMoveDay;
   const isRefuse = apiData.isConfirmedToMe === false && apiData.status === 'COMPLETED';
-  const isConfirmedQuotation = apiData.isConfirmedToMe === true && apiData.status === 'CONFIRMED';
+  const isConfirmedQuotation =
+    (apiData.isConfirmedToMe === true && apiData.status === 'CONFIRMED') ||
+    (apiData.isConfirmedToMe === true && apiData.status === 'COMPLETED');
   const isConfirmPending = apiData.isConfirmedToMe === false && apiData.status === 'CONFIRMED';
 
   if (isFinishRequest) {
