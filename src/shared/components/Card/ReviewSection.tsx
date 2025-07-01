@@ -16,6 +16,8 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
     return dayjs(date).format('YYYY-MM-DD');
   };
 
+  console.log('review data', data);
+
   return (
     <Stack direction="column">
       <Stack direction="row" alignItems="center" paddingBottom="8px">
@@ -42,23 +44,27 @@ export default function ReviewSection({ data }: ReviewSectionProps) {
         </Typo>
       </Stack>
 
-      <Stack
-        position="relative"
-        sx={{
-          width: {
-            xs: '20px',
-            md: '24px',
-          },
-          height: { xs: '20px', md: '24px' },
-          mb: isMdDown ? '8px' : '12px',
-        }}
-      >
-        <Image
-          src="/assets/images/star-icon/star-yellow-24x24.svg"
-          alt="like icon"
-          fill
-          style={{ objectFit: 'contain' }}
-        />
+      <Stack direction="row" spacing={1} mb={isMdDown ? '8px' : '12px'}>
+        {Array.from({ length: data.review?.averageScore || 0 }).map((_, index) => (
+          <Stack
+            key={index}
+            position="relative"
+            sx={{
+              width: {
+                xs: '20px',
+                md: '24px',
+              },
+              height: { xs: '20px', md: '24px' },
+            }}
+          >
+            <Image
+              src="/assets/images/star-icon/star-yellow-24x24.svg"
+              alt={`star-${index + 1}`}
+              fill
+              style={{ objectFit: 'contain' }}
+            />
+          </Stack>
+        ))}
       </Stack>
 
       <Typo
