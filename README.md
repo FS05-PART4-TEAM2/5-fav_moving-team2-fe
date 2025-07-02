@@ -1,36 +1,160 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 무빙 (Moving) - 이사 전문가 매칭 서비스
 
-## Getting Started
+> 이사 소비자와 이사 전문가를 연결하는 신뢰할 수 있는 매칭 플랫폼
 
-First, run the development server:
+## 🏠 프로젝트 소개
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**무빙**은 이사 시장의 무분별한 가격 책정과 무책임한 서비스 문제를 해결하기 위해 개발된 매칭 서비스입니다. 소비자가 원하는 서비스와 주거 정보를 입력하면 이사 전문가들이 견적을 제공하고, 사용자가 이를 바탕으로 신뢰할 수 있는 전문가를 선정할 수 있습니다.
+
+### ✨ 주요 기능
+
+- **투명한 견적 시스템**: 여러 이사 전문가로부터 견적을 받아 비교
+- **신뢰도 기반 매칭**: 리뷰와 평점을 통한 검증된 전문가 선택
+- **실시간 알림**: 견적 접수부터 이사 완료까지 단계별 알림
+- **지역 기반 서비스**: 서비스 가능 지역 내 전문가 매칭
+
+## 🎯 대상 사용자
+
+- **일반 사용자**: 이사를 계획 중인 개인 및 가정
+- **이사 전문가**: 이사 서비스를 제공하는 기사님들
+
+## 🚀 기술 스택
+
+### Backend
+
+- **API Documentation**: Swagger/OpenAPI 3.0
+- **Base URL**: `https://five-fav-moving-team2-be.onrender.com`
+
+### 주요 API 엔드포인트
+
+```
+📋 API 문서: https://five-fav-moving-team2-be.onrender.com/api-docs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📱 핵심 기능
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🔐 인증 및 사용자 관리
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **다중 사용자 타입**: 일반 사용자, 이사 전문가 구분
+- **소셜 로그인**: 구글, 네이버, 카카오 지원
+- **프로필 관리**: 맞춤형 프로필 등록 및 수정
 
-## Learn More
+### 💼 견적 관리 시스템
 
-To learn more about Next.js, take a look at the following resources:
+#### 일반 사용자
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **채팅 형태 견적 요청**: 직관적인 정보 입력
+- **프로그래스 바**: 현재 단계 시각화
+- **견적 비교**: 여러 전문가 견적 한눈에 비교
+- **전문가 지정 요청**: 원하는 전문가에게 직접 견적 요청
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 이사 전문가
 
-## Deploy on Vercel
+- **견적 요청 수신**: 서비스 가능 지역 내 요청만 필터링
+- **견적 제안**: 맞춤형 가격 제안
+- **요청 관리**: 수락/반려 처리
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🔍 전문가 검색 및 선택
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **다양한 정렬 옵션**: 리뷰, 평점, 경력, 확정 횟수순
+- **필터링**: 지역, 서비스 종류별 분류
+- **찜하기 기능**: 관심 전문가 저장
+- **소셜 공유**: 추천 전문가 공유
+
+### ⭐ 리뷰 및 평가 시스템
+
+- **이사 후 리뷰 작성**: 서비스 경험 공유
+- **평점 시스템**: 신뢰도 있는 전문가 선별
+- **리뷰 관리**: 작성/조회 이력 관리
+
+### 🔔 실시간 알림
+
+- **견적 관련**: 새 견적, 견적 확정 알림
+- **이사 당일**: 이사 진행 알림
+
+## 📋 주요 비즈니스 규칙
+
+### 견적 요청 제한
+
+- 이사일 경과 후 새로운 견적 요청 가능
+- 한 번에 하나의 활성 견적 요청만 허용
+- 기존 요청 확정 전까지 새 요청 불가
+
+### 활성 견적 요청 정의
+
+- 확정 전 대기 중인 견적 요청
+- 확정 후부터 이사일 이전까지의 견적
+
+## 🎨 사용자 경험
+
+### 반응형 디자인
+
+- **PC**: 찜한 전문가 3명까지 사이드바 표시
+- **모바일**: 최적화된 터치 인터페이스
+
+### 직관적 인터페이스
+
+- **채팅 형태**: 자연스러운 정보 입력
+- **무한 스크롤**: 부드러운 리스트 탐색
+- **원클릭 수정**: 입력 정보 간편 수정
+
+## 🔗 외부 서비스 연동
+
+- **카카오 우편번호 서비스**: 정확한 주소 입력
+- **소셜 로그인**: 간편한 회원가입/로그인
+- **알림 시스템**: 실시간 상태 업데이트
+
+## 📊 서비스 통계 및 관리
+
+### 자동화 프로세스
+
+- **크론탭**: 이사 날짜 도달 시 자동 완료 처리
+- **알림 스케줄링**: 단계별 자동 알림 발송
+
+## 🚀 시작하기
+
+### API 문서 확인
+
+```bash
+# API 문서 접속
+https://five-fav-moving-team2-be.onrender.com/api-docs
+```
+
+### 개발 환경 설정
+
+```bash
+# 저장소 클론
+git clone [repository-url]
+
+# 의존성 설치
+npm install
+
+# 환경 변수 설정
+cp .env.example .env
+
+# 개발 서버 실행
+npm run dev
+```
+
+## 📈 프로젝트 난이도
+
+**🌟🌟🌟🌟🌟** (5/5) - 고급 수준
+
+## 🤝 팀 정보
+
+- **개발팀**: Team 2
+- **프로젝트 기여자**: 이동혁 외
+
+## 📞 지원 및 문의
+
+프로젝트 관련 문의사항이나 기술적 지원이 필요한 경우, 이슈를 통해 연락해 주세요.
+
+---
+
+## 📄 라이선스
+
+이 프로젝트는 해당 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조해 주세요.
+
+---
+
+_무빙과 함께 더 나은 이사 경험을 만들어보세요! 🏠✨_
