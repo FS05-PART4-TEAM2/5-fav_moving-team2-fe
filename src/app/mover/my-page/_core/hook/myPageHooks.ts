@@ -5,10 +5,10 @@ import { getMoverDetail, getReviewList } from '../api/myPageApi';
 import { useQuery } from '@tanstack/react-query';
 import { MoverReviewListItem } from '@/shared/types/types';
 
-export const useReviewList = (id: string, page: number) => {
+export const useReviewList = (id: string, page: number, limit: number) => {
   return useQuery({
-    queryKey: ['reviewList', id, page],
-    queryFn: () => getReviewList(id, page),
+    queryKey: ['reviewList', id, page, limit],
+    queryFn: () => getReviewList(id, page, limit),
     enabled: !!id,
     staleTime: 0,
     placeholderData: (prev) => prev,

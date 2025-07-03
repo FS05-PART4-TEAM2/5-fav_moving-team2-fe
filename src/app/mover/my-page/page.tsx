@@ -19,6 +19,9 @@ import Image from 'next/image';
 
 export default function Page() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const limit = isSmDown ? 3 : isDesktop ? 5 : 4;
 
   const [page, setPage] = useState(1);
 
@@ -27,7 +30,8 @@ export default function Page() {
   const userId = userInfo?.id ?? '';
 
   const { data: moverDetail } = useMoverDetail(userId);
-  const { data } = useReviewList(userId, page);
+  const { data } = useReviewList(userId, page, limit);
+
   if (!userInfo || !moverDetail) return null;
 
   const reviews = data?.list ?? [];
@@ -51,7 +55,7 @@ export default function Page() {
             <Typo
               className="text_B_16to24"
               style={{ color: colorChips.black.b2b2b }}
-              content={`리뷰 (${reviews.length})`}
+              content={`리뷰 (${moverDetail.reviewCounts ?? 0})`}
             />
             <ReviewSummary
               totalRating={data?.totalRating ?? 0}
