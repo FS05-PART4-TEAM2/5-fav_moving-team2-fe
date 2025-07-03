@@ -58,6 +58,7 @@ export function MoverProfileBase({
             border: hasProfileImage ? `2px solid ${colorChips.primary[400]}` : 'none',
           }}
           priority
+          unoptimized
         />
       </Stack>
 

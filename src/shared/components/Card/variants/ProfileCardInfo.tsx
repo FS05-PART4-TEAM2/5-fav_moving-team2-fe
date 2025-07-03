@@ -43,6 +43,7 @@ export default function ProfileCardInfo({ data, bgColor }: ProfileCardInfoProps)
               alt="user profile Image"
               fill
               style={{ objectFit: 'cover' }}
+              unoptimized
             />
           </Stack>
         )}

@@ -43,6 +43,7 @@ export const MoverCardSmall = ({ data }: { data: SearchMoverListItem }) => {
             border: hasProfileImage ? `2px solid ${colorChips.primary[400]}` : 'none',
           }}
           priority
+          unoptimized
         />
 
         <Stack width="100%" direction="column" gap="8px" alignItems="flex-start">

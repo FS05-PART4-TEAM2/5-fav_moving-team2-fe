@@ -126,7 +126,7 @@ export default function ProfileImageUploader() {
                     position: 'relative',
                   }}
                 >
-                  <Image src={previewUrl} alt="preview image" fill style={{ objectFit: 'cover' }} />
+                  <Image src={previewUrl} alt="preview image" fill style={{ objectFit: 'cover' }} unoptimized />
                 </Stack>
               )}
 

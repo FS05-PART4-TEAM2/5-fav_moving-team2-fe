@@ -116,6 +116,7 @@ export default function CardHeader({ type, data, isModal }: CardHeaderProps) {
                   alt="user profile Image"
                   fill
                   style={{ objectFit: 'cover' }}
+                  unoptimized
                 />
               </Stack>
             )}

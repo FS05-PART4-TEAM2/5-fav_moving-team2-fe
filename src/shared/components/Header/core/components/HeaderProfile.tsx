@@ -76,6 +76,7 @@ export const HeaderProfile = ({
             border: hasProfileImg ? `2px solid ${colorChips.primary[400]}` : 'none',
           }}
           priority
+          unoptimized
         />
         {isDesktop && <Typo content={nickname} className="text_M_18" color={colorChips.black[400]} />}
       </Stack>

@@ -65,6 +65,7 @@ export const ReviewCardBase = ({
               border: hasProfileImage ? `2px solid ${colorChips.primary[400]}` : 'none',
             }}
             priority
+            unoptimized
           />
         </Stack>
         {/* 닉네임 & 견적정보 & (별점) */}
